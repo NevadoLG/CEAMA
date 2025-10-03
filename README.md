@@ -31,7 +31,7 @@ Clonar este repositorio:
 ``` bash
     venv\Scripts\activate
 ```
-### Si lo hiciste bien veran algo tipo:
+### Si lo hicieron bien veran algo tipo:
 ``` bash
 (venv) C:\Users\Nevado\Desktop\CEAMA>
 ```
