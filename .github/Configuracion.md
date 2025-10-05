@@ -70,24 +70,30 @@ git add .
 git commit -m "Descripción corta del cambio realizado"
 git push origin feature/La-rama-que-estan-usando
 ```
-### Esto sirve para añadir los cambios que hicieron, pero esto aun no esta subido aún.
-### Lo que tienen que hacer es cambiarse a la rama principal, en este caso para feature es
-### develop y para ello usan: 
-``` bash
-git switch develop
-```
-### Una vez que se cambiaron, hacen la pull 
-``` bash
-git pull origin develop
-```
 ### Habiendo hecho eso tienen que ir a su GitHub en la web y les aparecerá
 ### la siguiente imagen en la cual le tendrán que dar en compare & pull request
 ![Pull](./images/pull.jpeg) 
 ### y les aparecerá otra ventanita del commit que tambien deberán darle al boton verde.
+![Pull](./images/create.jpeg) 
 ### LLegados a ese punto notifican por el whatsApp a cualquiera del grupo para aceptar el cambio
-### y le dan aprove y rebase para subir el cambio.
-
+### y la persona que lo va a aceptar debe darle aprove y rebase para subir el cambio.
+![Pull](./images/reabse.jpeg) 
 ## 5. Aprobación de la pull
 ### Cuando alguien del grupo ya acepto la pull y quieren ver los cambios tienen
 ### que darle a reload, es decir, las dos flechitas al lado de develop:
 ![Pull](./images/reload.png) 
+### Esto sirve para añadir los cambios que hicieron pero, cada uno debe borrar la rama que usaron
+### porque es de un solo uso. Para eso lo que deben hacer es cambiarse a otra rama
+### en este caso para feature es develop y para ello usan: 
+``` bash
+git switch develop
+```
+### Ya una vez se cambiaron de rama eliminan la suya y si quieren corroborar que no estan en la misma usan **solo branch** y al ver que no estan en la misma la borran
+``` bash
+git branch
+git branch -D feature/lo-que-hicieron
+```
+### Una vez que se lo borraron localmente, hacen un push para eliminarlo del repositorio remoto 
+``` bash
+git push origin --delete feature/lo-que-hicieron
+```
