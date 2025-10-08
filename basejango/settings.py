@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'apoderados',
     'usuarios',
     'planes',
+    'landing',
 ]
 AUTH_USER_MODEL = 'usuarios.Usuario'
 # ----------------------------
