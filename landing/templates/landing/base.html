@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>CEAMA - Centro Educativo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'landing/css/estilos.css' %}">
+</head>
+<body>
+
+  <header class="header">
+    <div class="logo">
+      <img src="{% static 'landing/img/ceama.png' %}" alt="Logo CEAMA">
+    </div>
+    <nav class="nav">
+      <a href="#quienes">Quiénes somos</a>
+      <a href="#cursos">Cursos</a>
+      <a href="#horarios">Horarios</a>
+      <a href="#costos">Costos</a>
+      <a href="#contacto">Contacto</a>
+      <a href="/estudiantes/registrar" class="btn-inscribir">Inscribirme</a>
+    </nav>
+  </header>
+
+  {% block contenido %}{% endblock %}
+
+  <footer>
+    <p>© 2025 CEAMA - Todos los derechos reservados</p>
+  </footer>
+
+  <script src="{% static 'landing/js/interaccion.js' %}"></script>
+</body>
+</html>
