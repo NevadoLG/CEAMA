@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'docentes',
     'apoderados',
     'usuarios',
+    'planes',
 ]
 AUTH_USER_MODEL = 'usuarios.Usuario'
 # ----------------------------
@@ -75,24 +76,16 @@ WSGI_APPLICATION = 'basejango.wsgi.application'
 # Configuración de base de datos (PostgreSQL)
 # ----------------------------
 DATABASES = {
-<<<<<<< HEAD
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "OPTIONS": {
-            "service": "my_service",
-            "passfile": ".my_pgpass",
-        },
-=======
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT'),
->>>>>>> f9d514e (Modulos/apps creados en Django)
+        'NAME': os.getenv('DB_NAME', 'ceama'),
+        'USER': os.getenv('DB_USER', 'postgres'),
+        'PASSWORD': os.getenv('DB_PASSWORD', '1234'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
+
 
 # ----------------------------
 # Validación de contraseñas

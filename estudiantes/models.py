@@ -29,7 +29,33 @@ class Inscripcion(models.Model):
     curso = models.ForeignKey('docentes.Curso', on_delete=models.PROTECT)
     usuario_registra = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     fecha = models.DateTimeField(auto_now_add=True)
-    estado_pago = models.CharField(max_length=20, choices=[('pendiente','Pendiente'),('total','Total'),('parcial','Parcial')])
+    estado_pago = models.CharField(
+        max_length=20,
+        choices=[
+            ('pendiente', 'Pendiente'),
+            ('total', 'Total'),
+            ('parcial', 'Parcial')
+        ]
+    )
+    plan = models.ForeignKey('planes.Plan', on_delete=models.CASCADE, default=1)
+
 
     def __str__(self):
-        return f"{self.apellidos}, {self.nombres}"
+        return f"{self.estudiante.apellidos}, {self.estudiante.nombres}"
+
+class Matricula(models.Model):
+    inscripcion = models.ForeignKey('estudiantes.Inscripcion', on_delete=models.CASCADE)
+    estudiante = models.ForeignKey('estudiantes.Estudiante', on_delete=models.CASCADE)  # 👈 Esta línea debe existir
+    estado = models.CharField(
+        max_length=20,
+        choices=[
+            ('activo', 'Activo'),
+            ('inactivo', 'Inactivo')
+        ]
+    )
+    monto_referencial = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    fecha_creada = models.DateTimeField(auto_now_add=True)
+    usuario_registra = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return f"Matrícula de {self.estudiante.apellidos}, {self.estudiante.nombres}"
