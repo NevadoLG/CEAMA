@@ -1,8 +1,15 @@
 from django.db import models
 
 class Plan(models.Model):
-    NIVELES = [('primaria','Primaria'), ('secundaria','Secundaria')]
-    AREAS = [('matematica','Matemática'), ('comunicacion','Comunicación'), ('ambos','Matemática + Comunicación')]
+    NIVELES = [
+        ('primaria', 'Primaria'),
+        ('secundaria', 'Secundaria')
+    ]
+    AREAS = [
+        ('matematica', 'Matemática'),
+        ('comunicacion', 'Comunicación'),
+        ('ambos', 'Matemática + Comunicación')
+    ]
 
     nombre = models.CharField(max_length=120)  # Ej: "Primaria - Matemática"
     nivel = models.CharField(max_length=15, choices=NIVELES)
@@ -12,3 +19,10 @@ class Plan(models.Model):
 
     def __str__(self):
         return f"{self.nombre} ({self.get_nivel_display()} - {self.get_area_display()})"
+
+    # 🔹 Funciones de ayuda (no afectan migraciones)
+    def cupos_ocupados(self):
+        return self.inscripcion_set.count()
+
+    def cupos_disponibles(self):
+        return max(self.cupo_maximo - self.cupos_ocupados(), 0)

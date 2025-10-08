@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, transaction
 from apoderados.models import Apoderado  
 from django.conf import settings
 
@@ -39,7 +39,21 @@ class Inscripcion(models.Model):
     )
     plan = models.ForeignKey('planes.Plan', on_delete=models.CASCADE, default=1)
 
+    # 🔹 Validación de disponibilidad de cupos al guardar
+    def save(self, *args, **kwargs):
+        from planes.models import Plan  # import interno para evitar ciclos
 
+        with transaction.atomic():
+            plan = Plan.objects.select_for_update().get(pk=self.plan_id)
+            ocupados = plan.inscripcion_set.exclude(pk=self.pk).count()
+
+            if ocupados >= plan.cupo_maximo:
+                raise ValidationError(
+                    f"No hay cupos disponibles para el plan: "
+                    f"{plan.get_nivel_display()} - {plan.get_area_display()}."
+                )
+
+            super().save(*args, **kwargs)
     def __str__(self):
         return f"{self.estudiante.apellidos}, {self.estudiante.nombres}"
 
