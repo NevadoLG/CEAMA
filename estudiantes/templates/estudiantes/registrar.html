@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Estudiante</title>
+</head>
+<body>
+    <h1>Registrar Estudiante</h1>
+    <form method="post" action="">
+        {% csrf_token %}
+        <label>Nombres:</label><br>
+        <input type="text" name="nombres" required><br>
+
+        <label>Apellidos:</label><br>
+        <input type="text" name="apellidos" required><br>
+
+        <label>Grado:</label><br>
+        <input type="text" name="grado" required><br>
+
+        <label>Colegio:</label><br>
+        <input type="text" name="colegio" required><br>
+
+        <label>Edad:</label><br>
+        <input type="number" name="edad" required><br><br>
+
+        <label>Apoderado:</label><br>
+        <select name="apoderado">
+            {% for a in apoderados %}
+                <option value="{{ a.id }}">{{ a.nombre }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>Plan:</label><br>
+        <select name="plan">
+            {% for p in planes %}
+                <option value="{{ p.id }}">{{ p.nombre }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>Usuario (registrado por):</label><br>
+        <select name="usuario">
+            {% for u in usuarios %}
+                <option value="{{ u.id }}">{{ u.nombre }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <button type="submit">Registrar</button>
+    </form>
+</body>
+</html>
