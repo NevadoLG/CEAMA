@@ -1,50 +1,88 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Registrar Estudiante</title>
+    <link rel="stylesheet" href="{% static 'landing/css/registro.css' %}">
 </head>
 <body>
-    <h1>Registrar Estudiante</h1>
-    <form method="post" action="">
-        {% csrf_token %}
-        <label>Nombres:</label><br>
-        <input type="text" name="nombres" required><br>
+    <!-- Banner superior fijo -->
+    <header class="top-banner">
+        <div class="banner-content">
+            <img src="{% static 'landing/img/ceama.png' %}" alt="Logo CEAMA" class="logo">
+            <h1 class="banner-title">ADMISIÓN 2026</h1>
+        </div>
+    </header>
 
-        <label>Apellidos:</label><br>
-        <input type="text" name="apellidos" required><br>
+    <!-- Contenedor principal -->
+    <main class="main-container">
+        <div class="form-card">
+            <div class="form-header">Registro de Estudiante</div>
+            <div class="form-body">
+                <h2 class="section-title">Datos del Alumno</h2>
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Nombres:</label>
+                            <input type="text" name="nombres" required>
+                        </div>
 
-        <label>Grado:</label><br>
-        <input type="text" name="grado" required><br>
+                        <div class="form-group">
+                            <label>Apellidos:</label>
+                            <input type="text" name="apellidos" required>
+                        </div>
 
-        <label>Colegio:</label><br>
-        <input type="text" name="colegio" required><br>
+                        <div class="form-group">
+                            <label>Grado:</label>
+                            <input type="text" name="grado" required>
+                        </div>
 
-        <label>Edad:</label><br>
-        <input type="number" name="edad" required><br><br>
+                        <div class="form-group">
+                            <label>Colegio:</label>
+                            <input type="text" name="colegio" required>
+                        </div>
 
-        <label>Apoderado:</label><br>
-        <select name="apoderado">
-            {% for a in apoderados %}
-                <option value="{{ a.id }}">{{ a.nombre }}</option>
-            {% endfor %}
-        </select><br><br>
+                        <div class="form-group">
+                            <label>Edad:</label>
+                            <input type="number" name="edad" required>
+                        </div>
 
-        <label>Plan:</label><br>
-        <select name="plan">
-            {% for p in planes %}
-                <option value="{{ p.id }}">{{ p.nombre }}</option>
-            {% endfor %}
-        </select><br><br>
+                        <div class="form-group">
+                            <label>Apoderado:</label>
+                            <select name="apoderado">
+                                {% for a in apoderados %}
+                                    <option value="{{ a.id }}">{{ a.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
 
-        <label>Usuario (registrado por):</label><br>
-        <select name="usuario">
-            {% for u in usuarios %}
-                <option value="{{ u.id }}">{{ u.nombre }}</option>
-            {% endfor %}
-        </select><br><br>
+                        <div class="form-group">
+                            <label>Plan:</label>
+                            <select name="plan">
+                                {% for p in planes %}
+                                    <option value="{{ p.id }}">{{ p.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
 
-        <button type="submit">Registrar</button>
-    </form>
+                        <div class="form-group">
+                            <label>Usuario (registrado por):</label>
+                            <select name="usuario">
+                                {% for u in usuarios %}
+                                    <option value="{{ u.id }}">{{ u.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-submit">Registrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
 </body>
 </html>

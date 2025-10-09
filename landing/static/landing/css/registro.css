@@ -1,0 +1,143 @@
+/* Fuente general */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    background-color: #f5f7fb;
+    color: #333;
+}
+
+.banner-content {
+    display: flex;
+    align-items: center; /* centra verticalmente texto e imagen */
+    justify-content: center; /* centra horizontalmente el conjunto (opcional) */
+    gap: 20px; /* separa el logo del texto */
+}
+
+/* Banner fijo arriba */
+.top-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background-color: #003366;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 50px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    z-index: 1000;
+}
+
+.top-banner img {
+    height: 100px;
+}
+
+.top-banner h1 {
+    font-size: 3rem; /* 🔥 más grande */
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+/* Contenedor principal */
+.main-container {
+    min-height: 100vh;
+    background-color: #f5f7fb;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 140px; /* espacio para el banner */
+    padding-bottom: 60px;
+}
+
+/* Tarjeta del formulario */
+.form-card {
+    background-color: white;
+    width: 92%;
+    max-width: 1350px; /* 🔥 más ancho */
+    border-radius: 12px;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    border-top: 6px solid #003366;
+}
+
+/* Header del formulario */
+.form-header {
+    background-color: #003366;
+    color: white;
+    font-weight: 700;
+    padding: 25px 40px;
+    font-size: 1.8rem; /* 🔥 más grande */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Cuerpo del formulario */
+.form-body {
+    padding: 50px;
+}
+
+/* Título de secciones */
+.section-title {
+    font-size: 1.4rem;
+    margin-bottom: 25px;
+    padding-left: 12px;
+    border-left: 6px solid #003366;
+    color: #003366;
+    font-weight: 600;
+}
+
+/* Cuadrícula de campos */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+/* Labels e inputs */
+label {
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 10px;
+    display: block;
+    font-size: 1.05rem; /* un poco más grande */
+}
+
+input, select {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+input:focus, select:focus {
+    border-color: #003366;
+    outline: none;
+    box-shadow: 0 0 4px rgba(0, 51, 102, 0.3);
+}
+
+/* Botón principal */
+button {
+    margin-top: 40px;
+    background-color: #003366;
+    color: white;
+    padding: 15px 28px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    grid-column: 1 / 4;
+}
+
+button:hover {
+    background-color: #0055aa;
+    transform: scale(1.03);
+}

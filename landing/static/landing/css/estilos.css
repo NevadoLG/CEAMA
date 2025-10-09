@@ -70,7 +70,7 @@ body {
 
 /* ====== Sección principal ====== */
 #portada {
-  background: linear-gradient(rgba(0, 116, 217, 0.5), rgba(0, 0, 0, 0.4)), url("../img/portada.png") center/cover no-repeat;
+  background: linear-gradient(rgba(0, 116, 217, 0.5), rgba(0, 0, 0, 0.4)), url("../img/CEAMA1.png") center/cover no-repeat;
   height: 90vh;
   color: white;
   display: flex;
