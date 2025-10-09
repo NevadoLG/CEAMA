@@ -22,12 +22,12 @@ class Estudiante(models.Model):
     edad = models.PositiveIntegerField()
     grado = models.CharField(max_length=10, choices=GRADOS)
     colegio = models.CharField(max_length=150)
-    apoderado = models.ForeignKey(Apoderado, on_delete=models.PROTECT, related_name='estudiantes')
+    apoderado = models.ForeignKey(Apoderado, on_delete=models.PROTECT, related_name='estudiantes', null=True, blank=True)
 
 class Inscripcion(models.Model):
     estudiante = models.ForeignKey('estudiantes.Estudiante', on_delete=models.CASCADE)
-    curso = models.ForeignKey('docentes.Curso', on_delete=models.PROTECT)
-    usuario_registra = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+    curso = models.ForeignKey('docentes.Curso', on_delete=models.PROTECT, null=True, blank=True)
+    # usuario_registra eliminado
     fecha = models.DateTimeField(auto_now_add=True)
     estado_pago = models.CharField(
         max_length=20,
@@ -69,7 +69,7 @@ class Matricula(models.Model):
     )
     monto_referencial = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     fecha_creada = models.DateTimeField(auto_now_add=True)
-    usuario_registra = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+    # usuario_registra eliminado
 
     def __str__(self):
         return f"Matrícula de {self.estudiante.apellidos}, {self.estudiante.nombres}"

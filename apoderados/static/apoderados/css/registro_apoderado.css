@@ -1,4 +1,4 @@
-/* Fuente general */
+/* Basado en landing/css/registro.css */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 body {
@@ -8,21 +8,13 @@ body {
     color: #333;
 }
 
-/* Acciones del formulario alineadas a extremos */
-.form-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 40px;
-}
 .banner-content {
     display: flex;
-    align-items: center; /* centra verticalmente texto e imagen */
-    justify-content: center; /* centra horizontalmente el conjunto (opcional) */
-    gap: 20px; /* separa el logo del texto */
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
 }
 
-/* Banner fijo arriba */
 .top-banner {
     position: fixed;
     top: 0;
@@ -44,51 +36,46 @@ body {
 }
 
 .top-banner h1 {
-    font-size: 3rem; /* 🔥 más grande */
+    font-size: 3rem;
     font-weight: 700;
     margin: 0;
     letter-spacing: 1px;
 }
 
-/* Contenedor principal */
 .main-container {
     min-height: 100vh;
     background-color: #f5f7fb;
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    padding-top: 140px; /* espacio para el banner */
+    padding-top: 140px;
     padding-bottom: 60px;
 }
 
-/* Tarjeta del formulario */
 .form-card {
     background-color: white;
     width: 92%;
-    max-width: 1350px; /* 🔥 más ancho */
+    max-width: 1350px;
     border-radius: 12px;
     box-shadow: 0 4px 25px rgba(0, 0, 0, 0.12);
     overflow: hidden;
     border-top: 6px solid #003366;
 }
 
-/* Header del formulario */
 .form-header {
     background-color: #003366;
     color: white;
     font-weight: 700;
     padding: 25px 40px;
-    font-size: 1.8rem; /* 🔥 más grande */
+    font-size: 1.8rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
-/* Cuerpo del formulario */
 .form-body {
     padding: 50px;
 }
 
-/* Título de secciones */
 .section-title {
     font-size: 1.4rem;
     margin-bottom: 25px;
@@ -98,20 +85,18 @@ body {
     font-weight: 600;
 }
 
-/* Cuadrícula de campos */
 .form-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 30px;
 }
 
-/* Labels e inputs */
 label {
     font-weight: 600;
     color: #222;
     margin-bottom: 10px;
     display: block;
-    font-size: 1.05rem; /* un poco más grande */
+    font-size: 1.05rem;
 }
 
 input, select {
@@ -129,9 +114,6 @@ input:focus, select:focus {
     box-shadow: 0 0 4px rgba(0, 51, 102, 0.3);
 }
 
-/* Botón principal */
-
-/* Botón principal y enlaces tipo botón */
 .btn-submit, button {
     margin-top: 40px;
     background-color: #003366;
@@ -153,4 +135,11 @@ input:focus, select:focus {
     background-color: #0055aa;
     transform: scale(1.03);
     color: white !important;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
 }

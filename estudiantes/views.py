@@ -13,11 +13,11 @@ def registrar_estudiante(request):
     if request.method == 'GET':
         apoderados = Apoderado.objects.all()
         planes = Plan.objects.all()
-        usuarios = Usuario.objects.all()
+        grados = Estudiante.GRADOS
         return render(request, 'estudiantes/registrar.html', {
             'apoderados': apoderados,
             'planes': planes,
-            'usuarios': usuarios
+            'grados': grados
         })
 
     elif request.method == 'POST':
@@ -27,27 +27,22 @@ def registrar_estudiante(request):
             grado = request.POST.get('grado')
             colegio = request.POST.get('colegio')
             edad = request.POST.get('edad')
-            apoderado_id = request.POST.get('apoderado')
             plan_id = request.POST.get('plan')
-            usuario_id = request.POST.get('usuario')
-
-            apoderado = Apoderado.objects.get(id=apoderado_id)
             plan = Plan.objects.get(id=plan_id)
-            usuario = Usuario.objects.get(id=usuario_id)
 
+            # Por ahora, creamos el estudiante sin apoderado (se asociará después)
             estudiante = Estudiante.objects.create(
                 nombres=nombres,
                 apellidos=apellidos,
                 grado=grado,
                 colegio=colegio,
                 edad=edad,
-                apoderado=apoderado
+                apoderado=None
             )
 
             inscripcion = Inscripcion.objects.create(
                 estudiante=estudiante,
                 plan=plan,
-                usuario_registra=usuario,
                 estado_pago='pendiente'
             )
 
@@ -56,6 +51,8 @@ def registrar_estudiante(request):
                 estudiante=estudiante
             )
 
-            return JsonResponse({'status': 'ok', 'message': 'Inscripción registrada correctamente.'})
+            # Redirigir a la vista de registro de apoderado tras registrar estudiante
+            from django.shortcuts import redirect
+            return redirect('registrar_apoderado')
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)

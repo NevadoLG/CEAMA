@@ -6,6 +6,7 @@ class Apoderado(models.Model):
     telefono = models.CharField(max_length=15, unique=True)
     correo = models.EmailField(blank=True, null=True)
     direccion = models.CharField(max_length=200, blank=True)
-
+    dni = models.CharField(max_length=8, unique=True)
+       
     def __str__(self):
         return f"{self.apellidos}, {self.nombres}"
