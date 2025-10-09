@@ -25,7 +25,6 @@ class InscripcionAdmin(admin.ModelAdmin):
         'estudiante',
         'plan',
         'curso',
-        'usuario_registra',
         'estado_pago',
         'fecha'
     )
@@ -33,7 +32,6 @@ class InscripcionAdmin(admin.ModelAdmin):
     search_fields = (
         'estudiante__nombres',
         'estudiante__apellidos',
-        'usuario_registra__username'
     )
     ordering = ('-fecha',)
     autocomplete_fields = ('estudiante', 'curso', 'plan')
@@ -41,7 +39,7 @@ class InscripcionAdmin(admin.ModelAdmin):
 
 @admin.register(Matricula)
 class MatriculaAdmin(admin.ModelAdmin):
-    list_display = ('inscripcion', 'estado', 'monto_referencial', 'fecha_creada', 'usuario_registra')
+    list_display = ('inscripcion', 'estado', 'monto_referencial', 'fecha_creada')
     list_filter = ('estado',)
     search_fields = ('inscripcion__estudiante__apellidos', 'inscripcion__estudiante__nombres')
     ordering = ('-fecha_creada',)

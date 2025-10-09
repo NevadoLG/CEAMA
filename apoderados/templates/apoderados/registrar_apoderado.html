@@ -3,72 +3,51 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Registrar Estudiante</title>
+    <title>Registrar Apoderado</title>
     <link rel="stylesheet" href="{% static 'landing/css/registro.css' %}">
+    <link rel="stylesheet" href="{% static 'apoderados/css/registro_apoderado.css' %}">
 </head>
 <body>
-    <!-- Banner superior fijo -->
     <header class="top-banner">
         <div class="banner-content">
             <img src="{% static 'landing/img/ceama.png' %}" alt="Logo CEAMA" class="logo">
             <h1 class="banner-title">ADMISIÓN 2026</h1>
         </div>
     </header>
-
-    <!-- Contenedor principal -->
     <main class="main-container">
         <div class="form-card">
-            <div class="form-header">Registro de Estudiante</div>
+            <div class="form-header">Registro de Apoderado</div>
             <div class="form-body">
-                <h2 class="section-title">Datos del Alumno</h2>
                 <form method="post" action="">
                     {% csrf_token %}
                     <div class="form-grid">
                         <div class="form-group">
+                            <label>DNI:</label>
+                            <input type="text" name="dni" maxlength="8" required>
+                        </div>
+                        <div class="form-group">
                             <label>Nombres:</label>
                             <input type="text" name="nombres" required>
                         </div>
-
                         <div class="form-group">
                             <label>Apellidos:</label>
                             <input type="text" name="apellidos" required>
                         </div>
-
                         <div class="form-group">
-                            <label>Grado:</label>
-                            <select name="grado" required>
-                                {% for valor, nombre in grados %}
-                                <option value="{{ valor }}">{{ nombre }}</option>
-                                {% endfor %}
-                            </select>
+                            <label>Teléfono:</label>
+                            <input type="text" name="telefono" maxlength="15" required>
                         </div>
-
                         <div class="form-group">
-                            <label>Colegio:</label>
-                            <input type="text" name="colegio" required>
+                            <label>Correo:</label>
+                            <input type="email" name="correo">
                         </div>
-
                         <div class="form-group">
-                            <label>Edad:</label>
-                            <input type="number" name="edad" required>
+                            <label>Dirección:</label>
+                            <input type="text" name="direccion">
                         </div>
-
-                        <!-- Campo Apoderado eliminado, ahora se registra en otra vista -->
-
-                        <div class="form-group">
-                            <label>Plan:</label>
-                            <select name="plan">
-                                {% for p in planes %}
-                                    <option value="{{ p.id }}">{{ p.nombre }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-
-                        <!-- Eliminado campo Usuario (registrado por) -->
                     </div>
-
                     <div class="form-actions">
-                        <button type="submit" class="btn-submit">Registrar</button>
+                        <button type="submit" class="btn-submit">Registrar Apoderado</button>
                         <a href="/" class="btn-submit" style="margin-left: 10px; text-align: center; display: inline-block;">Regresar a la página principal</a>
                     </div>
                 </form>
