@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {% load static %}
   <link rel="stylesheet" href="{% static 'landing/css/estilos.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&family=Pacifico&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -14,19 +15,41 @@
       <img src="{% static 'landing/img/ceama.png' %}" alt="Logo CEAMA">
     </div>
     <nav class="nav">
-      <a href="#quienes">Quiénes somos</a>
-      <a href="#cursos">Cursos</a>
-      <a href="#horarios">Horarios</a>
-      <a href="#costos">Costos</a>
-      <a href="#contacto">Contacto</a>
-      <a href="/estudiantes/registrar" class="btn-inscribir">Inscribirme</a>
+  <a href="#quienes">Quiénes somos</a>
+  <a href="#cursos">Cursos</a>
+  <a href="#galeria">Galería</a>
+  <a href="#testimonios">Testimonios</a>
+  <a href="#contacto">Contacto</a>
+  <a href="/estudiantes/registrar" class="btn-inscribir destacado">Inscríbete</a>
     </nav>
   </header>
 
   {% block contenido %}{% endblock %}
 
   <footer>
-    <p>© 2025 CEAMA - Todos los derechos reservados</p>
+    <div class="footer-pro">
+      <div class="footer-col footer-logo-col">
+        <img src="{% static 'landing/img/ceama.png' %}" alt="Logo CEAMA" class="footer-logo-img">
+        <div class="footer-nombre">Centro Educativo CEAMA</div>
+      </div>
+      <div class="footer-col footer-contacto-col">
+        <div class="footer-titulo">Contacto</div>
+        <div class="footer-contacto-list">
+          <div><span class="footer-label">Email:</span> <a href="mailto:info@ceama.edu.pe">info@ceama.edu.pe</a></div>
+          <div><span class="footer-label">Teléfono:</span> +51 123 456 789</div>
+          <div><span class="footer-label">Dirección:</span> Urb. Trupal Mz. D Lote 20, Trujillo, Perú</div>
+        </div>
+      </div>
+      <div class="footer-col footer-redes-col">
+        <div class="footer-titulo">Síguenos</div>
+        <div class="footer-redes-pro">
+          <a href="#" title="Facebook"><img src="{% static 'landing/img/facebook.svg' %}" alt="Facebook"></a>
+          <a href="#" title="Instagram"><img src="{% static 'landing/img/instagram.svg' %}" alt="Instagram"></a>
+          <a href="#" title="YouTube"><img src="{% static 'landing/img/youtube.svg' %}" alt="YouTube"></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copy-pro">© 2025 CEAMA - Todos los derechos reservados</div>
   </footer>
 
   <script src="{% static 'landing/js/interaccion.js' %}"></script>
