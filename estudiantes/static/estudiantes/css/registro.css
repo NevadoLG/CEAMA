@@ -115,7 +115,7 @@ label {
 }
 
 input, select {
-    width: 100%;
+    width: 85%;
     padding: 12px 15px;
     border-radius: 8px;
     border: 1px solid #ccc;
@@ -153,4 +153,81 @@ input:focus, select:focus {
     background-color: #0055aa;
     transform: scale(1.03);
     color: white !important;
+}
+
+/* Contenedor de pasos con etiquetas */
+.progress-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.step-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Círculo */
+.step {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+}
+
+/* Texto del paso */
+.step-label {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Primer paso azul */
+.step-container:first-child .step {
+  background-color: #003366;
+}
+
+/* Resto de pasos gris */
+.step-container:not(:first-child) .step {
+  background-color: #e0e0e0;
+}
+
+
+/* Barra de progreso completa debajo de los pasos */
+.progress-container {
+  width: 96%;
+  height: 10px;
+  background-color: #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 15px;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #003366;
+  width: 0%;
+  transition: width 0.5s ease-in-out;
+}
+
+/* Variantes según paso */
+.progress-container.step1 .progress-bar {
+  width: 33%;
+}
+.progress-container.step2 .progress-bar {
+  width: 66%;
+}
+.progress-container.step3 .progress-bar {
+  width: 100%;
 }

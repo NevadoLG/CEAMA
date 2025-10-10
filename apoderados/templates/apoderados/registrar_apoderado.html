@@ -18,6 +18,29 @@
         <div class="form-card">
             <div class="form-header">Registro de Apoderado</div>
             <div class="form-body">
+
+            <!-- Barra de progreso con textos -->
+            <div class="progress-steps">
+            <div class="step-container">
+                <div class="step completed">1</div>
+                <span class="step-label">Datos del Estudiante</span>
+            </div>
+            <div class="step-container">
+                <div class="step completed">2</div>
+                <span class="step-label">Datos del Apoderado</span>
+            </div>
+            <div class="step-container">
+                <div class="step">3</div>
+                <span class="step-label">Pago</span>
+            </div>
+            </div>
+
+            <!-- Barra de progreso debajo de los pasos -->
+            <div class="progress-container step2"> <!-- step2 = 66% completado -->
+            <div class="progress-bar"></div>
+            </div>
+            
+                <h2 class="section-title">Datos del Apoderado</h2>
                 <form method="post" action="">
                     {% csrf_token %}
                     <div class="form-grid">

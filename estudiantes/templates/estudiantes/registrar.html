@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Registrar Estudiante</title>
-    <link rel="stylesheet" href="{% static 'landing/css/registro.css' %}">
+    <link rel="stylesheet" href="{% static 'estudiantes/css/registro.css' %}">
 </head>
 <body>
     <!-- Banner superior fijo -->
@@ -20,6 +20,28 @@
         <div class="form-card">
             <div class="form-header">Registro de Estudiante</div>
             <div class="form-body">
+
+                <!-- Barra de progreso con textos -->
+                <div class="progress-steps">
+                <div class="step-container">
+                    <div class="step">1</div>
+                    <span class="step-label">Datos del Estudiante</span>
+                </div>
+                <div class="step-container">
+                    <div class="step">2</div>
+                    <span class="step-label">Datos del Apoderado</span>
+                </div>
+                <div class="step-container">
+                    <div class="step">3</div>
+                    <span class="step-label">Pago</span>
+                </div>
+                </div>
+
+                <!-- Barra de progreso -->
+                <div class="progress-container step1">  <!-- Cambiar a step2 o step3 según la etapa -->
+                <div class="progress-bar"></div>
+                </div>
+
                 <h2 class="section-title">Datos del Alumno</h2>
                 <form method="post" action="">
                     {% csrf_token %}
@@ -50,7 +72,8 @@
 
                         <div class="form-group">
                             <label>Edad:</label>
-                            <input type="number" name="edad" required>
+                            <input type="number" name="edad" min="5" max="20" required
+                            onfocus="if(!this.value)this.value=5;" onkeydown="return false;">
                         </div>
 
                         <!-- Campo Apoderado eliminado, ahora se registra en otra vista -->
