@@ -1,4 +1,6 @@
 from django.db import models, transaction
+from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError
 from apoderados.models import Apoderado  
 from django.conf import settings
 
@@ -19,7 +21,7 @@ class Estudiante(models.Model):
 
     nombres = models.CharField(max_length=120)
     apellidos = models.CharField(max_length=120)
-    edad = models.PositiveIntegerField()
+    edad = models.PositiveIntegerField(validators=[MinValueValidator(5), MaxValueValidator(20)])
     grado = models.CharField(max_length=10, choices=GRADOS)
     colegio = models.CharField(max_length=150)
     apoderado = models.ForeignKey(Apoderado, on_delete=models.PROTECT, related_name='estudiantes', null=True, blank=True)
