@@ -2,56 +2,42 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>CEAMA - Centro Educativo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}CEAMA - Centro Educativo{% endblock %}</title>
   {% load static %}
   <link rel="stylesheet" href="{% static 'landing/css/estilos.css' %}">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&family=Pacifico&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
+  <!-- HEADER -->
   <header class="header">
-    <div class="logo">
-      <img src="{% static 'landing/img/ceama.png' %}" alt="Logo CEAMA">
-    </div>
-    <nav class="nav">
-  <a href="#quienes">Quiénes somos</a>
-  <a href="#cursos">Cursos</a>
-  <a href="#galeria">Galería</a>
-  <a href="#testimonios">Testimonios</a>
-  <a href="#contacto">Contacto</a>
-  <a href="/estudiantes/registrar" class="btn-inscribir destacado">Inscríbete</a>
+    <nav class="navbar">
+      <div class="container nav-content">
+        <div class="logo">
+          <img src="{% static 'landing/img/ceama.png' %}" alt="CEAMA Logo">
+          CEAMA
+        </div>
+        <ul class="nav-links">
+          <li><a href="#quienes-somos">Quiénes Somos </a></li>
+          <li><a href="#cursos">Cursos</a></li>
+          <li><a href="#testimonios">Testimonios</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+        <a href="/estudiantes/registrar" class="btn-inscribete">Inscríbete</a>
+      </div>
     </nav>
   </header>
 
-  {% block contenido %}{% endblock %}
+  <!-- CONTENIDO ESPECÍFICO DE CADA PÁGINA -->
+  {% block content %}{% endblock %}
 
-  <footer>
-    <div class="footer-pro">
-      <div class="footer-col footer-logo-col">
-        <img src="{% static 'landing/img/ceama.png' %}" alt="Logo CEAMA" class="footer-logo-img">
-        <div class="footer-nombre">Centro Educativo CEAMA</div>
-      </div>
-      <div class="footer-col footer-contacto-col">
-        <div class="footer-titulo">Contacto</div>
-        <div class="footer-contacto-list">
-          <div><span class="footer-label">Email:</span> <a href="mailto:info@ceama.edu.pe">info@ceama.edu.pe</a></div>
-          <div><span class="footer-label">Teléfono:</span> +51 123 456 789</div>
-          <div><span class="footer-label">Dirección:</span> Urb. Trupal Mz. D Lote 20, Trujillo, Perú</div>
-        </div>
-      </div>
-      <div class="footer-col footer-redes-col">
-        <div class="footer-titulo">Síguenos</div>
-        <div class="footer-redes-pro">
-          <a href="#" title="Facebook"><img src="{% static 'landing/img/facebook.svg' %}" alt="Facebook"></a>
-          <a href="#" title="Instagram"><img src="{% static 'landing/img/instagram.svg' %}" alt="Instagram"></a>
-          <a href="#" title="YouTube"><img src="{% static 'landing/img/youtube.svg' %}" alt="YouTube"></a>
-        </div>
-      </div>
-    </div>
-    <div class="footer-copy-pro">© 2025 CEAMA - Todos los derechos reservados</div>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>© 2025 CEAMA. Todos los derechos reservados.</p>
+    <p>Educación moderna, humana y digital para transformar tu futuro.</p>
   </footer>
 
-  <script src="{% static 'landing/js/interaccion.js' %}"></script>
 </body>
 </html>

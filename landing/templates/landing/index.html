@@ -1,157 +1,215 @@
-
 {% extends 'landing/base.html' %}
-{% load static %}
+{% block title %}Inicio | CEAMA{% endblock %}
+{% block content %}
 
-{% block contenido %}
-<!-- HERO PRINCIPAL -->
-<section id="portada" class="hero hero-pro">
-  <div class="hero-img-bg">
-    <img src="{% static 'landing/img/CEAMA portada.png' %}" alt="CEAMA portada" class="hero-bg-img">
-    <div class="hero-overlay"></div>
-    <div class="hero-content hero-content-absolute">
-      <h1 class="hero-title-pro">Formando mentes brillantes</h1>
-      <span class="marca hero-marca-pro">CEAMA</span>
-      <p class="hero-desc hero-desc-pro">Educación moderna, humana y digital para transformar tu futuro.<br>¡Solo Matemática y Comunicación!</p>
-      <a href="/estudiantes/registrar" class="btn-principal">Inscríbete ahora</a>
+<!-- ==========================
+     HERO
+=========================== -->
+<section class="hero">
+  <div class="hero-content">
+    <p class="hero-subtitle">Formando mentes brillantes</p>
+    <h1>CEAMA</h1>
+    <p>Educación moderna, humana y digital para transformar tu futuro.</p>
+    <a href="/estudiantes/registrar" class="btn-primary">Inscríbete ahora</a>
+  </div>
+</section>
+
+<!-- ==========================
+     QUIÉNES SOMOS
+=========================== -->
+<section id="quienes-somos" class="quienes-somos">
+  <h2 class="section-title">¿Quiénes somos?</h2>
+  <p>
+    Somos una institución educativa comprometida con la excelencia, la innovación
+    y el desarrollo humano. En CEAMA, solo enseñamos Matemática y Comunicación,
+    potenciando el talento de nuestros estudiantes con tecnología y valores.
+  </p>
+
+  <div class="pillars">
+    <div class="pillar">
+      <div class="pillar-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" stroke="#ff7b00" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M13 2L3 14h7v8l11-12h-8z"/>
+        </svg>
+      </div>
+      <h3>Innovación</h3>
+      <p>Utilizamos tecnología de punta para crear experiencias de aprendizaje interactivas y dinámicas.</p>
+    </div>
+
+    <div class="pillar">
+      <div class="pillar-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" stroke="#ff7b00" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10"/>
+          <circle cx="12" cy="12" r="5"/>
+        </svg>
+      </div>
+      <h3>Excelencia</h3>
+      <p>Nos comprometemos con los más altos estándares académicos y resultados comprobables.</p>
+    </div>
+
+    <div class="pillar">
+      <div class="pillar-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" stroke="#ff7b00" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M12 21C12 21 20 13 20 8a8 8 0 1 0-16 0c0 5 8 13 8 13z"/>
+        </svg>
+      </div>
+      <h3>Humanismo</h3>
+      <p>Formamos personas íntegras con valores, empatía y compromiso social.</p>
     </div>
   </div>
 </section>
 
-<!-- QUIÉNES SOMOS -->
-<section id="quienes" class="info-section quienes-pro">
-  <div class="quienes-flex" style="display: flex; align-items: center; gap: 40px; flex-wrap: wrap; justify-content: center;">
-    <div class="quienes-img-box">
-      <img src="{% static 'landing/img/Quiénes somos CEAMA.jpg' %}" alt="Quiénes somos CEAMA">
-    </div>
-    <div class="quienes-info" style="flex:1; min-width:260px; max-width:520px;">
-      <h2 class="subtitulo-seccion">¿Quiénes somos?</h2>
-      <p>Somos una institución educativa comprometida con la excelencia, la innovación y el desarrollo humano. En CEAMA, solo enseñamos Matemática y Comunicación, potenciando el talento de nuestros estudiantes con tecnología y valores.</p>
-      <div class="valores-flex-pro">
-        <div class="valor-card-pro">
-          <span class="valor-icono-pro" title="Innovación">
-            <svg width="32" height="32" fill="none" viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#eaf1fa" stroke="#00b6e6" stroke-width="2"/><path d="M16 8v8l6 3" stroke="#1e5ba0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
-          <span class="valor-txt-pro">Innovación</span>
-        </div>
-        <div class="valor-card-pro">
-          <span class="valor-icono-pro" title="Excelencia">
-            <svg width="32" height="32" fill="none" viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#eaf1fa" stroke="#00b6e6" stroke-width="2"/><path d="M10 22l6-12 6 12" stroke="#1e5ba0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
-          <span class="valor-txt-pro">Excelencia</span>
-        </div>
-        <div class="valor-card-pro">
-          <span class="valor-icono-pro" title="Humanismo">
-            <svg width="32" height="32" fill="none" viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#eaf1fa" stroke="#00b6e6" stroke-width="2"/><path d="M16 13a3 3 0 100-6 3 3 0 000 6zm0 2c-3.31 0-6 2.24-6 5v2h12v-2c0-2.76-2.69-5-6-5z" fill="#1e5ba0"/></svg>
-          </span>
-          <span class="valor-txt-pro">Humanismo</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- ==========================
+     NUESTROS CURSOS
+=========================== -->
+<section id="cursos" class="cursos">
+  <h2 class="section-title">Nuestros Cursos</h2>
 
-<!-- CURSOS DESTACADOS -->
-<section id="cursos" class="info-section cursos-pro" style="padding-bottom: 0;">
-  <h2 class="subtitulo-seccion">Nuestros Cursos</h2>
-  <div class="cursos-flex" style="margin-bottom:0;">
-    <div class="curso-card curso-mate" style="flex:1; min-width:260px; max-width:400px;">
-      <div class="curso-img-box" style="height:200px;">
-        <img src="{% static 'landing/img/Curso Matemática.jpg' %}" alt="Curso Matemática" style="height:100%; width:100%; object-fit:cover;">
-      </div>
-      <div class="curso-info">
+  <div class="cursos-grid">
+    <div class="curso-card azul">
+      <div class="curso-header">
         <h3>Matemática</h3>
-        <ul class="curso-lista">
-          <li>Resolución de problemas</li>
-          <li>Razonamiento lógico</li>
-          <li>Preparación para exámenes</li>
-          <li>Clases interactivas</li>
-        </ul>
+        <div class="curso-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" stroke="#1e63d0" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M4 7h16M4 12h10M4 17h16"/>
+          </svg>
+        </div>
+      </div>
+      <p class="curso-descripcion">
+        Domina conceptos fundamentales y avanzados de matemática con metodología práctica.
+      </p>
+      <div class="temas-incluidos">
+        <h4>Temas incluidos:</h4>
+        <div class="temas-grid">
+          <ul>
+            <li>Álgebra</li>
+            <li>Cálculo</li>
+          </ul>
+          <ul>
+            <li>Geometría</li>
+            <li>Estadística</li>
+          </ul>
+        </div>
       </div>
     </div>
-    <div class="curso-card curso-com" style="flex:1; min-width:260px; max-width:400px;">
-      <div class="curso-img-box" style="height:200px;">
-        <img src="{% static 'landing/img/Curso Comunicación.jpg' %}" alt="Curso Comunicación" style="height:100%; width:100%; object-fit:cover;">
-      </div>
-      <div class="curso-info">
+
+    <div class="curso-card naranja">
+      <div class="curso-header">
         <h3>Comunicación</h3>
-        <ul class="curso-lista">
-          <li>Comprensión lectora</li>
-          <li>Redacción y ortografía</li>
-          <li>Expresión oral</li>
-          <li>Debates y exposiciones</li>
-        </ul>
+        <div class="curso-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" stroke="#ff7b00" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M12 20h9M16.5 3.5l4 4-12 12H4v-4l12.5-12z"/>
+          </svg>
+        </div>
+      </div>
+      <p class="curso-descripcion">
+        Desarrolla habilidades de lectura, escritura y expresión oral efectiva.
+      </p>
+      <div class="temas-incluidos">
+        <h4>Temas incluidos:</h4>
+        <div class="temas-grid">
+          <ul>
+            <li>Redacción</li>
+            <li>Comprensión Lectora</li>
+          </ul>
+          <ul>
+            <li>Oratoria</li>
+            <li>Análisis Crítico</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- GALERÍA DE EXPERIENCIAS -->
-<section class="galeria-section">
-  <h2 class="subtitulo-seccion">Nuestra Experiencia en Imágenes</h2>
-  <div class="galeria-carrusel" id="galeria-carrusel">
-    <button class="carrusel-btn carrusel-btn-left" onclick="moverCarrusel(-1)">&#10094;</button>
-    <div class="carrusel-imagenes">
-      <img src="{% static 'landing/img/Galería 1.jpg' %}" alt="Galería 1" class="carrusel-img active">
-      <img src="{% static 'landing/img/portada.png' %}" alt="Galería 2" class="carrusel-img">
-      <img src="{% static 'landing/img/Quiénes somos CEAMA.jpg' %}" alt="Galería 3" class="carrusel-img">
-      <img src="{% static 'landing/img/CEAMA portada.png' %}" alt="Galería 4" class="carrusel-img">
-    </div>
-    <button class="carrusel-btn carrusel-btn-right" onclick="moverCarrusel(1)">&#10095;</button>
-  </div>
-</section>
-<script>
-let carruselIndex = 0;
-function mostrarImagenCarrusel(n) {
-  const imgs = document.querySelectorAll('.carrusel-img');
-  if (!imgs.length) return;
-  carruselIndex = (n + imgs.length) % imgs.length;
-  imgs.forEach((img, i) => {
-    img.classList.toggle('active', i === carruselIndex);
-  });
-}
-function moverCarrusel(dir) {
-  mostrarImagenCarrusel(carruselIndex + dir);
-}
-document.addEventListener('DOMContentLoaded', () => mostrarImagenCarrusel(0));
-</script>
+<!-- ==========================
+     TESTIMONIOS
+=========================== -->
+<section id="testimonios" class="testimonios">
+  <h2 class="section-title">Testimonios de Estudiantes</h2>
 
-<!-- TESTIMONIOS DESTACADOS -->
-<section id="testimonios" class="info-section">
-  <h2 class="subtitulo-seccion subtitulo-centrado">Testimonios de Estudiantes</h2>
-  <div class="testimonios-grid-pro">
+  <div class="testimonios-grid">
+    <!-- Testimonio 1 -->
     <div class="testimonio-card">
-      <div class="testimonio-img">
-        <img src="{% static 'landing/img/avatar1.png' %}" alt="Estudiante 1">
+      <div class="estrellas">
+        ★★★★★
       </div>
-      <div class="testimonio-body">
-        <h4>Juan Pérez</h4>
-        <span class="testimonio-curso">Matemática</span>
-        <p>"Gracias a CEAMA, mejoré mis notas en matemáticas y ahora me siento seguro resolviendo problemas complejos."</p>
+      <p class="testimonio-texto">
+        “Gracias a CEAMA, mejoré mis notas en matemáticas y ahora me siento seguro resolviendo problemas complejos.”
+      </p>
+      <div class="testimonio-autor">
+        <strong>Juan Pérez</strong><br>
+        <span>Curso de Matemática</span>
       </div>
     </div>
+
+    <!-- Testimonio 2 -->
     <div class="testimonio-card">
-      <div class="testimonio-img">
-        <img src="{% static 'landing/img/avatar2.png' %}" alt="Estudiante 2">
+      <div class="estrellas">
+        ★★★★★
       </div>
-      <div class="testimonio-body">
-        <h4>María López</h4>
-        <span class="testimonio-curso">Comunicación</span>
-        <p>"Las clases de comunicación me ayudaron a expresarme mejor y a perder el miedo a hablar en público."</p>
+      <p class="testimonio-texto">
+        “Las clases de comunicación me ayudaron a expresarme mejor y a perder el miedo a hablar en público.”
+      </p>
+      <div class="testimonio-autor">
+        <strong>María López</strong><br>
+        <span>Curso de Comunicación</span>
       </div>
     </div>
+
+    <!-- Testimonio 3 -->
     <div class="testimonio-card">
-      <div class="testimonio-img">
-        <img src="{% static 'landing/img/avatar3.png' %}" alt="Estudiante 3">
+      <div class="estrellas">
+        ★★★★★
       </div>
-      <div class="testimonio-body">
-        <h4>Luis Ramírez</h4>
-        <span class="testimonio-curso">Matemática y Comunicación</span>
-        <p>"Me encanta aprender con juegos y tecnología. ¡Las clases son divertidas y los profes muy atentos!"</p>
+      <p class="testimonio-texto">
+        “Me encanta aprender con juegos y tecnología. ¡Las clases son divertidas y los profes muy atentos!”
+      </p>
+      <div class="testimonio-autor">
+        <strong>Luis Ramírez</strong><br>
+        <span>Matemática y Comunicación</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CONTACTO MODERNO -->
+<!-- ==========================
+     CONTACTO
+=========================== -->
+<section id="contacto" class="contacto">
+  <h2 class="section-title">Ponte en Contacto</h2>
+  <p class="contacto-descripcion">
+    Estamos aquí para ayudarte. Comunícate con nosotros a través de los siguientes medios.
+  </p>
+
+  <div class="contacto-grid">
+    <div class="contacto-card">
+      <div class="contacto-icon">📍</div>
+      <h3>Ubicación</h3>
+      <p>Urb. Trupal Mz. D Lote 20<br>Trujillo, Perú</p>
+    </div>
+
+    <div class="contacto-card">
+      <div class="contacto-icon">⏰</div>
+      <h3>Horarios</h3>
+      <p><strong>Lunes a Viernes:</strong> 8:00 AM - 6:00 PM<br>
+         <strong>Sábados:</strong> 9:00 AM - 1:00 PM<br>
+         <strong>Domingos:</strong> Cerrado</p>
+    </div>
+
+    <div class="contacto-card">
+      <div class="contacto-icon">📞</div>
+      <h3>Teléfono</h3>
+      <p>+51 123 456 789</p>
+    </div>
+
+    <div class="contacto-card">
+      <div class="contacto-icon">✉️</div>
+      <h3>Email</h3>
+      <p>info@ceama.edu.pe</p>
+    </div>
+  </div>
+</section>
+
 
 {% endblock %}
