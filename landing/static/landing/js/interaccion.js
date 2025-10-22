@@ -1,28 +1,23 @@
-// Seleccionamos todas las secciones excepto #portada
-const secciones = document.querySelectorAll("section:not(#portada)");
+// Función para desplazarse a la sección de contacto
+function scrollToContacto() {
+  const contactoSection = document.getElementById("contacto")
+  contactoSection.scrollIntoView({ behavior: "smooth" })
+}
 
-const aparecer = () => {
-  secciones.forEach(sec => {
-    const top = sec.getBoundingClientRect().top;
-    const altura = window.innerHeight;
+// Agregar efecto de scroll a la navegación
+window.addEventListener("scroll", () => {
+  const header = document.querySelector(".header")
+  if (window.scrollY > 50) {
+    header.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.1)"
+  } else {
+    header.style.boxShadow = "0 2px 8px rgba(0, 0, 0, 0.05)"
+  }
+})
 
-    if (top < altura - 100) {
-      sec.style.opacity = "1";
-      sec.style.transform = "translateY(0)";
-    }
-  });
-};
-
-// Aplicamos efecto scroll solo a las secciones interiores
-window.addEventListener("scroll", aparecer);
-
-secciones.forEach(sec => {
-  sec.style.opacity = "0";
-  sec.style.transform = "translateY(40px)";
-  sec.style.transition = "all 0.8s ease";
-});
-
-window.addEventListener("load", () => {
-  setTimeout(aparecer, 500); // Espera 0.5 segundos antes de animar
-});
-
+// Resaltar enlace de navegación activo
+document.querySelectorAll(".nav a").forEach((link) => {
+  link.addEventListener("click", function (e) {
+    document.querySelectorAll(".nav a").forEach((a) => (a.style.color = ""))
+    this.style.color = "var(--primary)"
+  })
+})
