@@ -44,7 +44,7 @@ body {
 }
 
 .top-banner h1 {
-    font-size: 3rem; /* 🔥 más grande */
+    font-size: 3rem;
     font-weight: 700;
     margin: 0;
     letter-spacing: 1px;
@@ -129,9 +129,6 @@ input:focus, select:focus {
     box-shadow: 0 0 4px rgba(0, 51, 102, 0.3);
 }
 
-/* Botón principal */
-
-/* Botón principal y enlaces tipo botón */
 .btn-submit, button {
     margin-top: 40px;
     background-color: #003366;
@@ -155,7 +152,6 @@ input:focus, select:focus {
     color: white !important;
 }
 
-/* Contenedor de pasos con etiquetas */
 .progress-steps {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -170,7 +166,6 @@ input:focus, select:focus {
   gap: 10px;
 }
 
-/* Círculo */
 .step {
   width: 35px;
   height: 35px;
@@ -185,7 +180,6 @@ input:focus, select:focus {
   font-size: 1rem;
 }
 
-/* Texto del paso */
 .step-label {
   font-family: 'Poppins', sans-serif;
   font-weight: 500;
@@ -193,18 +187,14 @@ input:focus, select:focus {
   color: #333;
 }
 
-/* Primer paso azul */
 .step-container:first-child .step {
   background-color: #003366;
 }
 
-/* Resto de pasos gris */
 .step-container:not(:first-child) .step {
   background-color: #e0e0e0;
 }
 
-
-/* Barra de progreso completa debajo de los pasos */
 .progress-container {
   width: 96%;
   height: 10px;
@@ -221,7 +211,6 @@ input:focus, select:focus {
   transition: width 0.5s ease-in-out;
 }
 
-/* Variantes según paso */
 .progress-container.step1 .progress-bar {
   width: 33%;
 }

@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro de Pago</title>
+  <link rel="stylesheet" href="{% static 'pagos/css/registrar_pagos.css' %}">
+</head>
+<body class="page--pagos">
+  <header class="top-banner">
+    <div class="banner-content">
+      <img src="{% static 'landing/img/ceama.png' %}" alt="Logo CEAMA" class="logo">
+      <h1 class="banner-title">ADMISIÓN 2026</h1>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <div class="form-card">
+      <div class="form-header">Registro de Pago</div>
+      <div class="form-body">
+
+        <div class="progress-steps">
+          <div class="step-container">
+            <div class="step step--muted">1</div>
+            <span class="step-label step-label--muted">Datos del Estudiante</span>
+          </div>
+          <div class="step-container">
+            <div class="step step--muted">2</div>
+            <span class="step-label step-label--muted">Datos del Apoderado</span>
+          </div>
+          <div class="step-container">
+            <div class="step step--active">3</div>
+            <span class="step-label">Pago</span>
+          </div>
+        </div>
+
+        <div class="progress-container step3">
+          <div class="progress-bar"></div>
+        </div>
+
+        <h2 class="section-title">Datos del Pago</h2>
+
+        <form action="{% url 'registrar_pago' %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden" name="inscripcion_id" value="{{ inscripcion.id }}">
+
+          <div class="form-grid" style="margin-bottom:10px;">
+            <div class="form-group">
+              <label>Estudiante:</label>
+              <input type="text"
+                     value="{{ inscripcion.estudiante.apellidos }} {{ inscripcion.estudiante.nombres }}"
+                     readonly>
+            </div>
+
+            <div class="form-group">
+              <label>Plan:</label>
+              <input type="text" value="{{ inscripcion.plan }}" readonly>
+            </div>
+
+            <div class="form-group">
+              <label>Estado actual de pago:</label>
+              <input type="text" value="{{ inscripcion.estado_pago|title }}" readonly>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Monto:</label>
+              {{ pago_form.monto }}
+            </div>
+
+            <div class="form-group">
+              <label>Método:</label>
+              {{ pago_form.metodo }}
+            </div>
+
+            <div class="form-group">
+              <label>Estado del pago:</label>
+              {{ pago_form.estado }}
+            </div>
+
+            <div class="form-group">
+              <label>Comprobante (PDF/imagen):</label>
+              {{ comp_form.archivo }}
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-submit">Registrar Pago</button>
+            <a href="/" class="btn-submit" style="margin-left:10px; text-align:center; display:inline-block;">
+              Regresar a la página principal
+            </a>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </main>
+</body>
+</html>
