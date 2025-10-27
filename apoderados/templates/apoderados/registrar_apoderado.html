@@ -2,80 +2,88 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Registrar Apoderado</title>
-    <link rel="stylesheet" href="{% static 'landing/css/registro.css' %}">
-    <link rel="stylesheet" href="{% static 'apoderados/css/registro_apoderado.css' %}">
+  <meta charset="UTF-8" />
+  <title>Registrar Apoderado</title>
+  <link rel="stylesheet" href="{% static 'landing/css/registro.css' %}">
+  <link rel="stylesheet" href="{% static 'apoderados/css/registro_apoderado.css' %}">
 </head>
-<body>
-    <header class="top-banner">
-        <div class="banner-content">
-            <img src="{% static 'landing/img/ceama.png' %}" alt="Logo CEAMA" class="logo">
-            <h1 class="banner-title">ADMISIÓN 2026</h1>
-        </div>
-    </header>
-    <main class="main-container">
-        <div class="form-card">
-            <div class="form-header">Registro de Apoderado</div>
-            <div class="form-body">
+<body class="page--apoderados">
+  <header class="top-banner">
+    <div class="banner-content">
+      <img src="{% static 'landing/img/ceama.png' %}" alt="Logo CEAMA" class="logo">
+      <h1 class="banner-title">ADMISIÓN 2026</h1>
+    </div>
+  </header>
 
-            <!-- Barra de progreso con textos -->
-            <div class="progress-steps">
-            <div class="step-container">
-                <div class="step completed">1</div>
-                <span class="step-label">Datos del Estudiante</span>
-            </div>
-            <div class="step-container">
-                <div class="step completed">2</div>
-                <span class="step-label">Datos del Apoderado</span>
-            </div>
-            <div class="step-container">
-                <div class="step">3</div>
-                <span class="step-label">Pago</span>
-            </div>
-            </div>
-            
-            <!-- Barra de progreso debajo de los pasos -->
-            <div class="progress-container step2"> <!-- step2 = 66% completado -->
-            <div class="progress-bar"></div>
-            </div>
-            
-                <h2 class="section-title">Datos del Apoderado</h2>
-                <form method="post" action="">
-                    {% csrf_token %}
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>DNI:</label>
-                            <input type="text" name="dni" maxlength="8" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Nombres:</label>
-                            <input type="text" name="nombres" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Apellidos:</label>
-                            <input type="text" name="apellidos" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Teléfono:</label>
-                            <input type="text" name="telefono" maxlength="15" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Correo:</label>
-                            <input type="email" name="correo">
-                        </div>
-                        <div class="form-group">
-                            <label>Dirección:</label>
-                            <input type="text" name="direccion">
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <button type="submit" class="btn-submit">Registrar Apoderado</button>
-                        <a href="/" class="btn-submit" style="margin-left: 10px; text-align: center; display: inline-block;">Regresar a la página principal</a>
-                    </div>
-                </form>
-            </div>
+  <main class="main-container">
+    <div class="form-card">
+      <div class="form-header">Registro de Apoderado</div>
+      <div class="form-body">
+
+        <!-- Pasos: solo el 2 activo -->
+        <div class="progress-steps">
+          <div class="step-container">
+            <div class="step step--muted">1</div>
+            <span class="step-label step-label--muted">Datos del Estudiante</span>
+          </div>
+          <div class="step-container">
+            <div class="step step--active">2</div>
+            <span class="step-label">Datos del Apoderado</span>
+          </div>
+          <div class="step-container">
+            <div class="step step--muted">3</div>
+            <span class="step-label step-label--muted">Pago</span>
+          </div>
         </div>
-    </main>
+
+        <!-- Barra al 66% -->
+        <div class="progress-container step2">
+          <div class="progress-bar"></div>
+        </div>
+
+        <h2 class="section-title">Datos del Apoderado</h2>
+
+        <form method="post" action="{% url 'registrar_apoderado' %}">
+          {% csrf_token %}
+          <input type="hidden" name="inscripcion_id" value="{{ request.GET.inscripcion_id }}">
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label>DNI:</label>
+              <input type="text" name="dni" maxlength="8" required>
+            </div>
+            <div class="form-group">
+              <label>Nombres:</label>
+              <input type="text" name="nombres" required>
+            </div>
+            <div class="form-group">
+              <label>Apellidos:</label>
+              <input type="text" name="apellidos" required>
+            </div>
+            <div class="form-group">
+              <label>Teléfono:</label>
+              <input type="text" name="telefono" maxlength="15" required>
+            </div>
+            <div class="form-group">
+              <label>Correo:</label>
+              <input type="email" name="correo">
+            </div>
+            <div class="form-group">
+              <label>Dirección:</label>
+              <input type="text" name="direccion">
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-submit">Registrar Apoderado</button>
+            <a href="/" class="btn-submit" style="margin-left:10px; text-align:center; display:inline-block;">
+              Regresar a la página principal
+            </a>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </main>
 </body>
 </html>

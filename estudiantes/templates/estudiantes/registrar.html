@@ -2,101 +2,99 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Registrar Estudiante</title>
-    <link rel="stylesheet" href="{% static 'css/registro.css' %}">
+  <meta charset="UTF-8">
+  <title>Registrar Estudiante</title>
+  <link rel="stylesheet" href="{% static 'css/registro.css' %}">
 </head>
 <body>
-    <!-- Banner superior fijo -->
-    <header class="top-banner">
-        <div class="banner-content">
-            <img src="{% static 'landing/img/ceama.png' %}" alt="Logo CEAMA" class="logo">
-            <h1 class="banner-title">ADMISIÓN 2026</h1>
+
+  <header class="top-banner">
+    <div class="banner-content">
+      <img src="{% static 'landing/img/ceama.png' %}" alt="Logo CEAMA" class="logo">
+      <h1 class="banner-title">ADMISIÓN 2026</h1>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <div class="form-card">
+      <div class="form-header">Registro de Estudiante</div>
+      <div class="form-body">
+
+        <div class="progress-steps">
+          <div class="step-container">
+            <div class="step">1</div>
+            <span class="step-label">Datos del Estudiante</span>
+          </div>
+          <div class="step-container">
+            <div class="step">2</div>
+            <span class="step-label">Datos del Apoderado</span>
+          </div>
+          <div class="step-container">
+            <div class="step">3</div>
+            <span class="step-label">Pago</span>
+          </div>
         </div>
-    </header>
 
-    <!-- Contenedor principal -->
-    <main class="main-container">
-        <div class="form-card">
-            <div class="form-header">Registro de Estudiante</div>
-            <div class="form-body">
+        <div class="progress-container step1">
+          <div class="progress-bar"></div>
+        </div>
 
-                <!-- Barra de progreso con textos -->
-                <div class="progress-steps">
-                <div class="step-container">
-                    <div class="step">1</div>
-                    <span class="step-label">Datos del Estudiante</span>
-                </div>
-                <div class="step-container">
-                    <div class="step">2</div>
-                    <span class="step-label">Datos del Apoderado</span>
-                </div>
-                <div class="step-container">
-                    <div class="step">3</div>
-                    <span class="step-label">Pago</span>
-                </div>
-                </div>
+        <h2 class="section-title">Datos del Alumno</h2>
 
-                <!-- Barra de progreso -->
-                <div class="progress-container step1">
-                <div class="progress-bar"></div>
-                </div>
-                
-                <h2 class="section-title">Datos del Alumno</h2>
-                <form method="post" action="">
-                    {% csrf_token %}
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>Nombres:</label>
-                            <input type="text" name="nombres" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Apellidos:</label>
-                            <input type="text" name="apellidos" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Grado:</label>
-                            <select name="grado" required>
-                                {% for valor, nombre in grados %}
-                                <option value="{{ valor }}">{{ nombre }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Colegio:</label>
-                            <input type="text" name="colegio" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Edad:</label>
-                            <input type="number" name="edad" min="5" max="20" required 
-                                onfocus="if(!this.value)this.value=5;" onkeydown="return false;">
-                        </div>
-
-                        <!-- Campo Apoderado eliminado, ahora se registra en otra vista -->
-
-                        <div class="form-group">
-                            <label>Plan:</label>
-                            <select name="plan">
-                                {% for p in planes %}
-                                    <option value="{{ p.id }}">{{ p.nombre }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-
-                        <!-- Eliminado campo Usuario (registrado por) -->
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="submit" class="btn-submit">Registrar</button>
-                        <a href="/" class="btn-submit" style="margin-left: 10px; text-align: center; display: inline-block;">Regresar a la página principal</a>
-                    </div>
-                </form>
+        <form method="post" action="">
+          {% csrf_token %}
+          <div class="form-grid">
+            <!-- Grado (con id) -->
+            <div class="form-group">
+              <label>Grado:</label>
+              <select name="grado" id="grado" required>
+                {% for valor, nombre in grados %}
+                  <option value="{{ valor }}" {% if valor == grado %}selected{% endif %}>{{ nombre }}</option>
+                {% endfor %}
+              </select>
             </div>
-        </div>
-    </main>
+
+            <div class="form-group">
+              <label>Nombres:</label>
+              <input type="text" name="nombres" required>
+            </div>
+
+            <div class="form-group">
+              <label>Apellidos:</label>
+              <input type="text" name="apellidos" required>
+            </div>
+
+            <div class="form-group">
+              <label>Colegio:</label>
+              <input type="text" name="colegio" required>
+            </div>
+
+            <div class="form-group">
+              <label>Edad:</label>
+              <input type="number" name="edad" min="5" max="20" required
+                     onfocus="if(!this.value)this.value=5;" onkeydown="return false;">
+            </div>
+
+            <div class="form-group">
+              <label>Plan:</label>
+              <select name="plan" id="plan" data-endpoint="{% url 'planes_opciones' %}" required>
+                <option value="">Cargando planes…</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-submit">Registrar</button>
+            <a href="/" class="btn-submit" style="margin-left:10px; text-align:center; display:inline-block;">
+              Regresar a la página principal
+            </a>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="{% static 'js/planes_dynamic.js' %}"></script>
 </body>
 </html>

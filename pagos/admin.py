@@ -3,10 +3,10 @@ from .models import Pago, Comprobante
 
 @admin.register(Pago)
 class PagoAdmin(admin.ModelAdmin):
-    list_display = ('inscripcion', 'monto', 'metodo', 'fecha', 'estado')
-    list_filter = ('metodo', 'estado')
-    search_fields = ('inscripcion__estudiante__apellidos',)
+    list_display = ('id', 'inscripcion', 'monto', 'metodo', 'estado', 'fecha')
+    list_filter = ('metodo', 'estado', 'fecha')
+    search_fields = ('inscripcion__estudiante__apellidos', 'inscripcion__estudiante__nombres')
 
 @admin.register(Comprobante)
 class ComprobanteAdmin(admin.ModelAdmin):
-    list_display = ('pago', 'archivo')
+    list_display = ('id', 'pago', 'archivo')

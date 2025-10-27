@@ -4,6 +4,12 @@ from django.core.exceptions import ValidationError
 from apoderados.models import Apoderado  
 from django.conf import settings
 
+class VerificacionToken(models.Model):
+    estudiante = models.ForeignKey(
+        'estudiantes.Estudiante',
+        on_delete=models.CASCADE,
+        related_name='tokens'
+    )
 class Estudiante(models.Model):
     GRADOS = [
         ("1° Prim", "1° Primaria"),
@@ -29,18 +35,28 @@ class Estudiante(models.Model):
 class Inscripcion(models.Model):
     estudiante = models.ForeignKey('estudiantes.Estudiante', on_delete=models.CASCADE)
     curso = models.ForeignKey('docentes.Curso', on_delete=models.PROTECT, null=True, blank=True)
-    # usuario_registra eliminado
     fecha = models.DateTimeField(auto_now_add=True)
+    estado = models.CharField(
+        max_length=20,
+        choices=[
+            ('pendiente', 'Pendiente'),
+            ('confirmada', 'Confirmada'),
+            ('anulada', 'Anulada'),
+        ],
+        default='pendiente',
+    )
+
     estado_pago = models.CharField(
         max_length=20,
         choices=[
             ('pendiente', 'Pendiente'),
+            ('parcial', 'Parcial'),
             ('total', 'Total'),
-            ('parcial', 'Parcial')
-        ]
+        ],
+        default='pendiente',
     )
     plan = models.ForeignKey('planes.Plan', on_delete=models.CASCADE, default=1)
-
+    verificada = models.BooleanField(default=False)
     # 🔹 Validación de disponibilidad de cupos al guardar
     def save(self, *args, **kwargs):
         from planes.models import Plan  # import interno para evitar ciclos

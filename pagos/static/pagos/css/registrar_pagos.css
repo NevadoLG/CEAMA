@@ -30,9 +30,7 @@ body {
   z-index: 1000;
 }
 
-.top-banner img {
-  height: 100px;
-}
+.top-banner img { height: 100px; }
 
 .top-banner h1 {
   font-size: 3rem;
@@ -56,7 +54,7 @@ body {
   width: 92%;
   max-width: 1350px;
   border-radius: 12px;
-  box-shadow: 0 4px 25px rgba(0, 0, 0, .12);
+  box-shadow: 0 4px 25px rgba(0,0,0,.12);
   overflow: hidden;
   border-top: 6px solid #003366;
 }
@@ -71,9 +69,7 @@ body {
   letter-spacing: .5px;
 }
 
-.form-body {
-  padding: 50px;
-}
+.form-body { padding: 50px; }
 
 .section-title {
   font-size: 1.4rem;
@@ -98,8 +94,7 @@ label {
   font-size: 1.05rem;
 }
 
-input,
-select {
+input, select {
   width: 85%;
   padding: 12px 15px;
   border-radius: 8px;
@@ -108,11 +103,10 @@ select {
   transition: .3s;
 }
 
-input:focus,
-select:focus {
+input:focus, select:focus {
   border-color: #003366;
   outline: none;
-  box-shadow: 0 0 4px rgba(0, 51, 102, .3);
+  box-shadow: 0 0 4px rgba(0,51,102,.3);
 }
 
 .form-actions {
@@ -122,8 +116,7 @@ select:focus {
   margin-top: 40px;
 }
 
-.btn-submit,
-button {
+.btn-submit, button {
   margin-top: 40px;
   background: #003366;
   color: #fff !important;
@@ -140,8 +133,7 @@ button {
   text-align: center;
 }
 
-.btn-submit:hover,
-button:hover {
+.btn-submit:hover, button:hover {
   background: #0055aa;
   transform: scale(1.03);
 }
@@ -195,19 +187,11 @@ button:hover {
   transition: width .5s ease-in-out;
 }
 
-.progress-container.step2 .progress-bar {
-  width: 66%;
-}
+.progress-container.step3 .progress-bar { width: 100%; }
 
-.page--apoderados .step--muted {
-  background: #e0e0e0;
-}
-
-.page--apoderados .step-label--muted {
-  color: #9aa3af;
-}
-
-.page--apoderados .step--active {
+.page--pagos .step--muted { background: #e0e0e0; }
+.page--pagos .step-label--muted { color: #9aa3af; }
+.page--pagos .step--active {
   background: #003366;
-  box-shadow: 0 0 0 4px rgba(0, 51, 102, .15);
+  box-shadow: 0 0 0 4px rgba(0,51,102,.15);
 }
