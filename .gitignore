@@ -52,3 +52,7 @@ dist/
 # Archivos temporales del sistema operativo
 .DS_Store
 Thumbs.db
+
+# Django
+media/
+staticfiles/
