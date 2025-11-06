@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Registro de Pago</title>
   <link rel="stylesheet" href="{% static 'pagos/css/registrar_pagos.css' %}">
 </head>
@@ -17,8 +17,9 @@
   <main class="main-container">
     <div class="form-card">
       <div class="form-header">Registro de Pago</div>
-      <div class="form-body">
 
+      <div class="form-body">
+        <!-- Pasos -->
         <div class="progress-steps">
           <div class="step-container">
             <div class="step step--muted">1</div>
@@ -33,68 +34,162 @@
             <span class="step-label">Pago</span>
           </div>
         </div>
-
         <div class="progress-container step3">
           <div class="progress-bar"></div>
         </div>
 
+        {% if messages %}
+          {% for m in messages %}
+            <div class="alert {{ m.tags }}">{{ m }}</div>
+          {% endfor %}
+        {% endif %}
+
         <h2 class="section-title">Datos del Pago</h2>
 
-        <form action="{% url 'registrar_pago' %}" method="post" enctype="multipart/form-data">
+        {# Errores generales (no asociados a un campo) #}
+        {% if pago_form.non_field_errors %}
+          <div class="alert error">
+            <ul class="list-errors">
+              {% for err in pago_form.non_field_errors %}
+                <li>{{ err }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        <form id="form-pago"
+              action="{% url 'registrar_pago' %}"
+              method="post"
+              enctype="multipart/form-data">
           {% csrf_token %}
           <input type="hidden" name="inscripcion_id" value="{{ inscripcion.id }}">
 
-          <div class="form-grid" style="margin-bottom:10px;">
-            <div class="form-group">
-              <label>Estudiante:</label>
-              <input type="text"
-                     value="{{ inscripcion.estudiante.apellidos }} {{ inscripcion.estudiante.nombres }}"
-                     readonly>
+          <fieldset {% if pagado %}disabled{% endif %}>
+            <div class="form-grid" style="margin-bottom:10px;">
+              <div class="form-group">
+                <label>Estudiante:</label>
+                <input type="text"
+                       value="{{ inscripcion.estudiante.apellidos }} {{ inscripcion.estudiante.nombres }}"
+                       readonly>
+              </div>
+
+              <div class="form-group">
+                <label>Plan:</label>
+                <input type="text" value="{{ inscripcion.plan }}" readonly>
+              </div>
+
+              <div class="form-group">
+                <label>Estado actual de pago:</label>
+                <input type="text" value="{{ inscripcion.estado_pago|title }}" readonly>
+              </div>
             </div>
 
-            <div class="form-group">
-              <label>Plan:</label>
-              <input type="text" value="{{ inscripcion.plan }}" readonly>
-            </div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Monto:</label>
+                {% if pagado and last_pago %}
+                  <input type="text" value="{{ last_pago.monto }}" readonly>
+                {% else %}
+                  {{ pago_form.monto }}
+                  {% if pago_form.monto.errors %}
+                    <div class="field-error">{{ pago_form.monto.errors.0 }}</div>
+                  {% endif %}
+                {% endif %}
+              </div>
 
-            <div class="form-group">
-              <label>Estado actual de pago:</label>
-              <input type="text" value="{{ inscripcion.estado_pago|title }}" readonly>
-            </div>
-          </div>
+              <div class="form-group">
+                <label>Método:</label>
+                {% if pagado and last_pago %}
+                  <input type="text" value="{{ last_pago.get_metodo_display }}" readonly>
+                {% else %}
+                  {{ pago_form.metodo }}
+                  {% if pago_form.metodo.errors %}
+                    <div class="field-error">{{ pago_form.metodo.errors.0 }}</div>
+                  {% endif %}
+                {% endif %}
+              </div>
 
-          <div class="form-grid">
-            <div class="form-group">
-              <label>Monto:</label>
-              {{ pago_form.monto }}
-            </div>
+              <div class="form-group">
+                <label>Estado del pago:</label>
+                {% if pagado and last_pago %}
+                  <input type="text" value="{{ last_pago.get_estado_display }}" readonly>
+                {% else %}
+                  {{ pago_form.estado }}
+                  {% if pago_form.estado.errors %}
+                    <div class="field-error">{{ pago_form.estado.errors.0 }}</div>
+                  {% endif %}
+                {% endif %}
+              </div>
 
-            <div class="form-group">
-              <label>Método:</label>
-              {{ pago_form.metodo }}
+              <div class="form-group">
+                <label>Comprobantes (PDF/imagen)<span class="hint"> máx. {{ MAX_FILES }}</span>:</label>
+                {% if pagado %}
+                  <input type="text" value="Carga bloqueada (pago ya registrado)" readonly>
+                {% else %}
+                  <!-- input manual directo; se procesa con request.FILES.getlist('archivos') -->
+                  <input type="file" name="archivos" id="id_archivos" class="form-control" multiple>
+                {% endif %}
+              </div>
             </div>
-
-            <div class="form-group">
-              <label>Estado del pago:</label>
-              {{ pago_form.estado }}
-            </div>
-
-            <div class="form-group">
-              <label>Comprobante (PDF/imagen):</label>
-              {{ comp_form.archivo }}
-            </div>
-          </div>
+          </fieldset>
 
           <div class="form-actions">
-            <button type="submit" class="btn-submit">Registrar Pago</button>
+            {% if not pagado %}
+              <button type="submit" class="btn-submit" id="btn-registrar">Registrar Pago</button>
+            {% endif %}
             <a href="/" class="btn-submit" style="margin-left:10px; text-align:center; display:inline-block;">
               Regresar a la página principal
             </a>
           </div>
         </form>
 
+        {% if inscripcion.pago_set.all %}
+          <h2 class="section-title" style="margin-top:24px;">Pagos previos</h2>
+          <div class="form-grid" style="margin-bottom:10px;">
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <table class="table-pagos">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Monto</th>
+                    <th>Método</th>
+                    <th>Estado</th>
+                    <th>Fecha</th>
+                    <th>Comprobantes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for p in inscripcion.pago_set.all %}
+                    <tr>
+                      <td>{{ p.id }}</td>
+                      <td>{{ p.monto }}</td>
+                      <td>{{ p.get_metodo_display }}</td>
+                      <td>{{ p.get_estado_display }}</td>
+                      <td>{{ p.fecha }}</td>
+                      <td>
+                        {% with p.comprobantes.all as comp_list %}
+                          {% if comp_list %}
+                            {% for c in comp_list %}
+                              <a href="{{ c.archivo.url }}" target="_blank" rel="noopener">
+                                Ver {{ forloop.counter }}
+                              </a>{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                          {% else %}
+                            &mdash;
+                          {% endif %}
+                        {% endwith %}
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        {% endif %}
       </div>
     </div>
   </main>
+
+  <script src="{% static 'pagos/js/registrar_pagos.js' %}" defer></script>
 </body>
 </html>
