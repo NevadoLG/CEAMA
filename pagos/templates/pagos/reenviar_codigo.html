@@ -1,0 +1,43 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Reenviar código de acceso</title>
+  <link rel="stylesheet" href="{% static 'pagos/css/registrar_pagos.css' %}">
+</head>
+<body class="page--pagos">
+  <main class="main-container">
+    <div class="form-card">
+      <div class="form-header">Reenviar código de acceso</div>
+      <div class="form-body">
+
+        {% if messages %}
+          {% for m in messages %}
+            <div class="alert {{ m.tags }}">{{ m }}</div>
+          {% endfor %}
+        {% endif %}
+
+        <p>Ingresa el correo del apoderado para enviarte nuevamente el código.</p>
+
+        <form method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="{{ form.email.id_for_label }}">Correo</label>
+            {{ form.email }}
+            {% if form.email.errors %}
+              <div class="field-error">{{ form.email.errors.0 }}</div>
+            {% endif %}
+          </div>
+
+          <div class="form-actions">
+            <button class="btn-submit" type="submit">Reenviar código</button>
+            <a class="btn-submit" href="{% url 'pagos_regularizar_lookup' %}">Volver</a>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </main>
+</body>
+</html>

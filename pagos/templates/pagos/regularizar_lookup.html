@@ -1,0 +1,50 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Regularización de pagos</title>
+  <link rel="stylesheet" href="{% static 'pagos/css/registrar_pagos.css' %}">
+</head>
+<body class="page--pagos">
+  <main class="main-container">
+    <div class="form-card">
+      <div class="form-header">Regularización de pagos</div>
+
+      <div class="form-body">
+        <p>Ingresa el <strong>código de acceso</strong> que recibiste por correo.</p>
+
+        {% if form.non_field_errors %}
+          <div class="alert error">
+            <ul class="list-errors">
+              {% for e in form.non_field_errors %}<li>{{ e }}</li>{% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        <form method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="{{ form.code.id_for_label }}">Código de acceso</label>
+            {{ form.code }}
+            {% if form.code.errors %}
+              <div class="field-error">{{ form.code.errors.0 }}</div>
+            {% endif %}
+          </div>
+
+          <div class="form-actions">
+            <button class="btn-submit" type="submit">Continuar</button>
+            <a class="btn-submit" href="/">Regresar a la página principal</a>
+          </div>
+        </form>
+
+        <div style="margin-top:10px;">
+          <a class="muted-link" href="{% url 'pagos_reenviar_codigo' %}">
+        ¿No tienes tu código? Reenviar a mi correo
+        </a>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

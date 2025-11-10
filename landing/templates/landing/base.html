@@ -11,7 +11,6 @@
 
 <body>
 
-  <!-- HEADER -->
   <header class="header">
     <nav class="navbar">
       <div class="container nav-content">
@@ -25,15 +24,14 @@
           <li><a href="#testimonios">Testimonios</a></li>
           <li><a href="#contacto">Contacto</a></li>
         </ul>
+        <a href="{% url 'pagos_regularizar_lookup' %}" class="btn">Regularización de pagos</a>
         <a href="/estudiantes/registrar" class="btn-inscribete">Inscríbete</a>
       </div>
     </nav>
   </header>
 
-  <!-- CONTENIDO ESPECÍFICO DE CADA PÁGINA -->
   {% block content %}{% endblock %}
 
-  <!-- FOOTER -->
   <footer class="footer">
     <p>© 2025 CEAMA. Todos los derechos reservados.</p>
     <p>Educación moderna, humana y digital para transformar tu futuro.</p>

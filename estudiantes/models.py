@@ -1,8 +1,9 @@
+# estudiantes/models.py
 from django.db import models, transaction
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
-from apoderados.models import Apoderado  
-from django.conf import settings
+from apoderados.models import Apoderado
+
 
 class VerificacionToken(models.Model):
     estudiante = models.ForeignKey(
@@ -10,6 +11,12 @@ class VerificacionToken(models.Model):
         on_delete=models.CASCADE,
         related_name='tokens'
     )
+    creado = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Token {self.pk} de estudiante {self.estudiante_id}"
+
+
 class Estudiante(models.Model):
     GRADOS = [
         ("1° Prim", "1° Primaria"),
@@ -27,15 +34,28 @@ class Estudiante(models.Model):
 
     nombres = models.CharField(max_length=120)
     apellidos = models.CharField(max_length=120)
-    edad = models.PositiveIntegerField(validators=[MinValueValidator(5), MaxValueValidator(20)])
+    edad = models.PositiveIntegerField(
+        validators=[MinValueValidator(5), MaxValueValidator(20)]
+    )
     grado = models.CharField(max_length=10, choices=GRADOS)
     colegio = models.CharField(max_length=150)
-    apoderado = models.ForeignKey(Apoderado, on_delete=models.PROTECT, related_name='estudiantes', null=True, blank=True)
+    apoderado = models.ForeignKey(
+        Apoderado,
+        on_delete=models.PROTECT,
+        related_name='estudiantes',
+        null=True,
+        blank=True,
+    )
+
+    def __str__(self):
+        return f"{self.apellidos}, {self.nombres}"
+
 
 class Inscripcion(models.Model):
     estudiante = models.ForeignKey('estudiantes.Estudiante', on_delete=models.CASCADE)
     curso = models.ForeignKey('docentes.Curso', on_delete=models.PROTECT, null=True, blank=True)
     fecha = models.DateTimeField(auto_now_add=True)
+
     estado = models.CharField(
         max_length=20,
         choices=[
@@ -55,39 +75,47 @@ class Inscripcion(models.Model):
         ],
         default='pendiente',
     )
+
     plan = models.ForeignKey('planes.Plan', on_delete=models.CASCADE, default=1)
     verificada = models.BooleanField(default=False)
-    # 🔹 Validación de disponibilidad de cupos al guardar
-    def save(self, *args, **kwargs):
-        from planes.models import Plan  # import interno para evitar ciclos
 
+    # Ya no se genera automáticamente; se rellenará al aprobar el pago en el admin
+    access_code = models.CharField(
+        max_length=16,
+        unique=True,
+        blank=True,
+        null=True,
+        help_text="Código de acceso para seguimiento/regularización del pago."
+    )
+
+    def save(self, *args, **kwargs):
+        """
+        Mantén el control de cupos. NO crear access_code aquí.
+        """
+        from planes.models import Plan
         with transaction.atomic():
             plan = Plan.objects.select_for_update().get(pk=self.plan_id)
             ocupados = plan.inscripcion_set.exclude(pk=self.pk).count()
-
             if ocupados >= plan.cupo_maximo:
                 raise ValidationError(
                     f"No hay cupos disponibles para el plan: "
                     f"{plan.get_nivel_display()} - {plan.get_area_display()}."
                 )
-
             super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.estudiante.apellidos}, {self.estudiante.nombres}"
 
+
 class Matricula(models.Model):
     inscripcion = models.ForeignKey('estudiantes.Inscripcion', on_delete=models.CASCADE)
-    estudiante = models.ForeignKey('estudiantes.Estudiante', on_delete=models.CASCADE)  # 👈 Esta línea debe existir
+    estudiante = models.ForeignKey('estudiantes.Estudiante', on_delete=models.CASCADE)
     estado = models.CharField(
         max_length=20,
-        choices=[
-            ('activo', 'Activo'),
-            ('inactivo', 'Inactivo')
-        ]
+        choices=[('activo', 'Activo'), ('inactivo', 'Inactivo')]
     )
     monto_referencial = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     fecha_creada = models.DateTimeField(auto_now_add=True)
-    # usuario_registra eliminado
 
     def __str__(self):
         return f"Matrícula de {self.estudiante.apellidos}, {self.estudiante.nombres}"

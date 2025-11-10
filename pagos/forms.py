@@ -1,23 +1,20 @@
-from decimal import Decimal, InvalidOperation
+from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from django import forms
+from django.core.validators import MinValueValidator, MaxValueValidator
 from .models import Pago
-
-# --- Widget múltiple compatible con Django 3.2/4.0/4.1 ---
-class MultiFileInput(forms.ClearableFileInput):
-    # Esto es lo que habilita input type="file" multiple en versiones que lo requieren
-    allow_multiple_selected = True
 
 PUBLIC_ALLOWED_ESTADOS = {"parcial", "completado"}
 
 class PagoForm(forms.ModelForm):
     class Meta:
         model = Pago
-        # 'estado' aquí es lo que el apoderado SOLICITA (parcial/completado);
-        # el pago REAL siempre se registra en 'pendiente'
         fields = ["monto", "metodo", "estado"]
         widgets = {
             "monto": forms.NumberInput(attrs={
-                "class": "form-control", "step": "0.01", "min": "0", "inputmode": "decimal"
+                "class": "form-control",
+                "step": "0.01",
+                "min": "0",
+                "inputmode": "decimal",
             }),
             "metodo": forms.Select(attrs={"class": "form-select"}),
             "estado": forms.Select(attrs={"class": "form-select"}),
@@ -25,9 +22,9 @@ class PagoForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        all_choices = getattr(Pago, "ESTADO_CHOICES", Pago._meta.get_field("estado").choices)
-        # Solo mostramos al apoderado: Parcial / Completado
-        self.fields["estado"].choices = [(v, l) for v, l in all_choices if v in PUBLIC_ALLOWED_ESTADOS]
+        self.fields["metodo"].choices = Pago._meta.get_field("metodo").choices
+        all_estado = Pago._meta.get_field("estado").choices
+        self.fields["estado"].choices = [(v, l) for v, l in all_estado if v in PUBLIC_ALLOWED_ESTADOS]
 
     def clean_monto(self):
         raw = self.data.get("monto", "")
@@ -39,7 +36,7 @@ class PagoForm(forms.ModelForm):
             raise forms.ValidationError("Monto inválido. Usa números como 123.45.")
         if val < 0:
             raise forms.ValidationError("El monto no puede ser negativo.")
-        return val
+        return val.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
     def clean_estado(self):
         estado = self.cleaned_data.get("estado")
@@ -48,16 +45,53 @@ class PagoForm(forms.ModelForm):
         return estado
 
 
-class ComprobanteForm(forms.Form):
-    # IMPORTANTE: usar el widget MultiFileInput (no ClearableFileInput directo)
-    archivos = forms.FileField(
-        required=False,                   # opcional
-        widget=MultiFileInput(attrs={"multiple": True})
+class LookupCodeForm(forms.Form):
+    code = forms.CharField(
+        label="Código de acceso",
+        max_length=16,
+        widget=forms.TextInput(attrs={
+            "class": "form-control",
+            "placeholder": "Ej: 9K2F7A1B3C",
+        }),
     )
 
-    def clean_archivos(self):
+
+class ReenviarCodigoForm(forms.Form):
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={"class": "form-control", "placeholder": "tu@correo.com"})
+    )
+
+
+class RegularizacionForm(forms.Form):
+    """
+    Solo valida monto y método. Los archivos se leen por request.FILES['archivos'].
+    """
+    monto = forms.DecimalField(
+        min_value=1,
+        max_value=999.99,
+        decimal_places=2,
+        max_digits=6,
+        validators=[MinValueValidator(1), MaxValueValidator(999.99)],
+        widget=forms.NumberInput(attrs={
+            "class": "form-control",
+            "max": "999.99",
+            "min": "1",
+            "step": "0.01",
+            "inputmode": "decimal",
+        }),
+        label="Monto a regularizar",
+    )
+    metodo = forms.ChoiceField(
+        label="Método de pago",
+        choices=Pago._meta.get_field("metodo").choices,
+        widget=forms.Select(attrs={"class": "form-select"}),
+    )
+
+    def clean_monto(self):
         """
-        Siempre devolver una lista de archivos (vacía o con elementos).
-        Esto evita el error 'no se ha enviado ningún fichero' cuando no adjuntan.
+        Fuerza tope 999.99 si viene más alto.
         """
-        return self.files.getlist("archivos")
+        val = self.cleaned_data["monto"]
+        if val > Decimal("999.99"):
+            return Decimal("999.99")
+        return val
