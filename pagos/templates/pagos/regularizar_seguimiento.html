@@ -1,0 +1,150 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Regularización de pagos</title>
+  <link rel="stylesheet" href="{% static 'pagos/css/registrar_pagos.css' %}">
+</head>
+<body class="page--pagos">
+<main class="main-container">
+  <div class="form-card">
+    <div class="form-header">REGULARIZACIÓN DE PAGOS</div>
+
+    <div class="form-body">
+      {% if messages %}
+        {% for m in messages %}
+          <div class="alert {{ m.tags }}">{{ m }}</div>
+        {% endfor %}
+      {% endif %}
+
+      <h2 class="section-title">Inscripción</h2>
+      <div class="form-grid" style="margin-bottom:10px;">
+        <div class="form-group">
+          <label>Estudiante:</label>
+          <input readonly value="{{ inscripcion.estudiante.apellidos }} {{ inscripcion.estudiante.nombres }}">
+        </div>
+        <div class="form-group">
+          <label>Plan:</label>
+          <input readonly value="{{ inscripcion.plan }}">
+        </div>
+        <div class="form-group">
+          <label>Estado actual de pago:</label>
+          <input readonly value="{{ inscripcion.estado_pago|title }}">
+        </div>
+        <div class="form-group">
+          <label>Código de acceso:</label>
+          <input readonly value="{{ inscripcion.access_code }}">
+        </div>
+      </div>
+
+      <h2 class="section-title">Pagos registrados</h2>
+      <table class="table-pagos">
+        <thead>
+        <tr>
+          <th>ID</th><th>Monto</th><th>Método</th>
+          <th>Estado</th><th>Fecha</th><th>Comprobantes</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for p in pagos %}
+          <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.monto }}</td>
+            <td>{{ p.get_metodo_display }}</td>
+            <td>{{ p.get_estado_display }}</td>
+            <td>{{ p.fecha }}</td>
+            <td>
+              {% with p.comprobantes.all as comps %}
+                {% if comps %}
+                  {% for c in comps %}
+                    <a href="{{ c.archivo.url }}" target="_blank" rel="noopener">Ver {{ forloop.counter }}</a>{% if not forloop.last %}, {% endif %}
+                  {% endfor %}
+                {% else %}&mdash;{% endif %}
+              {% endwith %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="6">No hay pagos registrados.</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+
+      {% if puede_subir %}
+        <h2 class="section-title" style="margin-top:20px;">Subir comprobantes adicionales</h2>
+
+        {% if form.non_field_errors %}
+          <div class="alert error">
+            <ul class="list-errors">
+              {% for e in form.non_field_errors %}<li>{{ e }}</li>{% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        <form id="form-regularizacion" method="post" enctype="multipart/form-data" class="space-y-4">
+          {% csrf_token %}
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="{{ form.monto.id_for_label }}">Monto</label>
+              {{ form.monto }}
+              {% if form.monto.errors %}<div class="field-error">{{ form.monto.errors.0 }}</div>{% endif %}
+            </div>
+
+            <div class="form-group">
+              <label for="{{ form.metodo.id_for_label }}">Método</label>
+              {{ form.metodo }}
+              {% if form.metodo.errors %}<div class="field-error">{{ form.metodo.errors.0 }}</div>{% endif %}
+            </div>
+
+            <div class="form-group" style="grid-column:1/-1;">
+              <label for="id_archivos">
+                Comprobantes (PDF/imagen) <span class="hint">máx. {{ MAX_FILES }}</span>:
+              </label>
+
+              <!-- IMPORTANTE: name="archivos" y multiple -->
+              <input
+                id="id_archivos"
+                type="file"
+                name="archivos"
+                accept=".pdf,image/*"
+                multiple
+                required
+                data-max="{{ MAX_FILES }}"
+                class="form-control"
+              />
+
+              <div id="preview-grid" class="preview-grid"></div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button id="btn-regularizar" class="btn-submit" type="submit">Enviar</button>
+            <a class="btn-submit" href="{% url 'pagos_regularizar_lookup' %}">Usar otro código</a>
+          </div>
+        </form>
+      {% else %}
+        <div class="alert info">No hay pagos pendientes o parciales para regularizar.</div>
+        <div class="form-actions" style="margin-top:12px;">
+          <a class="btn-submit" href="{% url 'pagos_regularizar_lookup' %}">Ingresar otro código</a>
+        </div>
+      {% endif %}
+
+      <div class="form-actions" style="margin-top:12px;">
+        <a class="btn-submit" href="/">Regresar a la página principal</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="{% static 'pagos/js/regularizacion.js' %}"></script>
+
+<style>
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-top:8px}
+.preview-item{position:relative;border:1px solid #e5e7eb;border-radius:8px;padding:6px;background:#fafafa}
+.preview-item img{width:100%;height:100px;object-fit:cover;border-radius:6px}
+.preview-pdf,.preview-other{height:100px;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:6px;font-size:.9rem;color:#374151;text-align:center;padding:6px}
+.preview-remove{position:absolute;top:4px;right:6px;border:none;background:#ef4444;color:#fff;border-radius:999px;width:22px;height:22px;cursor:pointer;line-height:1}
+</style>
+</body>
+</html>
