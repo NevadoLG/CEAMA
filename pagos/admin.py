@@ -154,13 +154,13 @@ class PagoAdmin(admin.ModelAdmin):
             inscripcion=ins,
             estudiante=estudiante,
             defaults={
-                "estado": "activo" if ins.estado_pago == "total" else "inactivo",
+                "estado": "activo" if ins.estado_pago in ["total", "parcial"] else "inactivo",
                 "monto_referencial": total_pagado,
             },
         )
 
         if not created:
-            matricula.estado = "activo" if ins.estado_pago == "total" else "inactivo"
+            matricula.estado = "activo" if ins.estado_pago in ["total", "parcial"] else "inactivo"
             matricula.monto_referencial = total_pagado
             matricula.save(update_fields=["estado", "monto_referencial"])
 
