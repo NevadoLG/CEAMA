@@ -45,10 +45,15 @@ class AsignacionInline(admin.TabularInline):
 
 @admin.register(Matricula)
 class MatriculaAdmin(admin.ModelAdmin):
-    list_display = ('inscripcion', 'estado', 'monto_referencial', 'fecha_creada')
+    list_display = ('estudiante', 'estado', 'monto_referencial', 'cursos_del_plan', 'fecha_creada')
     list_filter = ('estado',)
     search_fields = ('inscripcion__estudiante__apellidos', 'inscripcion__estudiante__nombres')
     ordering = ('-fecha_creada',)
     filter_horizontal = ('asignaciones',)
     inlines = [AsignacionInline]
-
+    def cursos_del_plan(self, obj):
+        cursos = obj.cursos_plan
+        if not cursos:
+            return "—"
+        return ", ".join(c.nombre for c in cursos)
+    cursos_del_plan.short_description = "Cursos del plan"

@@ -3,6 +3,8 @@ from django.db import models, transaction
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
 from apoderados.models import Apoderado
+from docentes.models import Asignacion
+from django.db.models import Count
 
 
 class VerificacionToken(models.Model):
@@ -125,3 +127,31 @@ class Matricula(models.Model):
 
     def __str__(self):
         return f"Matrícula de {self.estudiante.apellidos}, {self.estudiante.nombres}"
+    @property
+    def cursos_plan(self):
+        if not self.inscripcion or not self.inscripcion.plan:
+            return []
+        return self.inscripcion.plan.cursos_base()
+    def asignar_automaticamente_grupos(self):
+        if self.estado != 'activo':
+            return
+        cursos = list(self.cursos_plan)
+        if not cursos:
+            return
+        asignaciones_actuales = list(self.asignaciones.all())
+        cursos_ya_asignados = {a.curso_id for a in asignaciones_actuales}
+
+        for curso in cursos:
+            if curso.id in cursos_ya_asignados:
+                continue
+            asignacion = (
+                Asignacion.objects
+                .filter(curso=curso)
+                .annotate(num_matriculas=Count('matriculas'))
+                .filter(num_matriculas__lt=curso.cupo_maximo)
+                .order_by('num_matriculas', 'id')
+                .first()
+            )
+
+            if asignacion:
+                self.asignaciones.add(asignacion)
