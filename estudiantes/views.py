@@ -27,7 +27,6 @@ def registrar_estudiante(request):
         try:
             plan = Plan.objects.get(pk=plan_id, activo=True)
 
-            # Crea Estudiante
             estudiante = Estudiante.objects.create(
                 nombres=nombres,
                 apellidos=apellidos,
@@ -37,7 +36,6 @@ def registrar_estudiante(request):
                 apoderado=None
             )
 
-            # Crea Inscripción (los cupos sólo se validan cuando se verifique si así lo decides)
             inscripcion = Inscripcion.objects.create(
                 estudiante=estudiante,
                 plan=plan,
@@ -46,13 +44,6 @@ def registrar_estudiante(request):
                 verificada=False
             )
 
-            # Crea Matrícula (ajusta si tu modelo exige más campos)
-            Matricula.objects.create(
-                inscripcion=inscripcion,
-                estudiante=estudiante
-            )
-
-            # Redirige al registro de apoderado
             return redirect(f"{reverse('registrar_apoderado')}?inscripcion_id={inscripcion.id}")
 
         except Plan.DoesNotExist:
@@ -70,9 +61,23 @@ def registrar_estudiante(request):
             }
             return render(request, 'estudiantes/registrar.html', ctx)
 
-    # GET: sólo renderiza el form; el JS cargará los planes según el grado elegido
     return render(
         request,
         'estudiantes/registrar.html',
         {'grados': Estudiante.GRADOS, 'grado': request.GET.get('grado', '')}
     )
+def listado_matriculas(request):
+    """Listado simple de matrículas con sus asignaciones."""
+    matriculas = (
+        Matricula.objects
+        .select_related('estudiante', 'inscripcion')
+        .prefetch_related('asignaciones')
+        .order_by('-fecha_creada')
+    )
+
+    contexto = {
+        'matriculas': matriculas,
+    }
+    return render(request, 'estudiantes/listado_matriculas.html', contexto)
+
+

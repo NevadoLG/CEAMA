@@ -7,6 +7,9 @@ from django.utils.crypto import get_random_string
 
 from .models import Pago, Comprobante
 from .emails import enviar_correo_pago_aprobado
+from django.db.models import Sum
+from estudiantes.models import Matricula
+
 
 class ComprobanteInline(admin.TabularInline):
     model = Comprobante
@@ -126,6 +129,7 @@ class PagoAdmin(admin.ModelAdmin):
 
     def _sync_inscripcion(self, pago):
         ins = pago.inscripcion
+
         if pago.estado == "completado":
             ins.estado_pago = "total"
         elif pago.estado == "parcial":
@@ -135,6 +139,30 @@ class PagoAdmin(admin.ModelAdmin):
         else:
             ins.estado_pago = "pendiente"
         ins.save(update_fields=["estado_pago"])
+
+        total_pagado = (
+            ins.pago_set.filter(estado__in=["parcial", "completado"])
+            .aggregate(total=Sum("monto"))
+            .get("total") or 0
+        )
+
+        estudiante = getattr(ins, "estudiante", None)
+        if estudiante is None:
+            return
+
+        matricula, created = Matricula.objects.get_or_create(
+            inscripcion=ins,
+            estudiante=estudiante,
+            defaults={
+                "estado": "activo" if ins.estado_pago == "total" else "inactivo",
+                "monto_referencial": total_pagado,
+            },
+        )
+
+        if not created:
+            matricula.estado = "activo" if ins.estado_pago == "total" else "inactivo"
+            matricula.monto_referencial = total_pagado
+            matricula.save(update_fields=["estado", "monto_referencial"])
 
     def aprobar_view(self, request, pk):
         pago = Pago.objects.select_related("inscripcion__estudiante__apoderado").filter(pk=pk).first()
