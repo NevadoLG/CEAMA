@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Estudiante, Inscripcion, Matricula
-
+from docentes.models import Asignacion
 
 class MatriculaInline(admin.StackedInline):
     model = Matricula
@@ -36,6 +36,12 @@ class InscripcionAdmin(admin.ModelAdmin):
     ordering = ('-fecha',)
     autocomplete_fields = ('estudiante', 'curso', 'plan')
 
+class AsignacionInline(admin.TabularInline):
+    model = Matricula.asignaciones.through
+    extra = 0
+    verbose_name = "Asignación"
+    verbose_name_plural = "Asignaciones"
+    can_delete = False
 
 @admin.register(Matricula)
 class MatriculaAdmin(admin.ModelAdmin):
@@ -43,4 +49,6 @@ class MatriculaAdmin(admin.ModelAdmin):
     list_filter = ('estado',)
     search_fields = ('inscripcion__estudiante__apellidos', 'inscripcion__estudiante__nombres')
     ordering = ('-fecha_creada',)
+    filter_horizontal = ('asignaciones',)
+    inlines = [AsignacionInline]
 

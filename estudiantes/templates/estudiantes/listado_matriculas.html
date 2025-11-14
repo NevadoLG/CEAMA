@@ -1,0 +1,44 @@
+{% extends "base.html" %} {# si tienes un base.html global, si no, quita esta línea y el block #}
+
+{% block content %}
+<h1>Listado de Matrículas</h1>
+
+<table border="1" cellpadding="4" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Estudiante</th>
+            <th>Estado matrícula</th>
+            <th>Monto pagado (referencial)</th>
+            <th>Fecha creada</th>
+            <th>Asignaciones (curso / profe / aula / horario)</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for m in matriculas %}
+        <tr>
+            <td>{{ m.estudiante.apellidos }}, {{ m.estudiante.nombres }}</td>
+            <td>{{ m.estado }}</td>
+            <td>{{ m.monto_referencial }}</td>
+            <td>{{ m.fecha_creada }}</td>
+            <td>
+                {% if m.asignaciones.all %}
+                    <ul>
+                        {% for asig in m.asignaciones.all %}
+                            <li>{{ asig }}</li> {# usa __str__ de Asignacion #}
+                        {% empty %}
+                            <li>Sin asignaciones</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    Sin asignaciones
+                {% endif %}
+            </td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="5">No hay matrículas registradas aún.</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -110,9 +110,15 @@ class Inscripcion(models.Model):
 class Matricula(models.Model):
     inscripcion = models.ForeignKey('estudiantes.Inscripcion', on_delete=models.CASCADE)
     estudiante = models.ForeignKey('estudiantes.Estudiante', on_delete=models.CASCADE)
+    asignaciones = models.ManyToManyField(
+        'docentes.Asignacion',
+        blank=True,
+        related_name='matriculas'
+    )
     estado = models.CharField(
         max_length=20,
-        choices=[('activo', 'Activo'), ('inactivo', 'Inactivo')]
+        choices=[('activo', 'Activo'), ('inactivo', 'Inactivo')],
+        default='inactivo',
     )
     monto_referencial = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     fecha_creada = models.DateTimeField(auto_now_add=True)
