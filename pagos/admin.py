@@ -163,6 +163,11 @@ class PagoAdmin(admin.ModelAdmin):
             matricula.estado = "activo" if ins.estado_pago in ["total", "parcial"] else "inactivo"
             matricula.monto_referencial = total_pagado
             matricula.save(update_fields=["estado", "monto_referencial"])
+        try:
+            matricula.asignar_automaticamente_grupos()
+        except Exception:
+            pass
+
 
     def aprobar_view(self, request, pk):
         pago = Pago.objects.select_related("inscripcion__estudiante__apoderado").filter(pk=pk).first()

@@ -26,3 +26,15 @@ class Plan(models.Model):
 
     def cupos_disponibles(self):
         return max(self.cupo_maximo - self.cupos_ocupados(), 0)
+    
+    def cursos_base(self):
+        from docentes.models import Curso
+        qs = Curso.objects.filter(nivel=self.nivel)
+        if self.area == 'matematica':
+            qs = qs.filter(plan='matematica')
+        elif self.area == 'comunicacion':
+            qs = qs.filter(plan='comunicacion')
+        else:  
+            qs = qs.filter(plan__in=['matematica', 'comunicacion'])
+        return qs
+
