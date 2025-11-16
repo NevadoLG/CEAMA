@@ -1,215 +1,460 @@
 {% extends 'landing/base.html' %}
+{% load static %}
+
 {% block title %}Inicio | CEAMA{% endblock %}
+
 {% block content %}
 
-<!-- ==========================
-     HERO
-=========================== -->
-<section class="hero">
-  <div class="hero-content">
-    <p class="hero-subtitle">Formando mentes brillantes</p>
-    <h1>CEAMA</h1>
-    <p>Educación moderna, humana y digital para transformar tu futuro.</p>
-    <a href="/estudiantes/registrar" class="btn-primary">Inscríbete ahora</a>
-  </div>
-</section>
-
-<!-- ==========================
-     QUIÉNES SOMOS
-=========================== -->
-<section id="quienes-somos" class="quienes-somos">
-  <h2 class="section-title">¿Quiénes somos?</h2>
-  <p>
-    Somos una institución educativa comprometida con la excelencia, la innovación
-    y el desarrollo humano. En CEAMA, solo enseñamos Matemática y Comunicación,
-    potenciando el talento de nuestros estudiantes con tecnología y valores.
-  </p>
-
-  <div class="pillars">
-    <div class="pillar">
-      <div class="pillar-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" stroke="#ff7b00" stroke-width="2" viewBox="0 0 24 24">
-          <path d="M13 2L3 14h7v8l11-12h-8z"/>
-        </svg>
-      </div>
-      <h3>Innovación</h3>
-      <p>Utilizamos tecnología de punta para crear experiencias de aprendizaje interactivas y dinámicas.</p>
+<section
+    id="inicio"
+    class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 md:pt-20"
+>
+    <div class="absolute inset-0 z-0">
+        <img
+            src="{% static 'landing/img/lovable/hero-bg.jpg' %}"
+            alt="CEAMA Academia"
+            class="w-full h-full object-cover"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-primary/90 to-primary/70"></div>
     </div>
 
-    <div class="pillar">
-      <div class="pillar-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" stroke="#ff7b00" stroke-width="2" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="10"/>
-          <circle cx="12" cy="12" r="5"/>
-        </svg>
-      </div>
-      <h3>Excelencia</h3>
-      <p>Nos comprometemos con los más altos estándares académicos y resultados comprobables.</p>
-    </div>
-
-    <div class="pillar">
-      <div class="pillar-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" stroke="#ff7b00" stroke-width="2" viewBox="0 0 24 24">
-          <path d="M12 21C12 21 20 13 20 8a8 8 0 1 0-16 0c0 5 8 13 8 13z"/>
-        </svg>
-      </div>
-      <h3>Humanismo</h3>
-      <p>Formamos personas íntegras con valores, empatía y compromiso social.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ==========================
-     NUESTROS CURSOS
-=========================== -->
-<section id="cursos" class="cursos">
-  <h2 class="section-title">Nuestros Cursos</h2>
-
-  <div class="cursos-grid">
-    <div class="curso-card azul">
-      <div class="curso-header">
-        <h3>Matemática</h3>
-        <div class="curso-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" stroke="#1e63d0" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M4 7h16M4 12h10M4 17h16"/>
-          </svg>
+    <div class="container mx-auto px-4 z-10 text-center py-16 md:py-20">
+        <div class="max-w-4xl mx-auto space-y-6">
+            <h1 class="text-5xl md:text-7xl font-bold text-primary-foreground drop-shadow-lg leading-tight">
+                Bienvenido a CEAMA
+            </h1>
+            <p class="text-xl md:text-2xl text-primary-foreground/90 max-w-2xl mx-auto drop-shadow-md">
+                Centro de Excelencia Académica en Matemática y Comunicación
+            </p>
+            <p class="text-lg md:text-xl text-primary-foreground/80 max-w-3xl mx-auto drop-shadow-sm">
+                Desarrollamos habilidades esenciales para el éxito académico y
+                profesional a través de programas especializados en comunicación
+                efectiva y razonamiento matemático.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center pt-6">
+                <button
+                    onclick="scrollToSection('cursos')"
+                    class="text-lg bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold rounded-md h-11 px-8 inline-flex items-center justify-center gap-2 transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
+                    Ver Cursos
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-5 w-5">
+                        <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                    </svg>
+                </button>
+                <button
+                    onclick="scrollToSection('contacto')"
+                    class="text-lg bg-transparent border-2 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary font-semibold rounded-md h-11 px-8 inline-flex items-center justify-center gap-2 transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
+                    Contáctanos
+                </button>
+            </div>
         </div>
-      </div>
-      <p class="curso-descripcion">
-        Domina conceptos fundamentales y avanzados de matemática con metodología práctica.
-      </p>
-      <div class="temas-incluidos">
-        <h4>Temas incluidos:</h4>
-        <div class="temas-grid">
-          <ul>
-            <li>Álgebra</li>
-            <li>Cálculo</li>
-          </ul>
-          <ul>
-            <li>Geometría</li>
-            <li>Estadística</li>
-          </ul>
-        </div>
-      </div>
     </div>
-
-    <div class="curso-card naranja">
-      <div class="curso-header">
-        <h3>Comunicación</h3>
-        <div class="curso-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" stroke="#ff7b00" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M12 20h9M16.5 3.5l4 4-12 12H4v-4l12.5-12z"/>
-          </svg>
-        </div>
-      </div>
-      <p class="curso-descripcion">
-        Desarrolla habilidades de lectura, escritura y expresión oral efectiva.
-      </p>
-      <div class="temas-incluidos">
-        <h4>Temas incluidos:</h4>
-        <div class="temas-grid">
-          <ul>
-            <li>Redacción</li>
-            <li>Comprensión Lectora</li>
-          </ul>
-          <ul>
-            <li>Oratoria</li>
-            <li>Análisis Crítico</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
 </section>
 
-<!-- ==========================
-     TESTIMONIOS
-=========================== -->
-<section id="testimonios" class="testimonios">
-  <h2 class="section-title">Testimonios de Estudiantes</h2>
+<section id="nosotros" class="py-20 bg-background">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-4">
+                ¿Por Qué Elegirnos?
+            </h2>
+            <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Somos una institución comprometida con la excelencia académica y el
+                desarrollo integral de nuestros estudiantes
+            </p>
+        </div>
 
-  <div class="testimonios-grid">
-    <!-- Testimonio 1 -->
-    <div class="testimonio-card">
-      <div class="estrellas">
-        ★★★★★
-      </div>
-      <p class="testimonio-texto">
-        “Gracias a CEAMA, mejoré mis notas en matemáticas y ahora me siento seguro resolviendo problemas complejos.”
-      </p>
-      <div class="testimonio-autor">
-        <strong>Juan Pérez</strong><br>
-        <span>Curso de Matemática</span>
-      </div>
-    </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm text-center hover:shadow-lg transition-shadow">
+                <div class="pt-6 space-y-4 p-6">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-primary"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-foreground">Metodología Efectiva</h3>
+                    <p class="text-muted-foreground">Aplicamos técnicas pedagógicas innovadoras que garantizan el aprendizaje significativo y duradero.</p>
+                </div>
+            </div>
+            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm text-center hover:shadow-lg transition-shadow">
+                <div class="pt-6 space-y-4 p-6">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-primary"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M19 21v-2a4 4 0 0 0-3-3.87"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-foreground">Docentes Expertos</h3>
+                    <p class="text-muted-foreground">Nuestro equipo está conformado por profesionales altamente calificados con amplia experiencia educativa.</p>
+                </div>
+            </div>
+            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm text-center hover:shadow-lg transition-shadow">
+                <div class="pt-6 space-y-4 p-6">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-primary"><path d="m15.5 14.5-5 5-5-5a4 4 0 1 1 5-5.5 4 4 0 0 1 5 5.5Z"/><path d="m19 13-2.25-2.25"/><path d="M11 20 6 15"/><path d="m17.5 10.5-5.5 5.5"/><path d="M8 13.5l-2.25 2.25"/></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-foreground">Resultados Comprobados</h3>
+                    <p class="text-muted-foreground">Miles de estudiantes han logrado sus objetivos académicos gracias a nuestros programas de estudio.</p>
+                </div>
+            </div>
+            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm text-center hover:shadow-lg transition-shadow">
+                <div class="pt-6 space-y-4 p-6">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-primary"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-foreground">Material Didáctico</h3>
+                    <p class="text-muted-foreground">Proporcionamos recursos educativos de calidad diseñados específicamente para cada nivel y necesidad.</p>
+                </div>
+            </div>
+        </div>
 
-    <!-- Testimonio 2 -->
-    <div class="testimonio-card">
-      <div class="estrellas">
-        ★★★★★
-      </div>
-      <p class="testimonio-texto">
-        “Las clases de comunicación me ayudaron a expresarme mejor y a perder el miedo a hablar en público.”
-      </p>
-      <div class="testimonio-autor">
-        <strong>María López</strong><br>
-        <span>Curso de Comunicación</span>
-      </div>
+        <div class="mt-16 max-w-4xl mx-auto bg-primary/10 rounded-lg p-8">
+            <h3 class="text-2xl font-bold text-foreground mb-4 text-center">
+                Nuestra Misión
+            </h3>
+            <p class="text-lg text-muted-foreground text-center leading-relaxed">
+                En CEAMA nos dedicamos a formar estudiantes con sólidas competencias
+                en comunicación y matemática, brindándoles las herramientas
+                necesarias para destacar en su vida académica y profesional.
+                Creemos en la educación de calidad como el camino hacia el éxito y
+                el desarrollo personal.
+            </p>
+        </div>
     </div>
-
-    <!-- Testimonio 3 -->
-    <div class="testimonio-card">
-      <div class="estrellas">
-        ★★★★★
-      </div>
-      <p class="testimonio-texto">
-        “Me encanta aprender con juegos y tecnología. ¡Las clases son divertidas y los profes muy atentos!”
-      </p>
-      <div class="testimonio-autor">
-        <strong>Luis Ramírez</strong><br>
-        <span>Matemática y Comunicación</span>
-      </div>
-    </div>
-  </div>
 </section>
 
-<!-- ==========================
-     CONTACTO
-=========================== -->
-<section id="contacto" class="contacto">
-  <h2 class="section-title">Ponte en Contacto</h2>
-  <p class="contacto-descripcion">
-    Estamos aquí para ayudarte. Comunícate con nosotros a través de los siguientes medios.
-  </p>
+<section class="py-20 bg-background">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-10 w-10 text-primary">
+                    <path d="m15.5 14.5-5 5-5-5a4 4 0 1 1 5-5.5 4 4 0 0 1 5 5.5Z"/>
+                    <path d="m19 13-2.25-2.25"/>
+                    <path d="M11 20 6 15"/>
+                    <path d="m17.5 10.5-5.5 5.5"/>
+                    <path d="M8 13.5l-2.25 2.25"/>
+                </svg>
+            </div>
+            <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-4">
+                Certificaciones y Reconocimientos
+            </h2>
+            <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Nuestros docentes cuentan con certificaciones que avalan su excelencia educativa
+            </p>
+        </div>
 
-  <div class="contacto-grid">
-    <div class="contacto-card">
-      <div class="contacto-icon">📍</div>
-      <h3>Ubicación</h3>
-      <p>Urb. Trupal Mz. D Lote 20<br>Trujillo, Perú</p>
+        <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                <div class="pt-8 pb-6 space-y-4 p-6">
+                    <div class="flex justify-center mb-4">
+                        <img
+                            src="{% static 'landing/img/lovable/kahoot-verified.png' %}"
+                            alt="Kahoot! Verified Creator"
+                            class="w-32 h-32 object-contain"
+                        />
+                    </div>
+                    <h3 class="text-xl font-bold text-foreground">Kahoot! Verified Creator</h3>
+                    <p class="text-muted-foreground leading-relaxed">
+                        Nuestros docentes son creadores verificados de Kahoot!, reconocidos por crear contenido educativo de alta calidad.
+                    </p>
+                </div>
+            </div>
+            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                <div class="pt-8 pb-6 space-y-4 p-6">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-education-accent/10 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-education-accent"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-foreground">Metodología Certificada</h3>
+                    <p class="text-muted-foreground leading-relaxed">
+                        Aplicamos metodologías pedagógicas certificadas y validadas por instituciones educativas reconocidas.
+                    </p>
+                </div>
+            </div>
+            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                <div class="pt-8 pb-6 space-y-4 p-6">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-education-accent/10 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-education-accent"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-foreground">Experiencia Comprobada</h3>
+                    <p class="text-muted-foreground leading-relaxed">
+                        Más de 10 años de experiencia en la enseñanza de comunicación y matemática con resultados excepcionales.
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
+</section>
 
-    <div class="contacto-card">
-      <div class="contacto-icon">⏰</div>
-      <h3>Horarios</h3>
-      <p><strong>Lunes a Viernes:</strong> 8:00 AM - 6:00 PM<br>
-         <strong>Sábados:</strong> 9:00 AM - 1:00 PM<br>
-         <strong>Domingos:</strong> Cerrado</p>
-    </div>
+<section id="cursos" class="py-20 bg-muted/30">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-4">
+                Nuestros Cursos
+            </h2>
+            <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Programas diseñados para potenciar tus habilidades académicas y
+                profesionales
+            </p>
+        </div>
 
-    <div class="contacto-card">
-      <div class="contacto-icon">📞</div>
-      <h3>Teléfono</h3>
-      <p>+51 123 456 789</p>
-    </div>
+        <div class="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm overflow-hidden hover:shadow-xl transition-shadow">
+                <div class="h-48 overflow-hidden bg-primary/70">
+                    <img
+                        src="{% static 'landing/img/lovable/communication-icon.jpg' %}"
+                        alt="Curso de Comunicación"
+                        class="w-full h-full object-cover opacity-90"
+                    />
+                </div>
+                <div class="flex flex-col space-y-1.5 p-6">
+                    <h3 class="text-2xl font-semibold leading-none tracking-tight">Comunicación Efectiva</h3>
+                    <p class="text-base text-muted-foreground">Desarrolla habilidades de expresión oral y escrita</p>
+                </div>
+                <div class="p-6 pt-0 space-y-4">
+                    <p class="text-muted-foreground">Aprende a comunicarte con claridad, persuasión y confianza en cualquier contexto académico o profesional.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span class="text-sm">Redacción académica y profesional</span></li>
+                        <li class="flex items-start gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span class="text-sm">Oratoria y expresión oral</span></li>
+                        <li class="flex items-start gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span class="text-sm">Comprensión lectora avanzada</span></li>
+                        <li class="flex items-start gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span class="text-sm">Técnicas de argumentación</span></li>
+                        <li class="flex items-start gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span class="text-sm">Análisis de textos literarios</span></li>
+                    </ul>
+                    <a href="#" class="w-full mt-4 bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-md h-10 px-4 py-2 inline-flex items-center justify-center gap-2 transition-colors shadow-md">Más Información</a>
+                </div>
+            </div>
 
-    <div class="contacto-card">
-      <div class="contacto-icon">✉️</div>
-      <h3>Email</h3>
-      <p>info@ceama.edu.pe</p>
+            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm overflow-hidden hover:shadow-xl transition-shadow">
+                <div class="h-48 overflow-hidden bg-education-secondary/70">
+                    <img
+                        src="{% static 'landing/img/lovable/math-icon.jpg' %}"
+                        alt="Curso de Matemática"
+                        class="w-full h-full object-cover opacity-90"
+                    />
+                </div>
+                <div class="flex flex-col space-y-1.5 p-6">
+                    <h3 class="text-2xl font-semibold leading-none tracking-tight">Razonamiento Matemático</h3>
+                    <p class="text-base text-muted-foreground">Domina los conceptos y el pensamiento lógico-matemático</p>
+                </div>
+                <div class="p-6 pt-0 space-y-4">
+                    <p class="text-muted-foreground">Fortalece tu capacidad de análisis y resolución de problemas con métodos innovadores y efectivos.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-education-secondary shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span class="text-sm">Álgebra y geometría aplicada</span></li>
+                        <li class="flex items-start gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-education-secondary shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span class="text-sm">Razonamiento lógico</span></li>
+                        <li class="flex items-start gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-education-secondary shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span class="text-sm">Resolución de problemas</span></li>
+                        <li class="flex items-start gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-education-secondary shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span class="text-sm">Estadística y probabilidades</span></li>
+                        <li class="flex items-start gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-education-secondary shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span class="text-sm">Matemática para exámenes de admisión</span></li>
+                    </ul>
+                    <a href="#" class="w-full mt-4 bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-md h-10 px-4 py-2 inline-flex items-center justify-center gap-2 transition-colors shadow-md">Más Información</a>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+</section>
+
+<section class="py-20 bg-background">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-education-secondary/10 mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-10 w-10 text-education-secondary">
+                    <path d="M20 19v-2a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v2"/>
+                    <rect width="20" height="14" x="2" y="3" rx="2" ry="2"/>
+                </svg>
+            </div>
+            <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-4">
+                Herramientas Tecnológicas
+            </h2>
+            <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Utilizamos las mejores herramientas educativas para hacer el aprendizaje más efectivo y atractivo
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow">
+                <div class="flex flex-col items-center p-6 space-y-4">
+                    <div class="w-20 h-20 rounded-full bg-purple-600/20 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-10 w-10 text-foreground"><path d="M12 2a10 10 0 0 0-10 10c0 4.4 3.58 8 8 8 3.52 0 6.64-2.3 7.73-5.5a9.5 9.5 0 0 0-1.23-11.5c1.09-3.2 4.21-5.5 7.73-5.5a10 10 0 0 0-10 10v4"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-foreground text-center">Kahoot!</h3>
+                    <p class="text-muted-foreground text-center text-sm leading-relaxed">Plataforma interactiva de aprendizaje basado en juegos que hace las clases más dinámicas y entretenidas.</p>
+                </div>
+            </div>
+            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow">
+                <div class="flex flex-col items-center p-6 space-y-4">
+                    <div class="w-20 h-20 rounded-full bg-pink-500/20 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-10 w-10 text-foreground"><path d="M6 10a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2z"/><path d="M18 10a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2z"/><path d="M10 20v-4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4"/><path d="M6 4h12a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-foreground text-center">Quizizz</h3>
+                    <p class="text-muted-foreground text-center text-sm leading-relaxed">Herramienta de cuestionarios gamificados que permite evaluar el progreso de forma divertida y efectiva.</p>
+                </div>
+            </div>
+            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow">
+                <div class="flex flex-col items-center p-6 space-y-4">
+                    <div class="w-20 h-20 rounded-full bg-cyan-500/20 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-10 w-10 text-foreground"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-foreground text-center">Videos Dinámicos</h3>
+                    <p class="text-muted-foreground text-center text-sm leading-relaxed">Contenido audiovisual educativo especialmente diseñado para reforzar conceptos y facilitar el aprendizaje.</p>
+                </div>
+            </div>
+            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow">
+                <div class="flex flex-col items-center p-6 space-y-4">
+                    <div class="w-20 h-20 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-10 w-10 text-foreground"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-foreground text-center">Materiales Físicos</h3>
+                    <p class="text-muted-foreground text-center text-sm leading-relaxed">Recursos didácticos tangibles como libros, fichas de trabajo y material manipulativo para aprendizaje práctico.</p>
+                </div>
+            </div>
+            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow">
+                <div class="flex flex-col items-center p-6 space-y-4">
+                    <div class="w-20 h-20 rounded-full bg-orange-500/20 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-10 w-10 text-foreground"><path d="M6 10a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2z"/><path d="M18 10a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2z"/><path d="M10 20v-4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4"/><path d="M6 4h12a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-foreground text-center">Juegos Educativos</h3>
+                    <p class="text-muted-foreground text-center text-sm leading-relaxed">Actividades lúdicas diseñadas para reforzar conocimientos mientras los estudiantes se divierten aprendiendo.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
 
-{% endblock %}
+<section id="contacto" class="py-20 bg-muted/30">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-4">
+                Contáctanos
+            </h2>
+            <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+                ¿Tienes preguntas? Estamos aquí para ayudarte. Contáctanos y te
+                responderemos lo antes posible.
+            </p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm">
+                <div class="pt-6 p-6">
+                    <form action="#" method="POST" class="space-y-4">
+                        <div>
+                            <label for="name" class="text-sm font-medium text-foreground mb-2 block">Nombre Completo</label>
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                placeholder="Tu nombre"
+                                required
+                                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                            />
+                        </div>
+                        <div>
+                            <label for="email" class="text-sm font-medium text-foreground mb-2 block">Email</label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="tu@email.com"
+                                required
+                                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                            />
+                        </div>
+                        <div>
+                            <label for="phone" class="text-sm font-medium text-foreground mb-2 block">Teléfono</label>
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                placeholder="+51 999 999 999"
+                                required
+                                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                            />
+                        </div>
+                        <div>
+                            <label for="message" class="text-sm font-medium text-foreground mb-2 block">Mensaje</label>
+                            <textarea
+                                id="message"
+                                name="message"
+                                placeholder="Escribe tu mensaje aquí..."
+                                rows="5"
+                                required
+                                class="flex min-h-[80px] w-full rounded-md border border-border bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
+                            ></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-md h-11 px-8 py-2 inline-flex items-center justify-center gap-2 transition-colors shadow-md">
+                            Enviar Mensaje
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-foreground mb-6">Información de Contacto</h3>
+                    <div class="space-y-4">
+                        <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm hover:shadow-md transition-shadow">
+                            <div class="p-4">
+                                <a href="tel:+51999999999" class="flex items-start gap-4 group">
+                                    <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-primary"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.08 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-foreground mb-1">Teléfono</h4>
+                                        <p class="text-muted-foreground">+51 999 999 999</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm hover:shadow-md transition-shadow">
+                            <div class="p-4">
+                                <a href="mailto:info@ceama.edu.pe" class="flex items-start gap-4 group">
+                                    <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-primary"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-foreground mb-1">Email</h4>
+                                        <p class="text-muted-foreground">info@ceama.edu.pe</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm hover:shadow-md transition-shadow">
+                            <div class="p-4">
+                                <a href="#" class="flex items-start gap-4 group">
+                                    <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-primary"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-foreground mb-1">Dirección</h4>
+                                        <p class="text-muted-foreground">Av. Universitaria 123, Lima, Perú</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm hover:shadow-md transition-shadow">
+                            <div class="p-4">
+                                <a href="#" class="flex items-start gap-4 group">
+                                    <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-primary"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-foreground mb-1">Horario</h4>
+                                        <p class="text-muted-foreground">Lun - Sáb: 8:00 AM - 8:00 PM</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-lg border bg-primary/10 text-primary-foreground p-6 mt-6">
+                    <h3 class="text-xl font-bold mb-3 text-foreground">
+                        ¿Listo para Comenzar?
+                    </h3>
+                    <p class="mb-4 text-muted-foreground">
+                        Inscríbete hoy y transforma tu futuro académico con CEAMA.
+                        Ofrecemos programas flexibles adaptados a tus necesidades.
+                    </p>
+                    <a href="/estudiantes/registrar" class="w-full bg-secondary hover:bg-secondary/80 text-secondary-foreground font-medium rounded-md h-11 px-8 py-2 inline-flex items-center justify-center gap-2 transition-colors shadow-md">
+                        Inscríbete Ahora
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
