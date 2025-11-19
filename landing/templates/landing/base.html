@@ -9,68 +9,62 @@
   <script src="https://cdn.tailwindcss.com"></script>
   
   <style>
-    /* Variables CSS personalizadas para replicar los colores de Lovable/shadcn. */
+    /* Variables HSL esenciales extraídas del index.css de Lovable */
     :root {
-      --background: 0 0% 100%; /* Fondo principal blanco */
-      --foreground: 222.2 47.4% 11.2%; /* Texto principal casi negro */
-      --muted: 210 40% 96.1%; /* Fondo gris claro */
-      --muted-foreground: 215.4 16.3% 46.9%; /* Texto gris oscuro */
-      --border: 214.3 31.8% 91.4%; /* Color de borde gris claro */
+      --background: 0 0% 100%;
+      --foreground: 222.2 47.4% 11.2%;
+      --muted: 210 40% 96.1%;
+      --muted-foreground: 215.4 16.3% 46.9%;
+      --border: 214.3 31.8% 91.4%;
       
-      --primary: 212 92% 38%; /* Azul CEAMA - Ajustado para ser más vivo */
-      --primary-foreground: 0 0% 100%; /* Blanco para texto sobre Primary */
+      --primary: 217 91% 60%; /* Azul CEAMA - Base */
+      --primary-foreground: 0 0% 100%;
 
-      --secondary: 202 92% 38%; /* Un azul ligeramente diferente para botones secundarios */
-      --secondary-foreground: 0 0% 100%; /* Blanco para texto sobre Secondary */
+      --secondary: 280 65% 60%; /* Púrpura */
+      --secondary-foreground: 0 0% 100%;
 
-      --education-secondary: 150 72% 38%; /* Verde/Accent para Matemática */
-      --education-accent: 35 100% 50%; /* Naranja Accent */
+      --education-primary: 217 91% 60%; /* Azul */
+      --education-secondary: 142 76% 36%; /* Verde */
+      --education-accent: 38 92% 50%; /* Naranja-Amarillo */
+      --education-purple: 280 65% 60%; /* Púrpura */
+      --education-teal: 174 72% 56%; /* Turquesa */
+      --education-coral: 15 90% 65%; /* Coral */
+      --education-orange: 25 95% 53%; /* Naranja */
+      --education-yellow: 48 96% 53%; /* Amarillo */
 
-      --card: 0 0% 100%; /* Fondo de tarjetas */
-      --card-foreground: 222.2 47.4% 11.2%; /* Texto de tarjetas */
+      --card: 0 0% 100%;
+      --card-foreground: 222.2 47.4% 11.2%;
     }
     
-    /* Aplicación de colores base y fuentes */
+    /* Aplicación de clases y helpers para que Tailwind las lea correctamente */
     body {
       color: hsl(var(--foreground));
       background-color: hsl(var(--background));
       font-family: "Montserrat", sans-serif;
     }
 
-    /* Definiciones directas para que Tailwind use las variables */
-    .bg-primary { background-color: hsl(var(--primary)); }
-    .text-primary { color: hsl(var(--primary)); }
-    .bg-primary\/90:hover { background-color: hsla(var(--primary), 0.9); }
-    .bg-primary\/10 { background-color: hsla(var(--primary), 0.1); }
-    
-    .bg-secondary { background-color: hsl(var(--secondary)); }
-    .text-secondary-foreground { color: hsl(var(--secondary-foreground)); }
-    .hover\:bg-secondary\/80:hover { background-color: hsla(var(--secondary), 0.8); }
-
-    .text-education-secondary { color: hsl(var(--education-secondary)); }
-    .bg-education-secondary\/10 { background-color: hsla(var(--education-secondary), 0.1); }
-    .text-education-accent { color: hsl(var(--education-accent)); }
-    
-    .bg-background { background-color: hsl(var(--background)); }
-    .text-foreground { color: hsl(var(--foreground)); }
-    .text-muted-foreground { color: hsl(var(--muted-foreground)); }
-    .border-border { border-color: hsl(var(--border)); }
-
-    .bg-card { background-color: hsl(var(--card)); }
-    .text-card-foreground { color: hsl(var(--card-foreground)); }
-
-    /* Ajustes específicos para el foco de los inputs */
-    .focus-visible\:ring-primary:focus-visible {
-      --tw-ring-color: hsl(var(--primary));
+    /* Definiciones para custom gradients usados en fondos de sección */
+    .bg-gradient-warm {
+        background-image: linear-gradient(135deg, hsl(var(--education-orange)) 0%, hsl(var(--education-yellow)) 100%);
     }
+    .bg-gradient-teal {
+        background-image: linear-gradient(135deg, hsl(var(--education-teal)) 0%, hsl(var(--education-primary)) 100%);
+    }
+    .bg-gradient-coral {
+        background-image: linear-gradient(135deg, hsl(var(--education-coral)) 0%, hsl(var(--education-purple)) 100%);
+    }
+    .bg-white\/95 { background-color: hsla(0, 0%, 100%, 0.95); }
+    .text-white { color: hsl(0, 0%, 100%); }
+    .text-white\/90 { color: hsla(0, 0%, 100%, 0.9); }
+    .text-foreground { color: hsl(var(--foreground)); }
 
-    /* Para que el blur se vea bien en la navbar */
+    /* Estilo de blur en la Navbar */
     .backdrop-blur-md {
         backdrop-filter: blur(8px);
         background-color: hsla(var(--background), 0.9); 
     }
 
-    /* Contenedor principal para centrar contenido */
+    /* Contenedor */
     .container {
         max-width: 1280px; 
         margin-left: auto;
@@ -105,7 +99,7 @@
 
                     <div class="flex items-center space-x-3">
                         
-                        <a href="{% url 'pagos_regularizar_lookup' %}" class="border border-primary text-primary hover:bg-primary hover:text-primary-foreground font-medium rounded-md h-10 px-3 py-2 inline-flex items-center justify-center gap-2 transition-colors shadow-sm text-sm whitespace-nowrap">
+                        <a href="{% url 'pagos_regularizar_lookup' %}" class="border border-primary text-primary hover:bg-primary/10 hover:text-primary font-medium rounded-md h-10 px-3 py-2 inline-flex items-center justify-center gap-2 transition-colors shadow-sm text-sm whitespace-nowrap">
                             Regularización de pagos
                         </a>
                         
@@ -127,21 +121,21 @@
                 </button>
             </div>
 
-            <div id="mobile-menu" class="md:hidden py-4 space-y-4 hidden bg-background/90 border-t border-border">
-                <button onclick="scrollToSection('inicio'); closeMobileMenu();" class="block w-full text-left text-foreground hover:text-primary transition-colors py-2 px-4">
+            <div id="mobile-menu" class="md:hidden py-4 space-y-4 hidden bg-background/90 border-t border-border px-4">
+                <button onclick="scrollToSection('inicio'); closeMobileMenu();" class="block w-full text-left text-foreground hover:text-primary transition-colors py-2">
                     Inicio
                 </button>
-                <button onclick="scrollToSection('cursos'); closeMobileMenu();" class="block w-full text-left text-foreground hover:text-primary transition-colors py-2 px-4">
+                <button onclick="scrollToSection('cursos'); closeMobileMenu();" class="block w-full text-left text-foreground hover:text-primary transition-colors py-2">
                     Cursos
                 </button>
-                <button onclick="scrollToSection('nosotros'); closeMobileMenu();" class="block w-full text-left text-foreground hover:text-primary transition-colors py-2 px-4">
+                <button onclick="scrollToSection('nosotros'); closeMobileMenu();" class="block w-full text-left text-foreground hover:text-primary transition-colors py-2">
                     Nosotros
                 </button>
-                <button onclick="scrollToSection('contacto'); closeMobileMenu();" class="block w-full text-left text-foreground hover:text-primary transition-colors py-2 px-4">
+                <button onclick="scrollToSection('contacto'); closeMobileMenu();" class="block w-full text-left text-foreground hover:text-primary transition-colors py-2">
                     Contacto
                 </button>
                 
-                <a href="{% url 'pagos_regularizar_lookup' %}" class="w-full border border-primary text-primary hover:bg-primary hover:text-primary-foreground font-medium rounded-md h-10 px-4 py-2 inline-flex items-center justify-center gap-2 transition-colors shadow-sm text-sm">
+                <a href="{% url 'pagos_regularizar_lookup' %}" class="w-full border border-primary text-primary hover:bg-primary/10 hover:text-primary font-medium rounded-md h-10 px-4 py-2 inline-flex items-center justify-center gap-2 transition-colors shadow-sm text-sm">
                     Regularización de pagos
                 </a>
 

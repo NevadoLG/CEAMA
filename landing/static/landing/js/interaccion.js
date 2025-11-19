@@ -3,11 +3,6 @@
  * Implementa el menú móvil y el scroll suave entre secciones.
  */
 
-/**
- * Lógica de interacción para la nueva landing page (Adaptada de Lovable)
- * Implementa el menú móvil y el scroll suave entre secciones.
- */
-
 // Función para desplazarse a la sección por ID (usada por la Navbar)
 function scrollToSection(id) {
     const element = document.getElementById(id);
