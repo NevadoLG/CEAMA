@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Registrar Estudiante</title>
-  <link rel="stylesheet" href="{% static 'css/registro.css' %}">
+  <link rel="stylesheet" href="{% static 'estudiantes/css/registro.css' %}">
 </head>
 <body>
 
@@ -43,7 +43,9 @@
 
         <form method="post" action="">
           {% csrf_token %}
-          <div class="form-grid">
+          <div class="form-layout">
+            <div class="form-main">
+              <div class="form-grid">
             <!-- Grado (con id) -->
             <div class="form-group">
               <label>Grado:</label>
@@ -76,18 +78,34 @@
             </div>
 
             <div class="form-group">
-              <label>Plan:</label>
-              <select name="plan" id="plan" data-endpoint="{% url 'planes_opciones' %}" required>
-                <option value="">Cargando planes…</option>
+              <label>Asignación:</label>
+              <select name="asignacion" id="asignacion" required>
+                <option value="">-- Seleccione una asignación --</option>
+                {% for a in asignaciones %}
+                  <option value="{{ a.id }}">{{ a.curso }} — {{ a.profesor }}</option>
+                {% endfor %}
               </select>
             </div>
           </div>
 
-          <div class="form-actions">
+              <div class="form-actions">
             <button type="submit" class="btn-submit">Registrar</button>
             <a href="/" class="btn-submit" style="margin-left:10px; text-align:center; display:inline-block;">
               Regresar a la página principal
             </a>
+              </div>
+            </div>
+
+            <aside class="form-sidebar">
+              <div id="asignacion-panel" class="asignacion-panel">
+                <h3>Detalles de la asignación</h3>
+                <p id="asignacion-horario"><strong>Horario:</strong> —</p>
+                <p id="asignacion-profesor"><strong>Profesor:</strong> —</p>
+                <p id="asignacion-aula"><strong>Aula:</strong> —</p>
+                <p id="asignacion-cupo"><strong>Cupos:</strong> —</p>
+              </div>
+            </aside>
+
           </div>
         </form>
 
@@ -95,6 +113,86 @@
     </div>
   </main>
 
-  <script src="{% static 'js/planes_dynamic.js' %}"></script>
+  <script>
+    (function(){
+      const select = document.getElementById('asignacion');
+      const gradoSelect = document.getElementById('grado');
+      const panelHorario = document.getElementById('asignacion-horario');
+      const panelProfesor = document.getElementById('asignacion-profesor');
+      const panelAula = document.getElementById('asignacion-aula');
+      const panelCupo = document.getElementById('asignacion-cupo');
+
+      if(!select) return;
+
+      async function fetchDetalles(id){
+        if(!id) return;
+        try{
+          const res = await fetch(`/docentes/asignacion/${id}/json/`);
+          if(!res.ok) throw new Error('No se pudo obtener detalles');
+          const data = await res.json();
+          panelHorario.innerHTML = '<strong>Horario:</strong> ' + (data.horario || '—');
+          panelProfesor.innerHTML = '<strong>Profesor:</strong> ' + (data.profesor || '—');
+          panelAula.innerHTML = '<strong>Aula:</strong> ' + (data.aula || '—');
+          const cupoText = (data.ocupados != null && data.cupo_maximo != null) ? `${data.ocupados} / ${data.cupo_maximo}` : '—';
+          panelCupo.innerHTML = '<strong>Cupos:</strong> ' + cupoText;
+        }catch(e){
+          panelHorario.innerHTML = '<strong>Horario:</strong> —';
+          panelProfesor.innerHTML = '<strong>Profesor:</strong> —';
+          panelAula.innerHTML = '<strong>Aula:</strong> —';
+          panelCupo.innerHTML = '<strong>Cupos:</strong> —';
+        }
+      }
+
+      async function loadAsignacionesPorGrado(grado){
+        if(!select) return;
+        // limpiar opciones actuales
+        select.innerHTML = '<option value="">-- Seleccione una asignación --</option>';
+        if(!grado) return;
+        try{
+          const res = await fetch(`/docentes/asignaciones/json/?grado=${encodeURIComponent(grado)}`);
+          if(!res.ok) throw new Error('No se pudo obtener asignaciones');
+          const data = await res.json();
+          data.forEach(item => {
+            const opt = document.createElement('option');
+            opt.value = item.id;
+            opt.textContent = `${item.curso} — ${item.profesor}`;
+            select.appendChild(opt);
+          });
+        }catch(e){
+          // no hacer nada
+        }
+      }
+
+      select.addEventListener('change', function(e){
+        const id = this.value;
+        if(!id){
+          panelHorario.innerHTML = '<strong>Horario:</strong> —';
+          panelProfesor.innerHTML = '<strong>Profesor:</strong> —';
+          panelAula.innerHTML = '<strong>Aula:</strong> —';
+          panelCupo.innerHTML = '<strong>Cupos:</strong> —';
+          return;
+        }
+        fetchDetalles(id);
+        // opcionalmente rellenar campo oculto 'plan' si tu flujo lo necesita
+      });
+
+      // reaccionar al cambio de grado para cargar asignaciones
+      if(gradoSelect){
+        gradoSelect.addEventListener('change', function(){
+          loadAsignacionesPorGrado(this.value);
+          // limpiar panel
+          panelHorario.innerHTML = '<strong>Horario:</strong> —';
+          panelProfesor.innerHTML = '<strong>Profesor:</strong> —';
+          panelAula.innerHTML = '<strong>Aula:</strong> —';
+          panelCupo.innerHTML = '<strong>Cupos:</strong> —';
+        });
+        // cargar asignaciones iniciales para grado por defecto
+        if(gradoSelect.value) loadAsignacionesPorGrado(gradoSelect.value);
+      }
+
+      // Si hay una seleccion por defecto de asignación, cargar sus detalles
+      if(select.value) fetchDetalles(select.value);
+    })();
+  </script>
 </body>
 </html>

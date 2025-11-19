@@ -1,31 +1,67 @@
 # estudiantes/views.py
+# estudiantes/views.py
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import JsonResponse
+from django.db.models import Count
+
+from apoderados.models import Apoderado
 from planes.models import Plan
+from docentes.models import Asignacion
 from .models import Estudiante, Inscripcion, Matricula
 
-def registrar_estudiante(request):
-    if request.method == 'POST':
-        # Datos del formulario
-        grado     = (request.POST.get('grado') or '').strip()
-        nombres   = (request.POST.get('nombres') or '').strip()
-        apellidos = (request.POST.get('apellidos') or '').strip()
-        colegio   = (request.POST.get('colegio') or '').strip()
-        edad      = request.POST.get('edad')
-        plan_id   = request.POST.get('plan')  # lo rellena el JS
 
-        # Validación simple
-        if not (grado and nombres and apellidos and colegio and edad and plan_id):
-            ctx = {
+def registrar_estudiante(request):
+    if request.method == 'GET':
+        apoderados = Apoderado.objects.all()
+        planes = Plan.objects.all()
+        asignaciones = (
+            Asignacion.objects
+            .select_related('curso', 'profesor', 'aula', 'horario')
+            .annotate(num_matriculas=Count('matriculas'))
+            .all()
+        )
+        grados = Estudiante.GRADOS
+        return render(request, 'estudiantes/registrar.html', {
+            'apoderados': apoderados,
+            'planes': planes,
+            'grados': grados,
+            'asignaciones': asignaciones,
+        })
+
+    if request.method == 'POST':
+        grado = (request.POST.get('grado') or '').strip()
+        nombres = (request.POST.get('nombres') or '').strip()
+        apellidos = (request.POST.get('apellidos') or '').strip()
+        colegio = (request.POST.get('colegio') or '').strip()
+        edad = request.POST.get('edad')
+        plan_id = request.POST.get('plan')
+        asignacion_id = request.POST.get('asignacion')
+
+        # Validación básica (plan puede deducirse desde asignacion)
+        if not (grado and nombres and apellidos and colegio and edad):
+            return render(request, 'estudiantes/registrar.html', {
                 'grados': Estudiante.GRADOS,
-                'grado': grado,
-                'form_error': 'Completa todos los campos y selecciona un plan.',
-            }
-            return render(request, 'estudiantes/registrar.html', ctx)
+                'form_error': 'Completa todos los campos.'
+            })
 
         try:
-            plan = Plan.objects.get(pk=plan_id, activo=True)
+            plan = None
+            if plan_id:
+                plan = Plan.objects.filter(pk=plan_id).first()
+            if not plan and asignacion_id:
+                try:
+                    asig_tmp = Asignacion.objects.select_related('curso').get(pk=asignacion_id)
+                    curso = asig_tmp.curso
+                    # buscar plan que coincida con nivel y area
+                    plan = Plan.objects.filter(nivel=curso.nivel, area=curso.plan).first()
+                    if not plan:
+                        plan = Plan.objects.filter(nivel=curso.nivel).first()
+                except Asignacion.DoesNotExist:
+                    plan = None
+            # si aún no hay plan, usar el plan por defecto
+            if not plan:
+                plan = Plan.objects.first()
 
             estudiante = Estudiante.objects.create(
                 nombres=nombres,
@@ -33,39 +69,37 @@ def registrar_estudiante(request):
                 grado=grado,
                 colegio=colegio,
                 edad=int(edad),
-                apoderado=None
+                apoderado=None,
             )
 
             inscripcion = Inscripcion.objects.create(
                 estudiante=estudiante,
                 plan=plan,
-                estado='pendiente',
-                estado_pago='pendiente',
-                verificada=False
             )
+
+            matricula = Matricula.objects.create(
+                inscripcion=inscripcion,
+                estudiante=estudiante,
+            )
+
+            # store the selected asignacion on the inscripcion as provisional
+            if asignacion_id:
+                try:
+                    asignacion = Asignacion.objects.get(pk=asignacion_id)
+                    inscripcion.asignacion = asignacion
+                    inscripcion.save(update_fields=['asignacion'])
+                except Asignacion.DoesNotExist:
+                    pass
 
             return redirect(f"{reverse('registrar_apoderado')}?inscripcion_id={inscripcion.id}")
 
-        except Plan.DoesNotExist:
-            ctx = {
-                'grados': Estudiante.GRADOS,
-                'grado': grado,
-                'form_error': 'El plan seleccionado no existe o no está activo.',
-            }
-            return render(request, 'estudiantes/registrar.html', ctx)
         except Exception as e:
-            ctx = {
+            return render(request, 'estudiantes/registrar.html', {
                 'grados': Estudiante.GRADOS,
-                'grado': grado,
-                'form_error': f'Error al registrar: {e}',
-            }
-            return render(request, 'estudiantes/registrar.html', ctx)
+                'form_error': f'Error al registrar: {e}'
+            })
 
-    return render(
-        request,
-        'estudiantes/registrar.html',
-        {'grados': Estudiante.GRADOS, 'grado': request.GET.get('grado', '')}
-    )
+
 def listado_matriculas(request):
     """Listado simple de matrículas con sus asignaciones."""
     matriculas = (
@@ -79,5 +113,6 @@ def listado_matriculas(request):
         'matriculas': matriculas,
     }
     return render(request, 'estudiantes/listado_matriculas.html', contexto)
+
 
 

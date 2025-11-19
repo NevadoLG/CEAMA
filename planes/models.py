@@ -14,18 +14,12 @@ class Plan(models.Model):
     nombre = models.CharField(max_length=120)  # Ej: "Primaria - Matemática"
     nivel = models.CharField(max_length=15, choices=NIVELES)
     area = models.CharField(max_length=15, choices=AREAS)
-    cupo_maximo = models.PositiveIntegerField(default=30)
     activo = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.nombre} ({self.get_nivel_display()} - {self.get_area_display()})"
 
-    # 🔹 Funciones de ayuda (no afectan migraciones)
-    def cupos_ocupados(self):
-        return self.inscripcion_set.count()
-
-    def cupos_disponibles(self):
-        return max(self.cupo_maximo - self.cupos_ocupados(), 0)
+    # Nota: la capacidad se gestiona por `Asignacion` (grupos), no por `Plan`.
     
     def cursos_base(self):
         from docentes.models import Curso

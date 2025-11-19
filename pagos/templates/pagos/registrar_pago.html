@@ -57,7 +57,7 @@
           </div>
         {% endif %}
 
-        <form id="form-pago"
+          <form id="form-pago"
               action="{% url 'registrar_pago' %}"
               method="post"
               enctype="multipart/form-data">
@@ -132,6 +132,25 @@
               </div>
             </div>
           </fieldset>
+
+          <h2 class="section-title" style="margin-top:18px;">Detalles de la(s) asignación(es)</h2>
+          <div class="form-grid" style="margin-bottom:10px;">
+            <div class="form-group" style="grid-column: 1 / -1;">
+              {% if asignaciones %}
+                {% for a in asignaciones %}
+                  <div style="margin-bottom:12px;padding:12px;border:1px solid #eee;border-radius:8px;background:#fafafa;">
+                    <strong>Curso:</strong> {{ a.curso }}<br>
+                    <strong>Profesor:</strong> {{ a.profesor }}<br>
+                    <strong>Horario:</strong> {{ a.horario }}<br>
+                    <strong>Aula:</strong> {{ a.aula }}<br>
+                    <strong>Cupos:</strong> {{ a.matriculas.count }} / {{ a.cupo_maximo }}
+                  </div>
+                {% endfor %}
+              {% else %}
+                <input type="text" value="—" readonly>
+              {% endif %}
+            </div>
+          </div>
 
           <div class="form-actions">
             {% if not pagado %}

@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.conf import settings
 
-from estudiantes.models import Inscripcion, Estudiante
+from estudiantes.models import Inscripcion, Estudiante, Matricula
 from .forms import (
     PagoForm,
     LookupCodeForm,
@@ -168,6 +168,21 @@ def registrar_pago(request):
     pagos_previos = inscripcion.pago_set.select_related().order_by("-id")
     last_pago = pagos_previos.first()
 
+    # Obtener matrícula y asignaciones relacionadas (si existen)
+    matricula = (
+        Matricula.objects
+        .filter(inscripcion=inscripcion)
+        .prefetch_related(
+            'asignaciones__curso',
+            'asignaciones__profesor',
+            'asignaciones__aula',
+            'asignaciones__horario',
+            'asignaciones__horario__dias',
+        )
+        .first()
+    )
+    asignaciones = list(matricula.asignaciones.all()) if matricula else []
+
     if request.method == "GET":
         pagado = request.GET.get("ok") == "1"
         return render(
@@ -175,6 +190,8 @@ def registrar_pago(request):
             "pagos/registrar_pago.html",
             {
                 "inscripcion": inscripcion,
+                "matricula": matricula,
+                "asignaciones": asignaciones,
                 "pago_form": PagoForm(),
                 "pagado": pagado,
                 "last_pago": last_pago,
@@ -203,6 +220,8 @@ def registrar_pago(request):
         "pagos/registrar_pago.html",
         {
             "inscripcion": inscripcion,
+            "matricula": matricula,
+            "asignaciones": asignaciones,
             "pago_form": pago_form,
             "pagado": False,
             "last_pago": last_pago,
