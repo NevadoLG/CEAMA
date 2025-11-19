@@ -7,6 +7,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('estudiantes/', include('estudiantes.urls')),
     path('apoderados/', include('apoderados.urls')),
+    path('docentes/', include('docentes.urls')),
     path('pagos/', include('pagos.urls')),
     path('planes/', include('planes.urls')),
     path('', include('landing.urls', namespace='landing_index')),

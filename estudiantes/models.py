@@ -56,6 +56,8 @@ class Estudiante(models.Model):
 class Inscripcion(models.Model):
     estudiante = models.ForeignKey('estudiantes.Estudiante', on_delete=models.CASCADE)
     curso = models.ForeignKey('docentes.Curso', on_delete=models.PROTECT, null=True, blank=True)
+    # Asignación seleccionada (la clase / grupo al que se quiere inscribir)
+    asignacion = models.ForeignKey('docentes.Asignacion', on_delete=models.SET_NULL, null=True, blank=True, related_name='inscripciones')
     fecha = models.DateTimeField(auto_now_add=True)
 
     estado = models.CharField(
@@ -80,6 +82,8 @@ class Inscripcion(models.Model):
 
     plan = models.ForeignKey('planes.Plan', on_delete=models.CASCADE, default=1)
     verificada = models.BooleanField(default=False)
+    # Indica si la inscripción es provisional (pendiente de aprobación de pago).
+    provisional = models.BooleanField(default=True, db_index=True)
 
     # Ya no se genera automáticamente; se rellenará al aprobar el pago en el admin
     access_code = models.CharField(
@@ -92,18 +96,11 @@ class Inscripcion(models.Model):
 
     def save(self, *args, **kwargs):
         """
-        Mantén el control de cupos. NO crear access_code aquí.
+        Guardamos la inscripción sin forzar control de cupos aquí. La lógica de
+        reserva y verificación de cupos se realiza en el flujo de pago para que
+        la inscripción pueda permanecer provisional hasta la aprobación.
         """
-        from planes.models import Plan
-        with transaction.atomic():
-            plan = Plan.objects.select_for_update().get(pk=self.plan_id)
-            ocupados = plan.inscripcion_set.exclude(pk=self.pk).count()
-            if ocupados >= plan.cupo_maximo:
-                raise ValidationError(
-                    f"No hay cupos disponibles para el plan: "
-                    f"{plan.get_nivel_display()} - {plan.get_area_display()}."
-                )
-            super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.estudiante.apellidos}, {self.estudiante.nombres}"
@@ -144,11 +141,12 @@ class Matricula(models.Model):
         for curso in cursos:
             if curso.id in cursos_ya_asignados:
                 continue
+            # elegir una asignacion del curso con cupos disponibles
             asignacion = (
                 Asignacion.objects
                 .filter(curso=curso)
                 .annotate(num_matriculas=Count('matriculas'))
-                .filter(num_matriculas__lt=curso.cupo_maximo)
+                .filter(num_matriculas__lt=models.F('cupo_maximo'))
                 .order_by('num_matriculas', 'id')
                 .first()
             )

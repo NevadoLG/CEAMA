@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models import Curso, Profesor, Aula, Horario, Asignacion
+from .models import Curso, Profesor, Aula, Horario, Asignacion, Dia
 from django.db.models import Count
 
 @admin.register(Curso)
 class CursoAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'nivel', 'plan', 'cupo_maximo','total_matriculados', 'capacidad_total')
+    list_display = ('nombre', 'nivel', 'plan', 'total_matriculados', 'capacidad_total')
     list_filter = ('nivel', 'plan')
     search_fields = ('nombre',)
     def get_queryset(self, request):
@@ -16,8 +16,8 @@ class CursoAdmin(admin.ModelAdmin):
     total_matriculados.short_description = "Matriculados"
 
     def capacidad_total(self, obj):
-        num_grupos = obj.asignacion_set.count()
-        return obj.cupo_maximo * num_grupos
+        # suma las capacidades definidas en las asignaciones del curso
+        return sum(a.cupo_maximo for a in obj.asignacion_set.all())
     capacidad_total.short_description = "Capacidad total"
 @admin.register(Profesor)
 class ProfesorAdmin(admin.ModelAdmin):
@@ -32,8 +32,13 @@ class AulaAdmin(admin.ModelAdmin):
 
 @admin.register(Horario)
 class HorarioAdmin(admin.ModelAdmin):
-    list_display = ('dia','hora_inicio','hora_fin')
-    list_filter = ('dia',)
+    list_display = ('dias_summary','hora_inicio','hora_fin')
+    list_filter = ('dias',)
+    def dias_summary(self, obj):
+        return ", ".join([d.get_codigo_display() for d in obj.dias.all()])
+    dias_summary.short_description = "Días"
+    # Mostrar selector M2M amigable
+    filter_horizontal = ('dias',)
 
 @admin.register(Asignacion)
 class AsignacionAdmin(admin.ModelAdmin):
@@ -44,8 +49,14 @@ class AsignacionAdmin(admin.ModelAdmin):
         qs = super().get_queryset(request)
         return qs.annotate(num_matriculas=Count('matriculas'))
     def cupos(self, obj):
-        maximo = obj.curso.cupo_maximo
+        maximo = getattr(obj, 'cupo_maximo', None)
         usados = getattr(obj, 'num_matriculas', 0)
-        return f"{usados}/{maximo}"
+        return f"{usados}/{maximo if maximo is not None else '—'}"
 
     cupos.short_description = "Cupos usados"
+
+
+@admin.register(Dia)
+class DiaAdmin(admin.ModelAdmin):
+    list_display = ('codigo',)
+    search_fields = ('codigo',)
