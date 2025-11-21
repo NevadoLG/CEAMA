@@ -50,27 +50,28 @@
           <div class="form-grid">
             <div class="form-group">
               <label>DNI:</label>
-              <input type="text" name="dni" maxlength="8" required>
+              <input id="dni-field" type="text" name="dni" maxlength="8" pattern="\d{8}" inputmode="numeric" title="Ingrese 8 dígitos numéricos" required oninput="this.value = this.value.replace(/\D/g,'')">
             </div>
             <div class="form-group">
               <label>Nombres:</label>
-              <input type="text" name="nombres" required>
+              <input type="text" name="nombres" maxlength="30" required>
             </div>
             <div class="form-group">
               <label>Apellidos:</label>
-              <input type="text" name="apellidos" required>
+              <input type="text" name="apellidos" maxlength="30" required>
             </div>
             <div class="form-group">
               <label>Teléfono:</label>
-              <input type="text" name="telefono" maxlength="15" required>
+              <input id="telefono-field" type="text" name="telefono" maxlength="9" pattern="\d{9}" inputmode="numeric" title="Ingrese 9 dígitos numéricos (sin el código de país)" required oninput="this.value = this.value.replace(/\D/g,'')">
+              <div style="font-size:0.85em; color:#666; margin-top:4px;">Prefijo internacional: <strong>+51</strong> (no incluir en el campo)</div>
             </div>
             <div class="form-group">
               <label>Correo:</label>
-              <input type="email" name="correo">
+              <input type="email" name="correo" maxlength="50">
             </div>
             <div class="form-group">
               <label>Dirección:</label>
-              <input type="text" name="direccion">
+              <input type="text" name="direccion" maxlength="50">
             </div>
           </div>
 

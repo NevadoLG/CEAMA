@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.contrib import messages
 from .models import Apoderado
 from estudiantes.models import Estudiante, Inscripcion
+from django.utils import timezone
 
 
 def _resolver_inscripcion(request):
@@ -50,6 +51,60 @@ def registrar_apoderado(request):
             "direccion": (request.POST.get("direccion") or "").strip(),
         }
 
+        # Prebuild redirect URL (preserve inscripcion_id if present)
+        redirect_url = reverse("registrar_apoderado") + (
+            f"?inscripcion_id={inscripcion.id}" if inscripcion else ""
+        )
+
+        # Server-side validations requested:
+        # - DNI: exactly 8 numeric digits
+        # - Nombres / Apellidos: max 30 chars
+        # - Telefono: exactly 9 numeric digits
+        # - Correo: max 50 chars (if provided)
+        # - Direccion: max 50 chars (if provided)
+        if not dni:
+            messages.error(request, "El DNI es obligatorio.")
+            return redirect(redirect_url)
+
+        if not dni.isdigit() or len(dni) != 8:
+            messages.error(request, "El DNI debe tener exactamente 8 dígitos numéricos.")
+            return redirect(redirect_url)
+
+        # Rechazar espacios en cualquier posición del DNI
+        if any(c.isspace() for c in dni):
+            messages.error(request, "El DNI no puede contener espacios en blanco.")
+            return redirect(redirect_url)
+
+        if len(data["nombres"]) > 30:
+            messages.error(request, "Los nombres no pueden exceder 30 caracteres.")
+            return redirect(redirect_url)
+
+        if len(data["apellidos"]) > 30:
+            messages.error(request, "Los apellidos no pueden exceder 30 caracteres.")
+            return redirect(redirect_url)
+
+        telefono = data["telefono"]
+        if not telefono:
+            messages.error(request, "El teléfono es obligatorio.")
+            return redirect(redirect_url)
+
+        # Rechazar espacios en el teléfono y asegurar solo dígitos
+        if any(c.isspace() for c in telefono):
+            messages.error(request, "El teléfono no puede contener espacios en blanco.")
+            return redirect(redirect_url)
+
+        if not telefono.isdigit() or len(telefono) != 9:
+            messages.error(request, "El teléfono debe contener exactamente 9 dígitos numéricos (sin código de país).")
+            return redirect(redirect_url)
+
+        if data["correo"] and len(data["correo"]) > 50:
+            messages.error(request, "El correo no puede exceder 50 caracteres.")
+            return redirect(redirect_url)
+
+        if data["direccion"] and len(data["direccion"]) > 50:
+            messages.error(request, "La dirección no puede exceder 50 caracteres.")
+            return redirect(redirect_url)
+
         # Validaciones básicas
         if not dni:
             messages.error(request, "El DNI es obligatorio.")
@@ -58,62 +113,32 @@ def registrar_apoderado(request):
                 f"?inscripcion_id={inscripcion.id}" if inscripcion else ""
             ))
 
-        telefono = data["telefono"]
-
-        # ¿Existe alguien con ese DNI?
+        # Check for existing conflicts (telefono) to avoid obvious collisions
         apod_por_dni = Apoderado.objects.filter(dni=dni).first()
-
-        # ¿Existe alguien con ese teléfono? (excluye al del DNI si es la misma persona)
         tel_qs = Apoderado.objects.filter(telefono=telefono)
         if apod_por_dni:
             tel_qs = tel_qs.exclude(id=apod_por_dni.id)
         apod_por_tel = tel_qs.first()
-
         if apod_por_tel:
             messages.error(request, "El teléfono ya ha sido registrado previamente.")
-            return redirect(reverse("registrar_apoderado") + (
-                f"?inscripcion_id={inscripcion.id}" if inscripcion else ""
-            ))
+            return redirect(redirect_url)
 
-        # Si el DNI ya existe, actualizamos sus datos (sin romper la unicidad de tel)
-        if apod_por_dni:
-            apod_por_dni.nombres   = data["nombres"]
-            apod_por_dni.apellidos = data["apellidos"]
-            apod_por_dni.telefono  = data["telefono"]
-            apod_por_dni.correo    = data["correo"]
-            apod_por_dni.direccion = data["direccion"]
-            apod_por_dni.save(update_fields=["nombres", "apellidos", "telefono", "correo", "direccion"])
-            apoderado = apod_por_dni
-            created = False
-        else:
-            # Crear nuevo apoderado (DNI y Tel únicos)
-            apoderado = Apoderado.objects.create(dni=dni, **data)
-            created = True
+        # Save apoderado data in session (do NOT persist to DB yet). The actual
+        # Apoderado / Estudiante / Inscripcion / Pago objects will be created
+        # when the user submits the payment (Registrar pago).
+        request.session['ceama_apoderado'] = {
+            'dni': dni,
+            'nombres': data['nombres'],
+            'apellidos': data['apellidos'],
+            'telefono': data['telefono'],
+            'correo': data['correo'],
+            'direccion': data['direccion'],
+            'created_at': timezone.now().timestamp(),
+        }
+        request.session.modified = True
 
-        # Vincular a la inscripción si la tenemos
-        estudiante = inscripcion.estudiante if inscripcion else None
-        if estudiante:
-            if getattr(estudiante, "apoderado_id", None) != apoderado.id:
-                estudiante.apoderado = apoderado
-                estudiante.save(update_fields=["apoderado"])
-
-            messages.success(
-                request,
-                ("Apoderado creado. " if created else "Apoderado reutilizado/actualizado. ") +
-                "Continúa con el pago."
-            )
-            # Redirigir al paso de pago (conservando la inscripción)
-            url_pago = reverse("registrar_pago")
-            if inscripcion:
-                url_pago = f"{url_pago}?inscripcion_id={inscripcion.id}"
-            return redirect(url_pago)
-
-        messages.warning(
-            request,
-            "Apoderado registrado, pero no se pudo ubicar la inscripción del estudiante."
-        )
-        # PRG para limpiar
-        return redirect(reverse("registrar_apoderado"))
+        messages.success(request, 'Datos del apoderado guardados temporalmente. Continúa con el pago.')
+        return redirect(reverse('registrar_pago'))
 
     # GET
     apoderados = Apoderado.objects.all().order_by("-id")

@@ -41,6 +41,10 @@
 
         <h2 class="section-title">Datos del Alumno</h2>
 
+        {% if form_error %}
+          <div class="alert error" style="margin-bottom:16px;padding:12px;border-radius:6px;background:#ffe6e6;color:#900;">{{ form_error }}</div>
+        {% endif %}
+
         <form method="post" action="">
           {% csrf_token %}
           <div class="form-layout">
@@ -50,6 +54,7 @@
             <div class="form-group">
               <label>Grado:</label>
               <select name="grado" id="grado" required>
+                <option value="" disabled {% if not grado %}selected{% endif %}>-- Seleccione grado --</option>
                 {% for valor, nombre in grados %}
                   <option value="{{ valor }}" {% if valor == grado %}selected{% endif %}>{{ nombre }}</option>
                 {% endfor %}
@@ -58,23 +63,22 @@
 
             <div class="form-group">
               <label>Nombres:</label>
-              <input type="text" name="nombres" required>
+              <input type="text" name="nombres" maxlength="30" required value="{{ nombres|default_if_none:'' }}">
             </div>
 
             <div class="form-group">
               <label>Apellidos:</label>
-              <input type="text" name="apellidos" required>
+              <input type="text" name="apellidos" maxlength="30" required value="{{ apellidos|default_if_none:'' }}">
             </div>
 
             <div class="form-group">
               <label>Colegio:</label>
-              <input type="text" name="colegio" required>
+              <input type="text" name="colegio" maxlength="30" required value="{{ colegio|default_if_none:'' }}">
             </div>
 
             <div class="form-group">
               <label>Edad:</label>
-              <input type="number" name="edad" min="5" max="20" required
-                     onfocus="if(!this.value)this.value=5;" onkeydown="return false;">
+              <input type="number" name="edad" min="5" max="20" required value="{{ edad|default_if_none:'' }}" maxlength="2" inputmode="numeric" oninput="if(this.value.length>2) this.value=this.value.slice(0,2);">
             </div>
 
             <div class="form-group">
