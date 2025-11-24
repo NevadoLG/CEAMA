@@ -86,7 +86,7 @@
               <select name="asignacion" id="asignacion" required>
                 <option value="">-- Seleccione una asignación --</option>
                 {% for a in asignaciones %}
-                  <option value="{{ a.id }}">{{ a.curso }} — {{ a.profesor }}</option>
+                  <option value="{{ a.id }}">{{ a.plan }} — {{ a.profesor }}</option>
                 {% endfor %}
               </select>
             </div>
@@ -103,6 +103,7 @@
             <aside class="form-sidebar">
               <div id="asignacion-panel" class="asignacion-panel">
                 <h3>Detalles de la asignación</h3>
+                <p id="asignacion-plan"><strong>Plan:</strong> —</p>
                 <p id="asignacion-horario"><strong>Horario:</strong> —</p>
                 <p id="asignacion-profesor"><strong>Profesor:</strong> —</p>
                 <p id="asignacion-aula"><strong>Aula:</strong> —</p>
@@ -134,6 +135,10 @@
           const res = await fetch(`/docentes/asignacion/${id}/json/`);
           if(!res.ok) throw new Error('No se pudo obtener detalles');
           const data = await res.json();
+          // rellenar plan
+          const planVal = data.plan || '—';
+          const panelPlan = document.getElementById('asignacion-plan');
+          if(panelPlan) panelPlan.innerHTML = '<strong>Plan:</strong> ' + planVal;
           panelHorario.innerHTML = '<strong>Horario:</strong> ' + (data.horario || '—');
           panelProfesor.innerHTML = '<strong>Profesor:</strong> ' + (data.profesor || '—');
           panelAula.innerHTML = '<strong>Aula:</strong> ' + (data.aula || '—');
@@ -159,7 +164,7 @@
           data.forEach(item => {
             const opt = document.createElement('option');
             opt.value = item.id;
-            opt.textContent = `${item.curso} — ${item.profesor}`;
+            opt.textContent = `${item.plan || ''} — ${item.profesor}`;
             select.appendChild(opt);
           });
         }catch(e){

@@ -67,7 +67,7 @@ def registrar_estudiante(request):
                 asignaciones = (
                     Asignacion.objects
                     .filter(grado=grado)
-                    .select_related('curso', 'profesor', 'aula', 'horario')
+                    .select_related('plan', 'profesor', 'aula', 'horario')
                     .annotate(num_matriculas=Count('matriculas'))
                 )
             else:
