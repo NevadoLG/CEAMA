@@ -8,6 +8,7 @@ from estudiantes.models import Inscripcion, Estudiante, Matricula
 from apoderados.models import Apoderado
 from planes.models import Plan
 from docentes.models import Asignacion
+from types import SimpleNamespace
 from django.db import transaction
 from django.db.models import F
 from .forms import (
@@ -196,23 +197,29 @@ def registrar_pago(request):
             messages.error(request, 'Los datos temporales expiraron (más de 24 horas). Por favor reingresa el formulario.')
             return redirect(reverse('registrar_estudiante'))
 
-    pagos_previos = inscripcion.pago_set.select_related().order_by("-id")
-    last_pago = pagos_previos.first()
+    if inscripcion:
+        pagos_previos = inscripcion.pago_set.select_related().order_by("-id")
+        last_pago = pagos_previos.first()
 
-    # Obtener matrícula y asignaciones relacionadas (si existen)
-    matricula = (
-        Matricula.objects
-        .filter(inscripcion=inscripcion)
-        .prefetch_related(
-            'asignaciones__curso',
-            'asignaciones__profesor',
-            'asignaciones__aula',
-            'asignaciones__horario',
-            'asignaciones__horario__dias',
+        # Obtener matrícula y asignaciones relacionadas (si existen)
+        matricula = (
+            Matricula.objects
+            .filter(inscripcion=inscripcion)
+            .prefetch_related(
+                'asignaciones__plan',
+                'asignaciones__profesor',
+                'asignaciones__aula',
+                'asignaciones__horario',
+                'asignaciones__horario__dias',
+            )
+            .first()
         )
-        .first()
-    )
-    asignaciones = list(matricula.asignaciones.all()) if matricula else []
+        asignaciones = list(matricula.asignaciones.all()) if matricula else []
+    else:
+        pagos_previos = []
+        last_pago = None
+        matricula = None
+        asignaciones = []
 
     if request.method == "GET":
         pagado = request.GET.get("ok") == "1"
@@ -225,14 +232,47 @@ def registrar_pago(request):
                 'apoderado': ses_apod,
             }
             # fetch asignacion details for display if provided
+            asignacion_obj = None
             if ses_ins.get('asignacion_id'):
                 try:
                     asignacion_obj = Asignacion.objects.select_related(
-                        'curso', 'profesor', 'aula', 'horario'
+                        'plan', 'profesor', 'aula', 'horario'
                     ).prefetch_related('horario__dias').get(pk=ses_ins['asignacion_id'])
                     session_preview['asignacion_obj'] = asignacion_obj
                 except Asignacion.DoesNotExist:
                     session_preview['asignacion_obj'] = None
+
+            # Build lightweight preview objects so the template can render similarly
+            # to a persisted Inscripcion + Matricula.
+            if session_preview:
+                # dummy pago_set with all() -> empty list
+                class _DummyPagoSet:
+                    def all(self_inner):
+                        return []
+
+                estudiante_ns = SimpleNamespace(
+                    apellidos=ses_ins.get('apellidos', ''),
+                    nombres=ses_ins.get('nombres', ''),
+                )
+                # plan: prefer asignacion.plan if available, else try plan_id from session
+                plan_obj = None
+                if asignacion_obj and getattr(asignacion_obj, 'plan', None):
+                    plan_obj = asignacion_obj.plan
+                else:
+                    plan_id = ses_ins.get('plan_id')
+                    if plan_id:
+                        plan_obj = Plan.objects.filter(pk=plan_id).first()
+
+                ins_preview = SimpleNamespace(
+                    estudiante=estudiante_ns,
+                    plan=plan_obj,
+                    estado_pago=ses_ins.get('estado_pago', 'pendiente'),
+                    pago_set=_DummyPagoSet(),
+                )
+
+                # expose these into the locals used by the template
+                inscripcion = ins_preview
+                asignaciones = [asignacion_obj] if asignacion_obj else []
 
         return render(
             request,
@@ -304,11 +344,8 @@ def registrar_pago(request):
                             plan = Plan.objects.filter(pk=plan_id).first()
                         if not plan and asignacion_id:
                             try:
-                                asig_tmp = Asignacion.objects.select_related('curso').get(pk=asignacion_id)
-                                curso = asig_tmp.curso
-                                plan = Plan.objects.filter(nivel=curso.nivel, area=curso.plan).first()
-                                if not plan:
-                                    plan = Plan.objects.filter(nivel=curso.nivel).first()
+                                asig_tmp = Asignacion.objects.select_related('plan').get(pk=asignacion_id)
+                                plan = getattr(asig_tmp, 'plan', None)
                             except Asignacion.DoesNotExist:
                                 plan = None
                         if not plan:

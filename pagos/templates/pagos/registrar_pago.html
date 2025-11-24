@@ -139,11 +139,14 @@
               {% if asignaciones %}
                 {% for a in asignaciones %}
                   <div style="margin-bottom:12px;padding:12px;border:1px solid #eee;border-radius:8px;background:#fafafa;">
-                    <strong>Curso:</strong> {{ a.curso }}<br>
+                    <strong>Plan:</strong> {{ a.plan }}<br>
                     <strong>Profesor:</strong> {{ a.profesor }}<br>
                     <strong>Horario:</strong> {{ a.horario }}<br>
                     <strong>Aula:</strong> {{ a.aula }}<br>
                     <strong>Cupos:</strong> {{ a.matriculas.count }} / {{ a.cupo_maximo }}
+                    {% if a.matriculas.count >= a.cupo_maximo %}
+                      <div style="color:#b00; font-weight:600; margin-top:6px;">Estado: Lleno</div>
+                    {% endif %}
                   </div>
                 {% endfor %}
               {% else %}
