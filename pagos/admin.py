@@ -130,6 +130,8 @@ class PagoAdmin(admin.ModelAdmin):
     def _sync_inscripcion(self, pago):
         ins = pago.inscripcion
 
+        if not getattr(ins, "pk", None):
+            return
         if pago.estado == "completado":
             ins.estado_pago = "total"
         elif pago.estado == "parcial":
@@ -147,12 +149,12 @@ class PagoAdmin(admin.ModelAdmin):
         )
 
         estudiante = getattr(ins, "estudiante", None)
-        if estudiante is None:
+        if not estudiante or not estudiante.pk:
             return
 
         matricula, created = Matricula.objects.get_or_create(
             inscripcion=ins,
-            estudiante=estudiante,
+            estudiante_id=estudiante.pk,
             defaults={
                 "estado": "activo" if ins.estado_pago in ["total", "parcial"] else "inactivo",
                 "monto_referencial": total_pagado,
