@@ -1,5 +1,3 @@
-# estudiantes/views.py
-# estudiantes/views.py
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import JsonResponse
@@ -16,8 +14,6 @@ def registrar_estudiante(request):
     if request.method == 'GET':
         apoderados = Apoderado.objects.all()
         planes = Plan.objects.all()
-        # No enviar todas las asignaciones en el GET inicial. Las asignaciones
-        # se cargarán por grado vía AJAX cuando el usuario seleccione el grado.
         asignaciones = []
         grados = Estudiante.GRADOS
         return render(request, 'estudiantes/registrar.html', {
@@ -36,8 +32,6 @@ def registrar_estudiante(request):
         plan_id = request.POST.get('plan')
         asignacion_id = request.POST.get('asignacion')
 
-        # Validación básica (plan puede deducirse desde asignacion)
-        # Validaciones de campo: longitud y valores
         form_error = None
         if not grado:
             form_error = 'Selecciona un grado.'
@@ -47,7 +41,6 @@ def registrar_estudiante(request):
             form_error = 'Nombres, apellidos y colegio deben tener como máximo 30 caracteres.'
         else:
             try:
-                # En el cliente limitamos a 2 dígitos; validar también server-side
                 if len(str(edad)) > 2:
                     form_error = 'La edad no puede tener más de 2 dígitos.'
                 else:
@@ -58,11 +51,8 @@ def registrar_estudiante(request):
                 form_error = 'La edad debe ser un número válido.'
 
         if form_error:
-            # Re-renderizar con los valores y mensaje de error
             apoderados = Apoderado.objects.all()
             planes = Plan.objects.all()
-            # Si hay grado seleccionado, cargar asignaciones de ese grado;
-            # si no, no mostrar asignaciones (evita mostrar todas las asignaciones).
             if grado:
                 asignaciones = (
                     Asignacion.objects
@@ -85,9 +75,6 @@ def registrar_estudiante(request):
                 'grado': grado,
             })
 
-        # Instead of creating DB objects now, persist the form data in session
-        # and redirect to the apoderado step. The actual DB creation will happen
-        # when the user submits the payment (Registrar pago).
         ins_data = {
             'grado': grado,
             'nombres': nombres,

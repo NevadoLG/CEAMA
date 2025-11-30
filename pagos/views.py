@@ -57,7 +57,7 @@ def reenviar_codigo(request):
 
         ins = (
             Inscripcion.objects
-            .filter(estudiante__apoderado__email__iexact=email)
+            .filter(estudiante__apoderado__correo__iexact=email)
             .order_by("-id")
             .first()
         )
