@@ -5,14 +5,11 @@
 
 {% block content %}
 
-<section
-    id="inicio"
-    class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 md:pt-20"
->
+<section id="inicio" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 md:pt-20">
     <div class="absolute inset-0 z-0">
         <img
-            src="{% static 'landing/img/lovable/hero-bg.jpg' %}"
-            alt="CEAMA Academia"
+            src="{% static 'landing/img/lovable/classroom-bg.png' %}"
+            alt="CEAMA Academia Classroom"
             class="w-full h-full object-cover"
         />
         <div class="absolute inset-0 bg-gradient-to-t from-primary/90 to-primary/70"></div>
@@ -20,7 +17,7 @@
 
     <div class="container mx-auto px-4 z-10 text-center py-16 md:py-20">
         <div class="max-w-4xl mx-auto space-y-6">
-            <h1 class="text-5xl md:text-7xl font-bold text-primary-foreground drop-shadow-lg leading-tight">
+            <h1 class="text-5xl md:text-7xl font-bold text-primary-foreground drop-shadow-lg leading-tight animate-fade-in">
                 Bienvenido a CEAMA
             </h1>
             <p class="text-xl md:text-2xl text-primary-foreground/90 max-w-2xl mx-auto drop-shadow-md">
@@ -37,9 +34,7 @@
                     class="text-lg bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold rounded-md h-11 px-8 inline-flex items-center justify-center gap-2 transition-all duration-300 shadow-lg hover:shadow-xl"
                 >
                     Ver Cursos
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-5 w-5">
-                        <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                 </button>
                 <button
                     onclick="scrollToSection('contacto')"
@@ -47,6 +42,102 @@
                 >
                     Contáctanos
                 </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="cursos" class="py-20 relative overflow-hidden">
+    <div class="absolute inset-0 z-0">
+        <img
+          src="{% static 'landing/img/lovable/courses-bg.jpg' %}"
+          alt="Cursos background"
+          class="w-full h-full object-cover"
+        />
+        <div class="absolute inset-0 bg-gradient-warm opacity-80"></div>
+    </div>
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                Nuestros Cursos
+            </h2>
+            <p class="text-lg text-white/90 max-w-2xl mx-auto">
+                Programas diseñados especialmente para que aprendas de forma
+                divertida y efectiva
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div class="rounded-lg border border-border shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-105 bg-white/95 backdrop-blur-sm">
+                <div class="h-48 overflow-hidden bg-gradient-to-br from-education-orange to-education-yellow">
+                    <img
+                        src="{% static 'landing/img/lovable/communication-icon.jpg' %}"
+                        alt="Curso de Comunicación"
+                        class="w-full h-full object-cover opacity-90"
+                    />
+                </div>
+                <div class="flex flex-col space-y-1.5 p-6">
+                    <h3 class="text-2xl font-semibold leading-none tracking-tight">Comunicación</h3>
+                    <p class="text-base text-muted-foreground">Aprende a leer, escribir y expresarte mejor</p>
+                </div>
+                <div class="p-6 pt-0 space-y-4">
+                    <p class="text-muted-foreground">Mejora tu lectura, escritura y forma de hablar de manera divertida y práctica.</p>
+                    <ul class="space-y-2 text-sm text-muted-foreground">
+                        <li class="flex items-start gap-2"><span class="text-education-primary">✓</span> Lectura comprensiva y entretenida</li>
+                        <li class="flex items-start gap-2"><span class="text-education-primary">✓</span> Redacción de textos sencillos</li>
+                        <li class="flex items-start gap-2"><span class="text-education-primary">✓</span> Expresión oral con confianza</li>
+                        <li class="flex items-start gap-2"><span class="text-education-primary">✓</span> Ortografía y gramática básica</li>
+                        <li class="flex items-start gap-2"><span class="text-education-primary">✓</span> Cuentos y narraciones</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="rounded-lg border border-border shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-105 bg-white/95 backdrop-blur-sm">
+                <div class="h-48 overflow-hidden bg-gradient-to-br from-education-primary to-education-teal">
+                    <img
+                        src="{% static 'landing/img/lovable/math-icon.jpg' %}"
+                        alt="Curso de Matemática"
+                        class="w-full h-full object-cover opacity-90"
+                    />
+                </div>
+                <div class="flex flex-col space-y-1.5 p-6">
+                    <h3 class="text-2xl font-semibold leading-none tracking-tight">Matemática</h3>
+                    <p class="text-base text-muted-foreground">Aprende matemáticas de forma divertida</p>
+                </div>
+                <div class="p-6 pt-0 space-y-4">
+                    <p class="text-muted-foreground">Resuelve problemas matemáticos con técnicas sencillas y juegos entretenidos.</p>
+                    <ul class="space-y-2 text-sm text-muted-foreground">
+                        <li class="flex items-start gap-2"><span class="text-education-secondary">✓</span> Operaciones básicas y mental</li>
+                        <li class="flex items-start gap-2"><span class="text-education-secondary">✓</span> Problemas de razonamiento lógico</li>
+                        <li class="flex items-start gap-2"><span class="text-education-secondary">✓</span> Geometría con figuras y formas</li>
+                        <li class="flex items-start gap-2"><span class="text-education-secondary">✓</span> Juegos matemáticos</li>
+                        <li class="flex items-start gap-2"><span class="text-education-secondary">✓</span> Fracciones y números decimales</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="rounded-lg border border-border shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-105 bg-white/95 backdrop-blur-sm">
+                <div class="h-48 overflow-hidden bg-gradient-to-br from-education-purple to-education-coral">
+                    <img
+                        src="{% static 'landing/img/lovable/physics-icon.jpg' %}"
+                        alt="Curso de Física"
+                        class="w-full h-full object-cover opacity-90"
+                    />
+                </div>
+                <div class="flex flex-col space-y-1.5 p-6">
+                    <h3 class="text-2xl font-semibold leading-none tracking-tight">Física</h3>
+                    <p class="text-base text-muted-foreground">Descubre cómo funciona el mundo que te rodea</p>
+                </div>
+                <div class="p-6 pt-0 space-y-4">
+                    <p class="text-muted-foreground">Explora la ciencia de manera práctica con experimentos simples y conceptos básicos.</p>
+                    <ul class="space-y-2 text-sm text-muted-foreground">
+                        <li class="flex items-start gap-2"><span class="text-education-accent">✓</span> Fuerzas y movimiento</li>
+                        <li class="flex items-start gap-2"><span class="text-education-accent">✓</span> Energía y sus formas</li>
+                        <li class="flex items-start gap-2"><span class="text-education-accent">✓</span> Luz y sonido</li>
+                        <li class="flex items-start gap-2"><span class="text-education-accent">✓</span> Experimentos sencillos</li>
+                        <li class="flex items-start gap-2"><span class="text-education-accent">✓</span> Máquinas simples</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -65,45 +156,37 @@
         </div>
 
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm text-center hover:shadow-lg transition-shadow">
-                <div class="pt-6 space-y-4 p-6">
-                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-primary"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-foreground">Metodología Efectiva</h3>
-                    <p class="text-muted-foreground">Aplicamos técnicas pedagógicas innovadoras que garantizan el aprendizaje significativo y duradero.</p>
+            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm text-center hover:shadow-lg transition-shadow p-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4 text-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
                 </div>
+                <h3 class="text-xl font-semibold text-foreground">Metodología Efectiva</h3>
+                <p class="text-muted-foreground mt-2">Aplicamos técnicas pedagógicas innovadoras que garantizan el aprendizaje significativo y duradero.</p>
             </div>
-            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm text-center hover:shadow-lg transition-shadow">
-                <div class="pt-6 space-y-4 p-6">
-                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-primary"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M19 21v-2a4 4 0 0 0-3-3.87"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-foreground">Docentes Expertos</h3>
-                    <p class="text-muted-foreground">Nuestro equipo está conformado por profesionales altamente calificados con amplia experiencia educativa.</p>
+            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm text-center hover:shadow-lg transition-shadow p-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4 text-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M19 21v-2a4 4 0 0 0-3-3.87"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
                 </div>
+                <h3 class="text-xl font-semibold text-foreground">Docentes Expertos</h3>
+                <p class="text-muted-foreground mt-2">Nuestro equipo está conformado por profesionales altamente calificados con amplia experiencia educativa.</p>
             </div>
-            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm text-center hover:shadow-lg transition-shadow">
-                <div class="pt-6 space-y-4 p-6">
-                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-primary"><path d="m15.5 14.5-5 5-5-5a4 4 0 1 1 5-5.5 4 4 0 0 1 5 5.5Z"/><path d="m19 13-2.25-2.25"/><path d="M11 20 6 15"/><path d="m17.5 10.5-5.5 5.5"/><path d="M8 13.5l-2.25 2.25"/></svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-foreground">Resultados Comprobados</h3>
-                    <p class="text-muted-foreground">Miles de estudiantes han logrado sus objetivos académicos gracias a nuestros programas de estudio.</p>
+            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm text-center hover:shadow-lg transition-shadow p-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4 text-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.5 14.5-5 5-5-5a4 4 0 1 1 5-5.5 4 4 0 0 1 5 5.5Z"/><path d="m19 13-2.25-2.25"/><path d="M11 20 6 15"/><path d="m17.5 10.5-5.5 5.5"/><path d="M8 13.5l-2.25 2.25"/></svg>
                 </div>
+                <h3 class="text-xl font-semibold text-foreground">Resultados Comprobados</h3>
+                <p class="text-muted-foreground mt-2">Miles de estudiantes han logrado sus objetivos académicos gracias a nuestros programas de estudio.</p>
             </div>
-            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm text-center hover:shadow-lg transition-shadow">
-                <div class="pt-6 space-y-4 p-6">
-                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-primary"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-foreground">Material Didáctico</h3>
-                    <p class="text-muted-foreground">Proporcionamos recursos educativos de calidad diseñados específicamente para cada nivel y necesidad.</p>
+            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm text-center hover:shadow-lg transition-shadow p-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4 text-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
                 </div>
+                <h3 class="text-xl font-semibold text-foreground">Material Didáctico</h3>
+                <p class="text-muted-foreground mt-2">Proporcionamos recursos educativos de calidad diseñados específicamente para cada nivel y necesidad.</p>
             </div>
         </div>
 
-        <div class="mt-16 max-w-4xl mx-auto bg-primary/10 rounded-lg p-8">
+        <div class="mt-16 max-w-4xl mx-auto bg-gradient-to-r from-primary/10 to-education-secondary/10 rounded-lg p-8">
             <h3 class="text-2xl font-bold text-foreground mb-4 text-center">
                 Nuestra Misión
             </h3>
@@ -118,343 +201,391 @@
     </div>
 </section>
 
-<section class="py-20 bg-background">
+<section id="conocenos" class="py-20 bg-gradient-to-br from-education-teal/20 to-education-purple/20 relative overflow-hidden">
     <div class="container mx-auto px-4">
         <div class="text-center mb-16">
-            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-10 w-10 text-primary">
-                    <path d="m15.5 14.5-5 5-5-5a4 4 0 1 1 5-5.5 4 4 0 0 1 5 5.5Z"/>
-                    <path d="m19 13-2.25-2.25"/>
-                    <path d="M11 20 6 15"/>
-                    <path d="m17.5 10.5-5.5 5.5"/>
-                    <path d="M8 13.5l-2.25 2.25"/>
-                </svg>
-            </div>
             <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-4">
-                Certificaciones y Reconocimientos
+                Conócenos
             </h2>
             <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Nuestros docentes cuentan con certificaciones que avalan su excelencia educativa
+                Nuestro equipo docente altamente calificado
             </p>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
-                <div class="pt-8 pb-6 space-y-4 p-6">
-                    <div class="flex justify-center mb-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-8 items-center mb-16">
+                <div class="relative">
+                    <div class="rounded-2xl overflow-hidden shadow-2xl">
                         <img
-                            src="{% static 'landing/img/lovable/kahoot-verified.png' %}"
-                            alt="Kahoot! Verified Creator"
-                            class="w-32 h-32 object-contain"
+                          src="{% static 'landing/img/lovable/teacher-profile-new.png' %}"
+                          alt="Profesor CEAMA"
+                          class="w-full h-auto object-cover"
                         />
                     </div>
-                    <h3 class="text-xl font-bold text-foreground">Kahoot! Verified Creator</h3>
-                    <p class="text-muted-foreground leading-relaxed">
-                        Nuestros docentes son creadores verificados de Kahoot!, reconocidos por crear contenido educativo de alta calidad.
-                    </p>
+                    <div class="absolute -bottom-4 -right-4 bg-white rounded-full p-4 shadow-xl">
+                        <img
+                          src="{% static 'landing/img/lovable/kahoot-verified.png' %}"
+                          alt="Kahoot Verified Creator"
+                          class="w-20 h-20 object-contain"
+                        />
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-3xl font-bold text-foreground mb-2">
+                          [Nombre del Profesor]
+                        </h3>
+                        <p class="text-xl text-muted-foreground mb-4">
+                          Director y Profesor Principal
+                        </p>
+                    </div>
+
+                    <div class="rounded-lg border-0 bg-gradient-to-br from-education-teal to-education-primary text-white p-6 shadow-sm">
+                        <div class="flex items-center gap-3 mb-3">
+                            <img
+                              src="{% static 'landing/img/lovable/kahoot-verified.png' %}"
+                              alt="Kahoot Verified"
+                              class="w-12 h-12"
+                            />
+                            <div>
+                                <h4 class="font-bold text-lg">Kahoot! Verified Creator</h4>
+                                <p class="text-white/90 text-sm">Creador verificado oficial</p>
+                            </div>
+                        </div>
+                        <p class="text-white/90">
+                            Reconocido por Kahoot! por crear contenido educativo de alta calidad 
+                            e innovador que impacta positivamente en el aprendizaje de estudiantes.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="rounded-lg border bg-card text-card-foreground p-4 flex items-start gap-3 hover:shadow-lg transition-shadow">
+                            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-education-orange to-education-yellow flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-white"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                            </div>
+                            <div>
+                                <h5 class="font-semibold text-foreground mb-1">Más de 25 años de experiencia</h5>
+                                <p class="text-sm text-muted-foreground">Especializado en matemática para nivel primaria y secundaria - Colegio San José Obrero</p>
+                            </div>
+                        </div>
+
+                        <div class="rounded-lg border bg-card text-card-foreground p-4 flex items-start gap-3 hover:shadow-lg transition-shadow">
+                            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-education-purple to-education-coral flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-white"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+                            </div>
+                            <div>
+                                <h5 class="font-semibold text-foreground mb-1">Metodología Innovadora</h5>
+                                <p class="text-sm text-muted-foreground">Aplicando técnicas pedagógicas modernas y tecnología educativa</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
-                <div class="pt-8 pb-6 space-y-4 p-6">
-                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-education-accent/10 mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-education-accent"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+
+            <div class="mt-16">
+                <h3 class="text-3xl font-bold text-center text-foreground mb-8">
+                    Nuestro Equipo Docente
+                </h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-xl transition-all p-6 text-center">
+                        <div class="flex flex-col items-center">
+                            <div class="w-32 h-32 rounded-full overflow-hidden mb-4 border-4 border-education-teal shadow-lg">
+                                <img
+                                    src="{% static 'landing/img/lovable/teacher-liliana.png' %}"
+                                    alt="Liliana Alvarez Chavez"
+                                    class="w-full h-full object-cover object-top"
+                                />
+                            </div>
+                            <h4 class="text-xl font-bold text-foreground mb-2">Liliana Alvarez Chavez</h4>
+                            <p class="text-sm text-muted-foreground mb-2">Docente especialista 1ro. y 2do. grado primaria</p>
+                            <p class="text-xs text-muted-foreground">Colegio Rafael Narvaez Cadenillas</p>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold text-foreground">Metodología Certificada</h3>
-                    <p class="text-muted-foreground leading-relaxed">
-                        Aplicamos metodologías pedagógicas certificadas y validadas por instituciones educativas reconocidas.
-                    </p>
-                </div>
-            </div>
-            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
-                <div class="pt-8 pb-6 space-y-4 p-6">
-                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-education-accent/10 mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-education-accent"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-xl transition-all p-6 text-center">
+                        <div class="flex flex-col items-center">
+                            <div class="w-32 h-32 rounded-full overflow-hidden mb-4 border-4 border-education-purple shadow-lg">
+                                <img
+                                    src="{% static 'landing/img/lovable/teacher-diana.png' %}"
+                                    alt="Diana Castillo Miñano"
+                                    class="w-full h-full object-cover object-top"
+                                />
+                            </div>
+                            <h4 class="text-xl font-bold text-foreground mb-2">Diana Castillo Miñano</h4>
+                            <p class="text-sm text-muted-foreground mb-2">Docente especialista en el área de Comunicación</p>
+                            <p class="text-xs text-muted-foreground">Colegio Rafael Narvaez Cadenillas</p>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold text-foreground">Experiencia Comprobada</h3>
-                    <p class="text-muted-foreground leading-relaxed">
-                        Más de 10 años de experiencia en la enseñanza de comunicación y matemática con resultados excepcionales.
-                    </p>
+
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-xl transition-all p-6 text-center">
+                        <div class="flex flex-col items-center">
+                            <div class="w-32 h-32 rounded-full overflow-hidden mb-4 border-4 border-education-coral shadow-lg">
+                                <img
+                                    src="{% static 'landing/img/lovable/teacher-giovanna.png' %}"
+                                    alt="Giovanna Tejada Suarez"
+                                    class="w-full h-full object-cover object-top"
+                                />
+                            </div>
+                            <h4 class="text-xl font-bold text-foreground mb-2">Giovanna Tejada Suarez</h4>
+                            <p class="text-sm text-muted-foreground mb-2">Docente especialista en primaria</p>
+                            <p class="text-xs text-muted-foreground">Colegio Rafael Narvaez Cadenillas</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<section id="cursos" class="py-20 bg-muted/30">
+<section id="galeria" class="py-20 bg-gradient-to-br from-education-primary/10 to-education-teal/10">
     <div class="container mx-auto px-4">
         <div class="text-center mb-16">
             <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-4">
-                Nuestros Cursos
+                Galería
             </h2>
             <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Programas diseñados para potenciar tus habilidades académicas y
-                profesionales
+                Conoce nuestras instalaciones y el ambiente de aprendizaje que ofrecemos
             </p>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm overflow-hidden hover:shadow-xl transition-shadow">
-                <div class="h-48 overflow-hidden bg-primary/70">
-                    <img
-                        src="{% static 'landing/img/lovable/communication-icon.jpg' %}"
-                        alt="Curso de Comunicación"
-                        class="w-full h-full object-cover opacity-90"
-                    />
-                </div>
-                <div class="flex flex-col space-y-1.5 p-6">
-                    <h3 class="text-2xl font-semibold leading-none tracking-tight">Comunicación Efectiva</h3>
-                    <p class="text-base text-muted-foreground">Desarrolla habilidades de expresión oral y escrita</p>
-                </div>
-                <div class="p-6 pt-0 space-y-4">
-                    <p class="text-muted-foreground">Aprende a comunicarte con claridad, persuasión y confianza en cualquier contexto académico o profesional.</p>
-                    <ul class="space-y-2">
-                        <li class="flex items-start gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span class="text-sm">Redacción académica y profesional</span></li>
-                        <li class="flex items-start gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span class="text-sm">Oratoria y expresión oral</span></li>
-                        <li class="flex items-start gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span class="text-sm">Comprensión lectora avanzada</span></li>
-                        <li class="flex items-start gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span class="text-sm">Técnicas de argumentación</span></li>
-                        <li class="flex items-start gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span class="text-sm">Análisis de textos literarios</span></li>
-                    </ul>
-                    <a href="#" class="w-full mt-4 bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-md h-10 px-4 py-2 inline-flex items-center justify-center gap-2 transition-colors shadow-md">Más Información</a>
-                </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-w-7xl mx-auto">
+            <div class="relative overflow-hidden rounded-lg shadow-lg cursor-pointer group hover:scale-105 transition-transform duration-300" onclick="openLightbox(this)">
+                <img src="{% static 'landing/img/lovable/teacher-class-1.png' %}" alt="Clase con el profesor" class="w-full h-64 object-cover group-hover:brightness-110 transition-all duration-300" />
             </div>
+            <div class="relative overflow-hidden rounded-lg shadow-lg cursor-pointer group hover:scale-105 transition-transform duration-300" onclick="openLightbox(this)">
+                <img src="{% static 'landing/img/lovable/communication-class.jpg' %}" alt="Clase de Comunicación" class="w-full h-64 object-cover group-hover:brightness-110 transition-all duration-300" />
+            </div>
+            <div class="relative overflow-hidden rounded-lg shadow-lg cursor-pointer group hover:scale-105 transition-transform duration-300" onclick="openLightbox(this)">
+                <img src="{% static 'landing/img/lovable/math-class.jpg' %}" alt="Clase de Matemática" class="w-full h-64 object-cover group-hover:brightness-110 transition-all duration-300" />
+            </div>
+            <div class="relative overflow-hidden rounded-lg shadow-lg cursor-pointer group hover:scale-105 transition-transform duration-300" onclick="openLightbox(this)">
+                <img src="{% static 'landing/img/lovable/group-class-1.jpg' %}" alt="Estudiantes en clase" class="w-full h-64 object-cover group-hover:brightness-110 transition-all duration-300" />
+            </div>
+             <div class="relative overflow-hidden rounded-lg shadow-lg cursor-pointer group hover:scale-105 transition-transform duration-300" onclick="openLightbox(this)">
+                <img src="{% static 'landing/img/lovable/group-class-2.jpg' %}" alt="Trabajo en grupo" class="w-full h-64 object-cover group-hover:brightness-110 transition-all duration-300" />
+            </div>
+             <div class="relative overflow-hidden rounded-lg shadow-lg cursor-pointer group hover:scale-105 transition-transform duration-300" onclick="openLightbox(this)">
+                <img src="{% static 'landing/img/lovable/teacher-class-2.jpg' %}" alt="Enseñanza activa" class="w-full h-64 object-cover group-hover:brightness-110 transition-all duration-300" />
+            </div>
+             <div class="relative overflow-hidden rounded-lg shadow-lg cursor-pointer group hover:scale-105 transition-transform duration-300" onclick="openLightbox(this)">
+                <img src="{% static 'landing/img/lovable/group-class-3.jpg' %}" alt="Ambiente de aprendizaje" class="w-full h-64 object-cover group-hover:brightness-110 transition-all duration-300" />
+            </div>
+        </div>
 
-            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm overflow-hidden hover:shadow-xl transition-shadow">
-                <div class="h-48 overflow-hidden bg-education-secondary/70">
+        <div id="lightbox" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4" onclick="closeLightbox()">
+            <button class="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+            <img id="lightbox-img" src="" alt="Vista ampliada" class="max-w-full max-h-full object-contain" onclick="event.stopPropagation()" />
+        </div>
+    </div>
+</section>
+
+<section id="certificaciones" class="py-20 relative overflow-hidden">
+    <div class="absolute inset-0 z-0">
+        <img
+          src="{% static 'landing/img/lovable/certifications-bg.jpg' %}"
+          alt="Certificaciones background"
+          class="w-full h-full object-cover"
+        />
+        <div class="absolute inset-0 bg-gradient-teal opacity-85"></div>
+    </div>
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                Certificaciones y Reconocimientos
+            </h2>
+            <p class="text-lg text-white/90 max-w-2xl mx-auto">
+                Respaldados por certificaciones profesionales y reconocimientos en
+                excelencia educativa
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            <div class="rounded-lg border border-border shadow-sm text-center hover:shadow-xl transition-all duration-300 hover:scale-105 bg-white/95 backdrop-blur-sm p-6">
+                <div class="flex justify-center mb-4">
                     <img
-                        src="{% static 'landing/img/lovable/math-icon.jpg' %}"
-                        alt="Curso de Matemática"
-                        class="w-full h-full object-cover opacity-90"
+                        src="{% static 'landing/img/lovable/kahoot-verified.png' %}"
+                        alt="Kahoot! Verified Creator"
+                        class="h-20 w-20 object-contain"
                     />
                 </div>
-                <div class="flex flex-col space-y-1.5 p-6">
-                    <h3 class="text-2xl font-semibold leading-none tracking-tight">Razonamiento Matemático</h3>
-                    <p class="text-base text-muted-foreground">Domina los conceptos y el pensamiento lógico-matemático</p>
+                <h3 class="text-xl font-semibold text-foreground">Kahoot Verified Creator</h3>
+                <p class="text-muted-foreground text-sm mt-2">
+                    Nuestros profesores son creadores verificados de Kahoot, reconocidos por crear contenido educativo de alta calidad.
+                </p>
+            </div>
+            <div class="rounded-lg border border-border shadow-sm text-center hover:shadow-xl transition-all duration-300 hover:scale-105 bg-white/95 backdrop-blur-sm p-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-education-teal to-education-primary mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M19 21v-2a4 4 0 0 0-3-3.87"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
                 </div>
-                <div class="p-6 pt-0 space-y-4">
-                    <p class="text-muted-foreground">Fortalece tu capacidad de análisis y resolución de problemas con métodos innovadores y efectivos.</p>
-                    <ul class="space-y-2">
-                        <li class="flex items-start gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-education-secondary shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span class="text-sm">Álgebra y geometría aplicada</span></li>
-                        <li class="flex items-start gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-education-secondary shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span class="text-sm">Razonamiento lógico</span></li>
-                        <li class="flex items-start gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-education-secondary shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span class="text-sm">Resolución de problemas</span></li>
-                        <li class="flex items-start gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-education-secondary shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span class="text-sm">Estadística y probabilidades</span></li>
-                        <li class="flex items-start gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-education-secondary shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span class="text-sm">Matemática para exámenes de admisión</span></li>
-                    </ul>
-                    <a href="#" class="w-full mt-4 bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-md h-10 px-4 py-2 inline-flex items-center justify-center gap-2 transition-colors shadow-md">Más Información</a>
+                <h3 class="text-xl font-semibold text-foreground">Experiencia Docente</h3>
+                <p class="text-muted-foreground text-sm mt-2">
+                    Equipo con más de 10 años de experiencia en enseñanza de matemática y comunicación.
+                </p>
+            </div>
+            <div class="rounded-lg border border-border shadow-sm text-center hover:shadow-xl transition-all duration-300 hover:scale-105 bg-white/95 backdrop-blur-sm p-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-education-teal to-education-primary mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
                 </div>
+                <h3 class="text-xl font-semibold text-foreground">Metodología Certificada</h3>
+                <p class="text-muted-foreground text-sm mt-2">
+                    Aplicamos técnicas pedagógicas avaladas y probadas que garantizan resultados efectivos.
+                </p>
+            </div>
+            <div class="rounded-lg border border-border shadow-sm text-center hover:shadow-xl transition-all duration-300 hover:scale-105 bg-white/95 backdrop-blur-sm p-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-education-teal to-education-primary mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+                </div>
+                <h3 class="text-xl font-semibold text-foreground">Reconocimiento Académico</h3>
+                <p class="text-muted-foreground text-sm mt-2">
+                    Premiados por excelencia en formación académica y metodología innovadora.
+                </p>
             </div>
         </div>
     </div>
 </section>
 
-<section class="py-20 bg-background">
-    <div class="container mx-auto px-4">
+<section id="herramientas" class="py-20 relative overflow-hidden">
+    <div class="absolute inset-0 z-0">
+        <img
+          src="{% static 'landing/img/lovable/techtools-bg.jpg' %}"
+          alt="Herramientas tecnológicas background"
+          class="w-full h-full object-cover"
+        />
+        <div class="absolute inset-0 bg-gradient-coral opacity-85"></div>
+    </div>
+    <div class="container mx-auto px-4 relative z-10">
         <div class="text-center mb-16">
-            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-education-secondary/10 mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-10 w-10 text-education-secondary">
-                    <path d="M20 19v-2a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v2"/>
-                    <rect width="20" height="14" x="2" y="3" rx="2" ry="2"/>
-                </svg>
-            </div>
-            <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-4">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
                 Herramientas Tecnológicas
             </h2>
-            <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Utilizamos las mejores herramientas educativas para hacer el aprendizaje más efectivo y atractivo
+            <p class="text-lg text-white/90 max-w-2xl mx-auto">
+                Utilizamos las mejores herramientas educativas para hacer el
+                aprendizaje más efectivo y divertido
             </p>
         </div>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow">
-                <div class="flex flex-col items-center p-6 space-y-4">
-                    <div class="w-20 h-20 rounded-full bg-purple-600/20 flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-10 w-10 text-foreground"><path d="M12 2a10 10 0 0 0-10 10c0 4.4 3.58 8 8 8 3.52 0 6.64-2.3 7.73-5.5a9.5 9.5 0 0 0-1.23-11.5c1.09-3.2 4.21-5.5 7.73-5.5a10 10 0 0 0-10 10v4"/></svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-foreground text-center">Kahoot!</h3>
-                    <p class="text-muted-foreground text-center text-sm leading-relaxed">Plataforma interactiva de aprendizaje basado en juegos que hace las clases más dinámicas y entretenidas.</p>
+        <div class="flex overflow-x-auto gap-6 max-w-6xl mx-auto pb-8 snap-x snap-mandatory">
+            <div class="min-w-[300px] md:min-w-[350px] snap-center rounded-lg border border-border shadow-sm overflow-hidden bg-white/95 backdrop-blur-sm p-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-education-coral to-education-orange text-white mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 0-10 10c0 4.4 3.58 8 8 8 3.52 0 6.64-2.3 7.73-5.5a9.5 9.5 0 0 0-1.23-11.5c1.09-3.2 4.21-5.5 7.73-5.5a10 10 0 0 0-10 10v4"/></svg>
                 </div>
+                <h3 class="text-xl font-bold text-foreground mb-2">Kahoot</h3>
+                <p class="text-muted-foreground text-sm">Cuestionarios interactivos que hacen del aprendizaje una experiencia divertida y competitiva.</p>
             </div>
-            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow">
-                <div class="flex flex-col items-center p-6 space-y-4">
-                    <div class="w-20 h-20 rounded-full bg-pink-500/20 flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-10 w-10 text-foreground"><path d="M6 10a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2z"/><path d="M18 10a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2z"/><path d="M10 20v-4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4"/><path d="M6 4h12a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-foreground text-center">Quizizz</h3>
-                    <p class="text-muted-foreground text-center text-sm leading-relaxed">Herramienta de cuestionarios gamificados que permite evaluar el progreso de forma divertida y efectiva.</p>
+            <div class="min-w-[300px] md:min-w-[350px] snap-center rounded-lg border border-border shadow-sm overflow-hidden bg-white/95 backdrop-blur-sm p-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-education-purple to-education-primary text-white mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
                 </div>
+                <h3 class="text-xl font-bold text-foreground mb-2">Quizizz</h3>
+                <p class="text-muted-foreground text-sm">Evaluaciones gamificadas que motivan a los estudiantes a mejorar constantemente.</p>
             </div>
-            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow">
-                <div class="flex flex-col items-center p-6 space-y-4">
-                    <div class="w-20 h-20 rounded-full bg-cyan-500/20 flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-10 w-10 text-foreground"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-foreground text-center">Videos Dinámicos</h3>
-                    <p class="text-muted-foreground text-center text-sm leading-relaxed">Contenido audiovisual educativo especialmente diseñado para reforzar conceptos y facilitar el aprendizaje.</p>
+             <div class="min-w-[300px] md:min-w-[350px] snap-center rounded-lg border border-border shadow-sm overflow-hidden bg-white/95 backdrop-blur-sm p-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-education-teal to-education-secondary text-white mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/></svg>
                 </div>
+                <h3 class="text-xl font-bold text-foreground mb-2">Videos Dinámicos</h3>
+                <p class="text-muted-foreground text-sm">Contenido multimedia educativo diseñado para captar la atención y facilitar el aprendizaje.</p>
             </div>
-            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow">
-                <div class="flex flex-col items-center p-6 space-y-4">
-                    <div class="w-20 h-20 rounded-full bg-emerald-500/20 flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-10 w-10 text-foreground"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-foreground text-center">Materiales Físicos</h3>
-                    <p class="text-muted-foreground text-center text-sm leading-relaxed">Recursos didácticos tangibles como libros, fichas de trabajo y material manipulativo para aprendizaje práctico.</p>
+             <div class="min-w-[300px] md:min-w-[350px] snap-center rounded-lg border border-border shadow-sm overflow-hidden bg-white/95 backdrop-blur-sm p-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-education-orange to-education-yellow text-white mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20h-4.5a2.5 2.5 0 0 0 0 5.5Z"/><path d="M8 7h6"/><path d="M8 11h6"/></svg>
                 </div>
-            </div>
-            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow">
-                <div class="flex flex-col items-center p-6 space-y-4">
-                    <div class="w-20 h-20 rounded-full bg-orange-500/20 flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-10 w-10 text-foreground"><path d="M6 10a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2z"/><path d="M18 10a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2z"/><path d="M10 20v-4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4"/><path d="M6 4h12a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-foreground text-center">Juegos Educativos</h3>
-                    <p class="text-muted-foreground text-center text-sm leading-relaxed">Actividades lúdicas diseñadas para reforzar conocimientos mientras los estudiantes se divierten aprendiendo.</p>
-                </div>
+                <h3 class="text-xl font-bold text-foreground mb-2">Materiales Físicos</h3>
+                <p class="text-muted-foreground text-sm">Libros de trabajo, fichas y recursos tangibles para complementar el aprendizaje digital.</p>
             </div>
         </div>
     </div>
 </section>
 
-
-<section id="contacto" class="py-20 bg-muted/30">
-    <div class="container mx-auto px-4">
+<section id="contacto" class="py-20 relative overflow-hidden">
+    <div class="absolute inset-0 z-0">
+        <img
+          src="{% static 'landing/img/lovable/contact-bg.jpg' %}"
+          alt="Contacto background"
+          class="w-full h-full object-cover"
+        />
+        <div class="absolute inset-0 bg-gradient-warm opacity-85"></div>
+    </div>
+    <div class="container mx-auto px-4 relative z-10">
         <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-4">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
                 Contáctanos
             </h2>
-            <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-                ¿Tienes preguntas? Estamos aquí para ayudarte. Contáctanos y te
-                responderemos lo antes posible.
+            <p class="text-lg text-white/90 max-w-2xl mx-auto">
+                Estamos aquí para responder todas tus preguntas y ayudarte a
+                comenzar tu camino hacia el éxito académico
             </p>
         </div>
 
-        <div class="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-            <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm">
-                <div class="pt-6 p-6">
-                    <form action="#" method="POST" class="space-y-4">
-                        <div>
-                            <label for="name" class="text-sm font-medium text-foreground mb-2 block">Nombre Completo</label>
-                            <input
-                                type="text"
-                                id="name"
-                                name="name"
-                                placeholder="Tu nombre"
-                                required
-                                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                            />
-                        </div>
-                        <div>
-                            <label for="email" class="text-sm font-medium text-foreground mb-2 block">Email</label>
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                placeholder="tu@email.com"
-                                required
-                                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                            />
-                        </div>
-                        <div>
-                            <label for="phone" class="text-sm font-medium text-foreground mb-2 block">Teléfono</label>
-                            <input
-                                type="tel"
-                                id="phone"
-                                name="phone"
-                                placeholder="+51 999 999 999"
-                                required
-                                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                            />
-                        </div>
-                        <div>
-                            <label for="message" class="text-sm font-medium text-foreground mb-2 block">Mensaje</label>
-                            <textarea
-                                id="message"
-                                name="message"
-                                placeholder="Escribe tu mensaje aquí..."
-                                rows="5"
-                                required
-                                class="flex min-h-[80px] w-full rounded-md border border-border bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
-                            ></textarea>
-                        </div>
-                        <button type="submit" class="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-md h-11 px-8 py-2 inline-flex items-center justify-center gap-2 transition-colors shadow-md">
-                            Enviar Mensaje
-                        </button>
-                    </form>
+        <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            <div class="rounded-lg border border-border shadow-sm hover:shadow-xl transition-all duration-300 hover:scale-105 bg-white/95 backdrop-blur-sm p-6 flex items-start space-x-4">
+                <div class="flex-shrink-0 inline-flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-education-orange to-education-yellow text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.08 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                </div>
+                <div class="flex-1">
+                  <h3 class="text-lg font-semibold text-foreground mb-2">Teléfono</h3>
+                  <p class="text-muted-foreground">+51 987 654 321</p>
                 </div>
             </div>
 
-            <div class="space-y-6">
-                <div>
-                    <h3 class="text-2xl font-bold text-foreground mb-6">Información de Contacto</h3>
-                    <div class="space-y-4">
-                        <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm hover:shadow-md transition-shadow">
-                            <div class="p-4">
-                                <a href="tel:+51999999999" class="flex items-start gap-4 group">
-                                    <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-primary"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.08 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-semibold text-foreground mb-1">Teléfono</h4>
-                                        <p class="text-muted-foreground">+51 999 999 999</p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm hover:shadow-md transition-shadow">
-                            <div class="p-4">
-                                <a href="mailto:info@ceama.edu.pe" class="flex items-start gap-4 group">
-                                    <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-primary"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-semibold text-foreground mb-1">Email</h4>
-                                        <p class="text-muted-foreground">info@ceama.edu.pe</p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm hover:shadow-md transition-shadow">
-                            <div class="p-4">
-                                <a href="#" class="flex items-start gap-4 group">
-                                    <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-primary"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-semibold text-foreground mb-1">Dirección</h4>
-                                        <p class="text-muted-foreground">Av. Universitaria 123, Lima, Perú</p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm hover:shadow-md transition-shadow">
-                            <div class="p-4">
-                                <a href="#" class="flex items-start gap-4 group">
-                                    <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-primary"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-semibold text-foreground mb-1">Horario</h4>
-                                        <p class="text-muted-foreground">Lun - Sáb: 8:00 AM - 8:00 PM</p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+            <div class="rounded-lg border border-border shadow-sm hover:shadow-xl transition-all duration-300 hover:scale-105 bg-white/95 backdrop-blur-sm p-6 flex items-start space-x-4">
+                <div class="flex-shrink-0 inline-flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-education-primary to-education-teal text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
                 </div>
+                <div class="flex-1">
+                  <h3 class="text-lg font-semibold text-foreground mb-2">Correo Electrónico</h3>
+                  <p class="text-muted-foreground">info@ceama.edu.pe</p>
+                </div>
+            </div>
 
-                <div class="rounded-lg border bg-primary/10 text-primary-foreground p-6 mt-6">
-                    <h3 class="text-xl font-bold mb-3 text-foreground">
-                        ¿Listo para Comenzar?
-                    </h3>
-                    <p class="mb-4 text-muted-foreground">
-                        Inscríbete hoy y transforma tu futuro académico con CEAMA.
-                        Ofrecemos programas flexibles adaptados a tus necesidades.
-                    </p>
-                    <a href="/estudiantes/registrar" class="w-full bg-secondary hover:bg-secondary/80 text-secondary-foreground font-medium rounded-md h-11 px-8 py-2 inline-flex items-center justify-center gap-2 transition-colors shadow-md">
-                        Inscríbete Ahora
-                    </a>
+            <div class="rounded-lg border border-border shadow-sm hover:shadow-xl transition-all duration-300 hover:scale-105 bg-white/95 backdrop-blur-sm p-6 flex items-start space-x-4 md:col-span-2">
+                <div class="flex-shrink-0 inline-flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-education-purple to-education-coral text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <div class="flex-1">
+                  <h3 class="text-lg font-semibold text-foreground mb-2">Dirección</h3>
+                  <p class="text-muted-foreground">Av. Educación 123, Lima, Perú</p>
                 </div>
             </div>
         </div>
+
+        <div class="mt-12 text-center">
+          <div class="inline-block bg-white/95 backdrop-blur-sm rounded-lg p-6 shadow-xl">
+            <h3 class="text-xl font-bold text-foreground mb-2">
+              ¿Listo para comenzar?
+            </h3>
+            <p class="text-muted-foreground">
+              Contáctanos hoy mismo y únete a nuestra comunidad educativa
+            </p>
+          </div>
+        </div>
     </div>
 </section>
+
+<script>
+    function openLightbox(element) {
+        const img = element.querySelector('img');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        
+        lightboxImg.src = img.src;
+        lightbox.classList.remove('hidden');
+    }
+
+    function closeLightbox() {
+        const lightbox = document.getElementById('lightbox');
+        lightbox.classList.add('hidden');
+    }
+
+    // Cerrar al presionar ESC
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "Escape") {
+            closeLightbox();
+        }
+    });
+</script>
 
 {% endblock content %}
