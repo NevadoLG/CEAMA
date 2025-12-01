@@ -86,7 +86,7 @@
               <select name="asignacion" id="asignacion" required>
                 <option value="">-- Seleccione una asignación --</option>
                 {% for a in asignaciones %}
-                  <option value="{{ a.id }}">{{ a.plan }} — {{ a.profesor }}</option>
+                  <option value="{{ a.id }}">{{ a.plan }} — {% for p in a.profesores.all %}{{ p }}{% if not forloop.last %}, {% endif %}{% empty %}&mdash;{% endfor %}</option>
                 {% endfor %}
               </select>
             </div>

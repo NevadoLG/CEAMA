@@ -25,18 +25,21 @@ class EstudianteAdmin(admin.ModelAdmin):
 class InscripcionAdmin(admin.ModelAdmin):
     list_display = (
         'estudiante',
-        'plan',
-        'curso',
+        'estado',
         'estado_pago',
         'fecha'
     )
-    list_filter = ('estado_pago', 'plan', 'curso')
+    list_filter = ('estado_pago', 'estado')
     search_fields = (
         'estudiante__nombres',
         'estudiante__apellidos',
     )
     ordering = ('-fecha',)
-    autocomplete_fields = ('estudiante', 'curso', 'plan')
+    autocomplete_fields = ('estudiante',)
+    readonly_fields = ('fecha',)
+    # Remove curso and plan from the Inscripcion CRUD: Asignacion already
+    # embeds course/plan information and Matricula holds confirmed plan.
+    exclude = ('curso', 'plan')
 
 class AsignacionInline(admin.TabularInline):
     model = Matricula.asignaciones.through
