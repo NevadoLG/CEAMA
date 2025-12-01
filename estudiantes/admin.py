@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.http import HttpResponse 
+import csv 
 from .models import Estudiante, Inscripcion, Matricula
 from docentes.models import Asignacion
 
@@ -23,18 +25,21 @@ class EstudianteAdmin(admin.ModelAdmin):
 class InscripcionAdmin(admin.ModelAdmin):
     list_display = (
         'estudiante',
-        'plan',
-        'curso',
+        'estado',
         'estado_pago',
         'fecha'
     )
-    list_filter = ('estado_pago', 'plan', 'curso')
+    list_filter = ('estado_pago', 'estado')
     search_fields = (
         'estudiante__nombres',
         'estudiante__apellidos',
     )
     ordering = ('-fecha',)
-    autocomplete_fields = ('estudiante', 'curso', 'plan')
+    autocomplete_fields = ('estudiante',)
+    readonly_fields = ('fecha',)
+    # Remove curso and plan from the Inscripcion CRUD: Asignacion already
+    # embeds course/plan information and Matricula holds confirmed plan.
+    exclude = ('curso', 'plan')
 
 class AsignacionInline(admin.TabularInline):
     model = Matricula.asignaciones.through
@@ -51,6 +56,39 @@ class MatriculaAdmin(admin.ModelAdmin):
     ordering = ('-fecha_creada',)
     filter_horizontal = ('asignaciones',)
     inlines = [AsignacionInline]
+    actions = ['exportar_matriculas_csv']
+    def exportar_matriculas_csv(self, request, queryset):
+        """
+        Exporta a CSV las matrículas seleccionadas (respeta filtros del admin).
+        """
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="matriculas_ceama.csv"'
+
+        writer = csv.writer(response)
+        writer.writerow([
+            "Nombre del estudiante",
+            "Estado de matrícula",
+            "Monto referencial",
+            "Fecha de creación",
+            "Asignaciones (curso / docente / aula / horario)",
+        ])
+
+        for m in queryset:
+            est = m.estudiante
+            nombre_estudiante = f"{est.apellidos}, {est.nombres}"
+            monto = f"{m.monto_referencial:.2f}" if m.monto_referencial is not None else ""
+            fecha = m.fecha_creada.strftime("%Y-%m-%d %H:%M") if m.fecha_creada else ""
+            asignaciones_texto = "; ".join(str(a) for a in m.asignaciones.all())
+
+            writer.writerow([
+                nombre_estudiante,
+                m.estado,
+                monto,
+                fecha,
+                asignaciones_texto,
+            ])
+        return response
+    exportar_matriculas_csv.short_description = "Exportar listado a CSV"
     def cursos_del_plan(self, obj):
         cursos = obj.cursos_plan
         if not cursos:

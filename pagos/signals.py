@@ -13,16 +13,16 @@ def pago_post_save(sender, instance: Pago, created, **kwargs):
     - On state change to 'parcial' or 'completado': finalize provisional inscription.
     """
     pago = instance
-    ins = pago.inscripcion
-
-    # If created, attempt reservation
+    ins = getattr(pago, 'inscripcion', None)
+    if ins is None:
+        # Defensive: if for any reason the Pago lacks an Inscripcion, bail out.
+        return
+    # If created, attempt reservation on the Asignacion referenced by the Inscripcion
     if created:
         asign = getattr(ins, 'asignacion', None)
         if asign is None:
             # nothing to reserve
             return
-        # Reserve atomically: lock the related curso row to avoid race conditions
-        curso = asign.curso
         try:
             with transaction.atomic():
                 # Lock the asignacion row to prevent concurrent reservations
@@ -40,7 +40,7 @@ def pago_post_save(sender, instance: Pago, created, **kwargs):
                     inscripcion=ins,
                     estudiante=ins.estudiante,
                 )
-                # idempotent add
+                # idempotent add: use the asignacion instance itself
                 matricula.asignaciones.add(asign)
                 matricula.save()
         except Exception:
@@ -53,8 +53,12 @@ def pago_post_save(sender, instance: Pago, created, **kwargs):
     if pago.estado in ('parcial', 'completado'):
         # finalize: mark inscription as not provisional
         if getattr(ins, 'provisional', False):
-            ins.provisional = False
-            ins.save(update_fields=['provisional'])
+            try:
+                ins.provisional = False
+                ins.save(update_fields=['provisional'])
+            except Exception:
+                # If saving inscripcion fails, continue without raising
+                pass
             # activate matricula if exists
             try:
                 matricula = Matricula.objects.filter(inscripcion=ins).first()
@@ -72,22 +76,35 @@ def pago_post_save(sender, instance: Pago, created, **kwargs):
                     # remove asignacion reservation from matricula if present
                     matricula = Matricula.objects.filter(inscripcion=ins).first()
                     if matricula:
-                        # remove asignaciones related to this inscripcion
-                        if ins.asignacion_id:
-                            matricula.asignaciones.remove(ins.asignacion_id)
+                        # remove asignacion reservation related to this inscripcion
+                        try:
+                            asign_id = getattr(ins, 'asignacion_id', None)
+                            if asign_id:
+                                # remove by id or by instance; use id for safety
+                                matricula.asignaciones.remove(asign_id)
+                        except Exception:
+                            # ignore if not present
+                            pass
                         # delete matricula
                         matricula.delete()
                     # keep reference to estudiante and apoderado before deleting inscripcion
-                    est = ins.estudiante
-                    ap = getattr(est, 'apoderado', None)
+                    est = getattr(ins, 'estudiante', None)
+                    ap = getattr(est, 'apoderado', None) if est is not None else None
                     # delete inscripcion
-                    ins.delete()
+                    try:
+                        ins.delete()
+                    except Exception:
+                        pass
                     # if estudiante has no other inscripciones, delete estudiante
-                    if not est.inscripcion_set.exists():
-                        est.delete()
-                        # if apoderado exists and has no other estudiantes, delete apoderado
-                        if ap and not ap.estudiantes.exists():
-                            ap.delete()
+                    if est is not None:
+                        try:
+                            if not est.inscripcion_set.exists():
+                                est.delete()
+                                # if apoderado exists and has no other estudiantes, delete apoderado
+                                if ap and not ap.estudiantes.exists():
+                                    ap.delete()
+                        except Exception:
+                            pass
             except Exception:
                 # best-effort rollback; don't raise
                 pass

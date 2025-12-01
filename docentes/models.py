@@ -1,15 +1,15 @@
 from django.db import models
 class Curso(models.Model):
     nombre = models.CharField(max_length=100)
-    nivel = models.CharField(max_length=20, choices=[('primaria','Primaria'),('secundaria','Secundaria')])
-    plan = models.CharField(max_length=50, choices=[
-        ('matematica', 'Matemática'),
-        ('comunicacion', 'Comunicación'),
-        ('ambos', 'Matemática + Comunicación')
-    ])
+    # Eliminamos el campo `nivel` para simplificar el modelo.
+    descripcion = models.TextField(blank=True)
+    # Curso ahora es una entidad independiente que representa la materia.
+    # Las relaciones con Plan se modelan desde `planes.Plan.cursos` (ManyToMany).
     # Nota: la capacidad se gestiona por `Asignacion` (grupos), no por `Curso`.
     def __str__(self):
-        return f"{self.nombre} ({self.get_nivel_display()})"
+        if self.descripcion:
+            return f"{self.nombre} — {self.descripcion}"
+        return self.nombre
 
 # Create your models here.
 class Profesor(models.Model):
@@ -58,8 +58,12 @@ class Asignacion(models.Model):
     # Grado asociado a esta asignación (para filtrar en el registro)
     grado = models.CharField(max_length=10, choices=GRADOS, null=True, blank=True)
 
-    profesor = models.ForeignKey('docentes.Profesor', on_delete=models.PROTECT)
-    curso = models.ForeignKey('docentes.Curso', on_delete=models.PROTECT)
+    # Permitir múltiples profesores por asignación
+    profesores = models.ManyToManyField('docentes.Profesor', related_name='asignaciones')
+    # Ahora Asignacion referencia a Plan (una asignación utiliza UN plan)
+    # Temporalmente permitimos NULL para poder introducir la columna y
+    # rellenarla con una migración de datos antes de exigir NOT NULL.
+    plan = models.ForeignKey('planes.Plan', on_delete=models.PROTECT, related_name='asignaciones', null=True, blank=True)
     aula = models.ForeignKey('docentes.Aula', on_delete=models.PROTECT)
     horario = models.ForeignKey('docentes.Horario', on_delete=models.PROTECT)
     fecha_inicio = models.DateField(null=True, blank=True)
@@ -69,14 +73,13 @@ class Asignacion(models.Model):
 
     class Meta:
         constraints = [
-            # Un profesor no puede tener dos clases en el mismo horario
-            models.UniqueConstraint(fields=['profesor','horario'], name='uniq_profesor_horario'),
             # Un aula no puede tener dos clases en el mismo horario
             models.UniqueConstraint(fields=['aula','horario'], name='uniq_aula_horario'),
         ]
 
     def __str__(self):
-        return f"{self.profesor} → {self.curso} ({self.horario} / {self.aula})"
+        profs = ', '.join(str(p) for p in self.profesores.all())
+        return f"{profs} → {getattr(self.plan, 'nombre', 'Plan?')} ({self.horario} / {self.aula})"
 
 
 class Dia(models.Model):

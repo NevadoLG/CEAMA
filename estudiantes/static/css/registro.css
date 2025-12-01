@@ -95,9 +95,7 @@ body {
   gap: 30px;
   align-items: start;
 }
-.form-main {
-  /* mantiene estilos por defecto */
-}
+
 .form-sidebar {
   position: relative;
 }

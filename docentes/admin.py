@@ -4,21 +4,16 @@ from django.db.models import Count
 
 @admin.register(Curso)
 class CursoAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'nivel', 'plan', 'total_matriculados', 'capacidad_total')
-    list_filter = ('nivel', 'plan')
+    list_display = ('nombre', 'descripcion_short')
+    list_filter = ()
     search_fields = ('nombre',)
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        return qs.annotate(num_matriculas_total=Count('asignacion__matriculas', distinct=True))
-
-    def total_matriculados(self, obj):
-        return getattr(obj, 'num_matriculas_total', 0)
-    total_matriculados.short_description = "Matriculados"
-
-    def capacidad_total(self, obj):
-        # suma las capacidades definidas en las asignaciones del curso
-        return sum(a.cupo_maximo for a in obj.asignacion_set.all())
-    capacidad_total.short_description = "Capacidad total"
+        return qs
+    def descripcion_short(self, obj):
+        return (obj.descripcion[:60] + '...') if obj.descripcion and len(obj.descripcion) > 60 else (obj.descripcion or '')
+    descripcion_short.short_description = 'Descripción'
+    
 @admin.register(Profesor)
 class ProfesorAdmin(admin.ModelAdmin):
     list_display = ('apellidos', 'nombres', 'telefono', 'correo', 'activo')
@@ -42,12 +37,16 @@ class HorarioAdmin(admin.ModelAdmin):
 
 @admin.register(Asignacion)
 class AsignacionAdmin(admin.ModelAdmin):
-    list_display = ('profesor','curso','aula','horario','fecha_inicio','fecha_fin', 'cupos')
-    list_filter = ('curso','profesor','aula','horario')
-    search_fields = ('profesor__apellidos','profesor__nombres','curso__nombre')
+    list_display = ('plan','profesores_list','aula','horario','grado','fecha_inicio','fecha_fin', 'cupos')
+    list_filter = ('plan','profesores','aula','horario','grado')
+    search_fields = ('profesores__apellidos','profesores__nombres','plan__nombre')
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         return qs.annotate(num_matriculas=Count('matriculas'))
+    def profesores_list(self, obj):
+        profs = ', '.join(str(p) for p in obj.profesores.all())
+        return profs or '—'
+    profesores_list.short_description = 'Profesores'
     def cupos(self, obj):
         maximo = getattr(obj, 'cupo_maximo', None)
         usados = getattr(obj, 'num_matriculas', 0)
