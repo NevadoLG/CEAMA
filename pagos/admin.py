@@ -57,9 +57,10 @@ class PagoAdmin(admin.ModelAdmin):
     list_filter = ("estado", "fecha")
     search_fields = ("inscripcion__estudiante__apellidos", "inscripcion__estudiante__nombres")
     date_hierarchy = "fecha"
-    readonly_fields = ("inscripcion", "fecha", "apoderado_info")
-    fields = ("inscripcion", "monto", "metodo", "estado", "fecha", "apoderado_info")
-    raw_id_fields = ("inscripcion",)
+    readonly_fields = ("fecha",)
+    fields = ("inscripcion", "monto", "metodo", "estado", "fecha")
+    # show a combobox of filtered Inscripcion choices (not raw id popup)
+    raw_id_fields = ()
     inlines = [ComprobanteInline]
     actions = ["validar_pago", "marcar_parcial", "rechazar_pago"]
 
@@ -132,20 +133,18 @@ class PagoAdmin(admin.ModelAdmin):
 
         if not getattr(ins, "pk", None):
             return
-        if pago.estado == "completado":
-            ins.estado_pago = "total"
-        elif pago.estado == "parcial":
-            ins.estado_pago = "parcial"
-        elif pago.estado == "rechazado":
-            ins.estado_pago = "pendiente"
+
+        # Compute effective payment state from Pago records (source of truth)
+        pagos_qs = ins.pago_set.all()
+        if pagos_qs.filter(estado='completado').exists():
+            estado_effectivo = 'total'
+        elif pagos_qs.filter(estado='parcial').exists():
+            estado_effectivo = 'parcial'
         else:
-            ins.estado_pago = "pendiente"
-        ins.save(update_fields=["estado_pago"])
+            estado_effectivo = 'pendiente'
 
         total_pagado = (
-            ins.pago_set.filter(estado__in=["parcial", "completado"])
-            .aggregate(total=Sum("monto"))
-            .get("total") or 0
+            pagos_qs.filter(estado__in=["parcial", "completado"]) .aggregate(total=Sum("monto")).get("total") or 0
         )
 
         estudiante = getattr(ins, "estudiante", None)
@@ -156,13 +155,13 @@ class PagoAdmin(admin.ModelAdmin):
             inscripcion=ins,
             estudiante_id=estudiante.pk,
             defaults={
-                "estado": "activo" if ins.estado_pago in ["total", "parcial"] else "inactivo",
+                "estado": "activo" if estado_effectivo in ["total", "parcial"] else "inactivo",
                 "monto_referencial": total_pagado,
             },
         )
 
         if not created:
-            matricula.estado = "activo" if ins.estado_pago in ["total", "parcial"] else "inactivo"
+            matricula.estado = "activo" if estado_effectivo in ["total", "parcial"] else "inactivo"
             matricula.monto_referencial = total_pagado
             matricula.save(update_fields=["estado", "monto_referencial"])
         try:
@@ -234,7 +233,28 @@ class PagoAdmin(admin.ModelAdmin):
 
     @admin.display(description="Plan")
     def plan_text(self, obj):
-        return str(obj.inscripcion.plan)
+        # Prefer Matricula.plan if exists, else fallback to inscripcion.plan
+        try:
+            from estudiantes.models import Matricula
+            mat = Matricula.objects.filter(inscripcion=obj.inscripcion).first()
+            if mat and getattr(mat, 'plan', None):
+                return str(mat.plan)
+        except Exception:
+            pass
+        return str(getattr(obj.inscripcion, 'plan', '—'))
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        """Limit the inscripcion choices to inscriptions that are pending or have pending/parcial payments.
+
+        We use an OR so inscriptions with either characteristic appear in the combobox.
+        """
+        from django.db.models import Q
+        from estudiantes.models import Inscripcion
+        if db_field.name == 'inscripcion':
+            kwargs['queryset'] = Inscripcion.objects.filter(
+                Q(estado='pendiente') | Q(estado_pago__in=['pendiente', 'parcial'])
+            ).order_by('-fecha')
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     @admin.display(description="Estado")
     def estado_badge(self, obj):

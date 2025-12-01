@@ -37,12 +37,16 @@ class HorarioAdmin(admin.ModelAdmin):
 
 @admin.register(Asignacion)
 class AsignacionAdmin(admin.ModelAdmin):
-    list_display = ('plan','profesor','aula','horario','grado','fecha_inicio','fecha_fin', 'cupos')
-    list_filter = ('plan','profesor','aula','horario','grado')
-    search_fields = ('profesor__apellidos','profesor__nombres','plan__nombre')
+    list_display = ('plan','profesores_list','aula','horario','grado','fecha_inicio','fecha_fin', 'cupos')
+    list_filter = ('plan','profesores','aula','horario','grado')
+    search_fields = ('profesores__apellidos','profesores__nombres','plan__nombre')
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         return qs.annotate(num_matriculas=Count('matriculas'))
+    def profesores_list(self, obj):
+        profs = ', '.join(str(p) for p in obj.profesores.all())
+        return profs or '—'
+    profesores_list.short_description = 'Profesores'
     def cupos(self, obj):
         maximo = getattr(obj, 'cupo_maximo', None)
         usados = getattr(obj, 'num_matriculas', 0)

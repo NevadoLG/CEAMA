@@ -58,7 +58,8 @@ class Asignacion(models.Model):
     # Grado asociado a esta asignación (para filtrar en el registro)
     grado = models.CharField(max_length=10, choices=GRADOS, null=True, blank=True)
 
-    profesor = models.ForeignKey('docentes.Profesor', on_delete=models.PROTECT)
+    # Permitir múltiples profesores por asignación
+    profesores = models.ManyToManyField('docentes.Profesor', related_name='asignaciones')
     # Ahora Asignacion referencia a Plan (una asignación utiliza UN plan)
     # Temporalmente permitimos NULL para poder introducir la columna y
     # rellenarla con una migración de datos antes de exigir NOT NULL.
@@ -72,14 +73,13 @@ class Asignacion(models.Model):
 
     class Meta:
         constraints = [
-            # Un profesor no puede tener dos clases en el mismo horario
-            models.UniqueConstraint(fields=['profesor','horario'], name='uniq_profesor_horario'),
             # Un aula no puede tener dos clases en el mismo horario
             models.UniqueConstraint(fields=['aula','horario'], name='uniq_aula_horario'),
         ]
 
     def __str__(self):
-        return f"{self.profesor} → {getattr(self.plan, 'nombre', 'Plan?')} ({self.horario} / {self.aula})"
+        profs = ', '.join(str(p) for p in self.profesores.all())
+        return f"{profs} → {getattr(self.plan, 'nombre', 'Plan?')} ({self.horario} / {self.aula})"
 
 
 class Dia(models.Model):

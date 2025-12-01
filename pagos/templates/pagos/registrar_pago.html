@@ -140,7 +140,13 @@
                 {% for a in asignaciones %}
                   <div style="margin-bottom:12px;padding:12px;border:1px solid #eee;border-radius:8px;background:#fafafa;">
                     <strong>Plan:</strong> {{ a.plan }}<br>
-                    <strong>Profesor:</strong> {{ a.profesor }}<br>
+                    <strong>Profesor:</strong>
+                    {% for p in a.profesores.all %}
+                      {{ p }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                      &mdash;
+                    {% endfor %}
+                    <br>
                     <strong>Horario:</strong> {{ a.horario }}<br>
                     <strong>Aula:</strong> {{ a.aula }}<br>
                     <strong>Cupos:</strong> {{ a.matriculas.count }} / {{ a.cupo_maximo }}
