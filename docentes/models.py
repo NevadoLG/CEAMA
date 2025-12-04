@@ -10,6 +10,9 @@ class Curso(models.Model):
         if self.descripcion:
             return f"{self.nombre} — {self.descripcion}"
         return self.nombre
+    class Meta:
+        verbose_name = "Curso"
+        verbose_name_plural = "Cursos"
 
 # Create your models here.
 class Profesor(models.Model):
@@ -21,6 +24,9 @@ class Profesor(models.Model):
 
     def __str__(self):
         return f"{self.apellidos}, {self.nombres}"
+    class Meta:
+        verbose_name = "Profesor"
+        verbose_name_plural = "Profesores"
 
 class Aula(models.Model):
     nombre = models.CharField(max_length=50, unique=True)  # Ej: "Aula 101"
@@ -28,6 +34,9 @@ class Aula(models.Model):
 
     def __str__(self):
         return self.nombre
+    class Meta:
+        verbose_name = "Aula"
+        verbose_name_plural = "Aulas"
 
 class Horario(models.Model):
     hora_inicio = models.TimeField()
@@ -39,6 +48,9 @@ class Horario(models.Model):
     def __str__(self):
         dias_list = ','.join([d.codigo for d in self.dias.all()])
         return f"{dias_list} {self.hora_inicio}–{self.hora_fin}"
+    class Meta:
+        verbose_name = "Horario"
+        verbose_name_plural = "Horarios"
 
 class Asignacion(models.Model):
     GRADOS = [
@@ -81,6 +93,10 @@ class Asignacion(models.Model):
         profs = ', '.join(str(p) for p in self.profesores.all())
         return f"{profs} → {getattr(self.plan, 'nombre', 'Plan?')} ({self.horario} / {self.aula})"
 
+    class Meta:
+        verbose_name = "Asignación"
+        verbose_name_plural = "Asignaciones"
+
 
 class Dia(models.Model):
     DIAS = [
@@ -91,3 +107,6 @@ class Dia(models.Model):
 
     def __str__(self):
         return self.get_codigo_display()
+    class Meta:
+        verbose_name = "Día"
+        verbose_name_plural = "Días"

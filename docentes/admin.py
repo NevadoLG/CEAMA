@@ -46,7 +46,7 @@ class AsignacionAdmin(admin.ModelAdmin):
     def profesores_list(self, obj):
         profs = ', '.join(str(p) for p in obj.profesores.all())
         return profs or '—'
-    profesores_list.short_description = 'Profesores'
+    profesores_list.short_description = 'Profesor(es)'
     def cupos(self, obj):
         maximo = getattr(obj, 'cupo_maximo', None)
         usados = getattr(obj, 'num_matriculas', 0)

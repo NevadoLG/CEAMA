@@ -1,0 +1,49 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+  <div class="module">
+    <h1>{{ title }}</h1>
+    <div style="margin:12px 0;padding:12px;border:1px solid #e6e6e6;background:#fff;border-radius:6px;">
+      <h2>Total recaudado</h2>
+      <p style="font-size:24px;font-weight:700;">S/ {{ total_recaudo|floatformat:2 }}</p>
+    </div>
+
+    <div style="display:flex;gap:18px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:300px;padding:12px;border:1px solid #e6e6e6;background:#fff;border-radius:6px;">
+        <h3>Recaudo por grado</h3>
+        <table class="table table-striped" style="width:100%;">
+          <thead><tr><th>Grado</th><th>Total</th><th>Pagos</th></tr></thead>
+          <tbody>
+            {% for g in por_grado %}
+              <tr>
+                <td>{{ g.inscripcion__estudiante__grado|default:'—' }}</td>
+                <td>S/ {{ g.total|floatformat:2 }}</td>
+                <td>{{ g.count }}</td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="3">No hay pagos</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div style="flex:1;min-width:300px;padding:12px;border:1px solid #e6e6e6;background:#fff;border-radius:6px;">
+        <h3>Recaudo por asignación</h3>
+        <table class="table table-striped" style="width:100%;">
+          <thead><tr><th>Asignación (Plan)</th><th>Total</th><th>Pagos</th></tr></thead>
+          <tbody>
+            {% for a in por_asignacion %}
+              <tr>
+                <td>{{ a.inscripcion__asignacion__plan__nombre|default:'(sin asignación)' }}</td>
+                <td>S/ {{ a.total|floatformat:2 }}</td>
+                <td>{{ a.count }}</td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="3">No hay pagos</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}

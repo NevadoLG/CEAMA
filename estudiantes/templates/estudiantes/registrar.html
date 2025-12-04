@@ -86,7 +86,7 @@
               <select name="asignacion" id="asignacion" required>
                 <option value="">-- Seleccione una asignación --</option>
                 {% for a in asignaciones %}
-                  <option value="{{ a.id }}">{{ a.plan }} — {% for p in a.profesores.all %}{{ p }}{% if not forloop.last %}, {% endif %}{% empty %}&mdash;{% endfor %}</option>
+                  <option value="{{ a.id }}">{{ a.plan }}</option>
                 {% endfor %}
               </select>
             </div>
@@ -103,11 +103,18 @@
             <aside class="form-sidebar">
               <div id="asignacion-panel" class="asignacion-panel">
                 <h3>Detalles de la asignación</h3>
-                <p id="asignacion-plan"><strong>Plan:</strong> —</p>
-                <p id="asignacion-horario"><strong>Horario:</strong> —</p>
-                <p id="asignacion-profesor"><strong>Profesor:</strong> —</p>
-                <p id="asignacion-aula"><strong>Aula:</strong> —</p>
-                <p id="asignacion-cupo"><strong>Cupos:</strong> —</p>
+                <div id="asignacion-card" style="padding:12px;border-radius:8px;border:1px solid #e6e6e6;background:#fff;">
+                  <div id="asignacion-badge" style="float:right;margin-left:8px"></div>
+                  <p id="asignacion-plan"><strong>Plan:</strong> —</p>
+                  <p id="asignacion-horario"><strong>Horario:</strong> —</p>
+                  <div id="asignacion-profesores"><strong id="profesores-label">Profesor(es)</strong>
+                    <ul id="asignacion-profesores-list" style="margin:6px 0 0 18px;padding:0;list-style:disc inside;">
+                      <li>&mdash;</li>
+                    </ul>
+                  </div>
+                  <p id="asignacion-aula"><strong>Aula:</strong> —</p>
+                  <p id="asignacion-cupo"><strong>Cupos:</strong> —</p>
+                </div>
               </div>
             </aside>
 
@@ -123,7 +130,6 @@
       const select = document.getElementById('asignacion');
       const gradoSelect = document.getElementById('grado');
       const panelHorario = document.getElementById('asignacion-horario');
-      const panelProfesor = document.getElementById('asignacion-profesor');
       const panelAula = document.getElementById('asignacion-aula');
       const panelCupo = document.getElementById('asignacion-cupo');
 
@@ -131,24 +137,70 @@
 
       async function fetchDetalles(id){
         if(!id) return;
+        const registerBtn = document.querySelector('button[type="submit"].btn-submit');
+        const badgeContainer = document.getElementById('asignacion-badge');
+        const profsListEl = document.getElementById('asignacion-profesores-list');
         try{
           const res = await fetch(`/docentes/asignacion/${id}/json/`);
           if(!res.ok) throw new Error('No se pudo obtener detalles');
           const data = await res.json();
-          // rellenar plan
+          // plan
           const planVal = data.plan || '—';
           const panelPlan = document.getElementById('asignacion-plan');
           if(panelPlan) panelPlan.innerHTML = '<strong>Plan:</strong> ' + planVal;
+
+          // horario (mejor presentado)
           panelHorario.innerHTML = '<strong>Horario:</strong> ' + (data.horario || '—');
-          panelProfesor.innerHTML = '<strong>Profesor:</strong> ' + (data.profesor || '—');
+
+          // profesores (separados) — use the array returned by the endpoint
+          const profs = Array.isArray(data.profesores) ? data.profesores : ((data.profesor || '').split(' / ').map(s => s.trim()).filter(Boolean));
+          profsListEl.innerHTML = '';
+          if(profs.length){
+            profs.forEach(p => {
+              const li = document.createElement('li'); li.textContent = p; profsListEl.appendChild(li);
+            });
+          } else {
+            profsListEl.innerHTML = '<li>&mdash;</li>';
+          }
+          // etiqueta: usar 'Profesor(es)'
+          const label = document.getElementById('profesores-label');
+          if(label){
+            label.textContent = 'Profesor(es)';
+          }
+
+          // aula
           panelAula.innerHTML = '<strong>Aula:</strong> ' + (data.aula || '—');
-          const cupoText = (data.ocupados != null && data.cupo_maximo != null) ? `${data.ocupados} / ${data.cupo_maximo}` : '—';
+
+          // horario — show days and larger hour range
+          const horario = data.horario || {};
+          if(horario && (horario.dias_text || horario.hora_range)){
+            const horarioHtml = '<strong>Horario:</strong> <div style="margin-top:4px;color:#333;">' + (horario.dias_text ? `<div style="font-weight:600;">${horario.dias_text}</div>` : '') + (horario.hora_range ? `<div style="font-size:16px;font-weight:700;margin-top:6px;">${horario.hora_range}</div>` : '') + '</div>';
+            panelHorario.innerHTML = horarioHtml;
+          } else {
+            panelHorario.innerHTML = '<strong>Horario:</strong> —';
+          }
+
+          // cupos y badge
+          const ocupados = (typeof data.ocupados === 'number') ? data.ocupados : (data.ocupados ? parseInt(data.ocupados) : null);
+          const cupoMax = (typeof data.cupo_maximo === 'number') ? data.cupo_maximo : (data.cupo_maximo ? parseInt(data.cupo_maximo) : null);
+          const cupoText = (ocupados != null && cupoMax != null) ? `${ocupados} / ${cupoMax}` : '—';
           panelCupo.innerHTML = '<strong>Cupos:</strong> ' + cupoText;
+
+          const isFull = (ocupados != null && cupoMax != null && ocupados >= cupoMax);
+          if(isFull){
+            badgeContainer.innerHTML = '<span style="background:#b00;color:#fff;padding:6px 8px;border-radius:6px;font-weight:700;">LLENO</span>';
+            if(registerBtn) registerBtn.disabled = true;
+          } else {
+            badgeContainer.innerHTML = '';
+            if(registerBtn) registerBtn.disabled = false;
+          }
         }catch(e){
           panelHorario.innerHTML = '<strong>Horario:</strong> —';
-          panelProfesor.innerHTML = '<strong>Profesor:</strong> —';
+          profsListEl.innerHTML = '<li>&mdash;</li>';
           panelAula.innerHTML = '<strong>Aula:</strong> —';
           panelCupo.innerHTML = '<strong>Cupos:</strong> —';
+          if(registerBtn) registerBtn.disabled = false;
+          if(badgeContainer) badgeContainer.innerHTML = '';
         }
       }
 
@@ -164,19 +216,22 @@
           data.forEach(item => {
             const opt = document.createElement('option');
             opt.value = item.id;
-            opt.textContent = `${item.plan || ''} — ${item.profesor}`;
+            opt.textContent = item.plan || '';
             select.appendChild(opt);
           });
         }catch(e){
-          // no hacer nada
+          console.error('Error al cargar asignaciones por grado:', e);
+          select.innerHTML = '<option value="">-- Error cargando asignaciones --</option>';
         }
       }
 
-      select.addEventListener('change', function(e){
+          select.addEventListener('change', function(e){
         const id = this.value;
         if(!id){
           panelHorario.innerHTML = '<strong>Horario:</strong> —';
-          panelProfesor.innerHTML = '<strong>Profesor:</strong> —';
+          const profsListEl = document.getElementById('asignacion-profesores-list');
+          if(profsListEl) profsListEl.innerHTML = '<li>&mdash;</li>';
+          const label = document.getElementById('profesores-label'); if(label) label.textContent = 'Profesor(es)';
           panelAula.innerHTML = '<strong>Aula:</strong> —';
           panelCupo.innerHTML = '<strong>Cupos:</strong> —';
           return;
@@ -187,11 +242,13 @@
 
       // reaccionar al cambio de grado para cargar asignaciones
       if(gradoSelect){
-        gradoSelect.addEventListener('change', function(){
+          gradoSelect.addEventListener('change', function(){
           loadAsignacionesPorGrado(this.value);
           // limpiar panel
           panelHorario.innerHTML = '<strong>Horario:</strong> —';
-          panelProfesor.innerHTML = '<strong>Profesor:</strong> —';
+          const profsListEl = document.getElementById('asignacion-profesores-list');
+          if(profsListEl) profsListEl.innerHTML = '<li>&mdash;</li>';
+          const label = document.getElementById('profesores-label'); if(label) label.textContent = 'Profesor(es)';
           panelAula.innerHTML = '<strong>Aula:</strong> —';
           panelCupo.innerHTML = '<strong>Cupos:</strong> —';
         });

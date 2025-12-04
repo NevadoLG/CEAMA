@@ -207,7 +207,7 @@ def registrar_pago(request):
             .filter(inscripcion=inscripcion)
             .prefetch_related(
                 'asignaciones__plan',
-                'asignaciones__profesor',
+                'asignaciones__profesores',
                 'asignaciones__aula',
                 'asignaciones__horario',
                 'asignaciones__horario__dias',
@@ -236,8 +236,8 @@ def registrar_pago(request):
             if ses_ins.get('asignacion_id'):
                 try:
                     asignacion_obj = Asignacion.objects.select_related(
-                        'plan', 'profesor', 'aula', 'horario'
-                    ).prefetch_related('horario__dias').get(pk=ses_ins['asignacion_id'])
+                        'plan', 'aula', 'horario'
+                    ).prefetch_related('horario__dias', 'profesores').get(pk=ses_ins['asignacion_id'])
                     session_preview['asignacion_obj'] = asignacion_obj
                 except Asignacion.DoesNotExist:
                     session_preview['asignacion_obj'] = None
