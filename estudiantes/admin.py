@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.admin import SimpleListFilter
 from django.http import HttpResponse 
 import csv 
 from .models import Estudiante, Inscripcion, Matricula
@@ -48,10 +49,25 @@ class AsignacionInline(admin.TabularInline):
     verbose_name_plural = "Asignaciones"
     can_delete = False
 
+
+class AsignacionFilter(SimpleListFilter):
+    title = 'Asignación'
+    parameter_name = 'asignacion'
+
+    def lookups(self, request, model_admin):
+        asigns = Asignacion.objects.all().order_by('plan__nombre')
+        return [(str(a.id), str(a)) for a in asigns]
+
+    def queryset(self, request, queryset):
+        val = self.value()
+        if val:
+            return queryset.filter(asignaciones__id=val)
+        return queryset
+
 @admin.register(Matricula)
 class MatriculaAdmin(admin.ModelAdmin):
     list_display = ('estudiante', 'estado', 'monto_referencial', 'cursos_del_plan', 'fecha_creada')
-    list_filter = ('estado',)
+    list_filter = (AsignacionFilter, 'estado',)
     search_fields = ('inscripcion__estudiante__apellidos', 'inscripcion__estudiante__nombres')
     ordering = ('-fecha_creada',)
     filter_horizontal = ('asignaciones',)

@@ -57,8 +57,9 @@ def registrar_estudiante(request):
                 asignaciones = (
                     Asignacion.objects
                     .filter(grado=grado)
-                    .select_related('plan', 'profesor', 'aula', 'horario')
-                    .annotate(num_matriculas=Count('matriculas'))
+                        .select_related('plan', 'aula', 'horario')
+                        .prefetch_related('profesores')
+                        .annotate(num_matriculas=Count('matriculas'))
                 )
             else:
                 asignaciones = []

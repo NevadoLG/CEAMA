@@ -17,6 +17,9 @@ class VerificacionToken(models.Model):
 
     def __str__(self):
         return f"Token {self.pk} de estudiante {self.estudiante_id}"
+    class Meta:
+        verbose_name = "Token de verificación"
+        verbose_name_plural = "Tokens de verificación"
 
 
 class Estudiante(models.Model):
@@ -51,6 +54,9 @@ class Estudiante(models.Model):
 
     def __str__(self):
         return f"{self.apellidos}, {self.nombres}"
+    class Meta:
+        verbose_name = "Estudiante"
+        verbose_name_plural = "Estudiantes"
 
 
 class Inscripcion(models.Model):
@@ -104,6 +110,9 @@ class Inscripcion(models.Model):
 
     def __str__(self):
         return f"{self.estudiante.apellidos}, {self.estudiante.nombres}"
+    class Meta:
+        verbose_name = "Inscripción"
+        verbose_name_plural = "Inscripciones"
 
 
 class Matricula(models.Model):
@@ -124,6 +133,9 @@ class Matricula(models.Model):
 
     def __str__(self):
         return f"Matrícula de {self.estudiante.apellidos}, {self.estudiante.nombres}"
+    class Meta:
+        verbose_name = "Matrícula"
+        verbose_name_plural = "Matrículas"
     @property
     def cursos_plan(self):
         if not self.inscripcion or not self.inscripcion.plan:

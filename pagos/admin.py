@@ -7,17 +7,80 @@ from django.utils.crypto import get_random_string
 
 from .models import Pago, Comprobante
 from .emails import enviar_correo_pago_aprobado
-from django.db.models import Sum
+from django.db.models import Sum, Count
 from estudiantes.models import Matricula
+from django import forms
+from django.core.exceptions import ValidationError
+from django.core.files.uploadedfile import UploadedFile
+
+# Same file-validation rules used by the public upload flow
+MAX_MB = 5
+MAX_FILES = 3
+ALLOWED_CT = {
+    "application/pdf",
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+    "image/gif",
+}
+
+
+class ComprobanteForm(forms.ModelForm):
+    class Meta:
+        model = Comprobante
+        fields = '__all__'
+
+    def clean_archivo(self):
+        f = self.cleaned_data.get('archivo')
+        if not f:
+            return f
+        # Only validate when the object is an uploaded file (new upload).
+        # Existing FileField instances (attached files) are not UploadedFile and should be accepted as-is.
+        if isinstance(f, UploadedFile):
+            ct = getattr(f, 'content_type', None)
+            size = getattr(f, 'size', None)
+            if ct not in ALLOWED_CT:
+                raise ValidationError('Solo PDF o imágenes (JPG/PNG/WEBP/GIF).')
+            if size is not None and size > MAX_MB * 1024 * 1024:
+                raise ValidationError(f'Cada archivo debe pesar ≤ {MAX_MB} MB.')
+        return f
 
 
 class ComprobanteInline(admin.TabularInline):
     model = Comprobante
+    # don't render a blank extra form by default; admins can add one explicitly
     extra = 0
     can_delete = False
     show_change_link = False
     readonly_fields = ("preview", "fecha", "acciones")
-    fields = ("preview", "fecha", "acciones")
+    # include 'archivo' so admins can upload files inline
+    fields = ("archivo", "preview", "fecha", "acciones")
+    form = ComprobanteForm
+    # enforce max files per Pago in the inline formset
+    from django.forms.models import BaseInlineFormSet
+
+    class ComprobanteInlineFormSet(BaseInlineFormSet):
+        def clean(self):
+            super().clean()
+            total = 0
+            for form in self.forms:
+                # skip forms with no cleaned_data or no changes (prevents creating empty records)
+                if getattr(form, 'cleaned_data', None) is None:
+                    continue
+                if not form.has_changed():
+                    continue
+                if form.cleaned_data.get('DELETE'):
+                    continue
+                # consider existing instance file or newly uploaded file
+                archivo = form.cleaned_data.get('archivo')
+                if not archivo and getattr(form.instance, 'pk', None):
+                    archivo = getattr(form.instance, 'archivo', None)
+                if archivo:
+                    total += 1
+            if total > MAX_FILES:
+                raise ValidationError(f'Solo se permiten {MAX_FILES} comprobantes por pago (actual: {total}).')
+
+    formset = ComprobanteInlineFormSet
 
     @admin.display(description="Archivo / Vista previa")
     def preview(self, obj):
@@ -122,6 +185,7 @@ class PagoAdmin(admin.ModelAdmin):
                  name='pagos_pago_aprobar'),
             path('<int:pk>/rechazar/', self.admin_site.admin_view(self.rechazar_view),
                  name='pagos_pago_rechazar'),
+              path('gestion-dinero/', self.admin_site.admin_view(self.gestion_dinero_view), name='pagos_gestion_dinero'),
         ]
         return custom + urls
 
@@ -214,6 +278,50 @@ class PagoAdmin(admin.ModelAdmin):
             )
 
         return self._redirect_changelist(request)
+
+    def changelist_view(self, request, extra_context=None):
+        """Attach the gestion URL so the change_list template can render a button."""
+        if extra_context is None:
+            extra_context = {}
+        extra_context['gestion_dinero_url'] = reverse('admin:pagos_gestion_dinero')
+        # quick summary: total recaudado (visible on changelist)
+        pagos_qs = Pago.objects.filter(estado__in=['parcial', 'completado'])
+        total_recaudo = pagos_qs.aggregate(total=Sum('monto')).get('total') or 0
+        extra_context['gestion_total_recaudo'] = f"S/ {total_recaudo:,.2f}"
+        return super().changelist_view(request, extra_context=extra_context)
+
+    def gestion_dinero_view(self, request):
+        """Admin dashboard showing aggregates: total recaudado, por asignación y por grado."""
+        from django.shortcuts import render
+        pagos_qs = Pago.objects.filter(estado__in=['parcial', 'completado'])
+
+        total_recaudo = pagos_qs.aggregate(total=Sum('monto')).get('total') or 0
+
+        # Por grado
+        por_grado = (
+            pagos_qs
+            .values('inscripcion__estudiante__grado')
+            .annotate(total=Sum('monto'), count=Count('id'))
+            .order_by('-total')
+        )
+
+        # Por asignación (si la inscripción tiene asignacion)
+        por_asignacion = (
+            pagos_qs
+            .values('inscripcion__asignacion__id', 'inscripcion__asignacion__plan__nombre')
+            .annotate(total=Sum('monto'), count=Count('id'))
+            .order_by('-total')
+        )
+
+        context = {
+            'title': 'Gestión de dinero',
+            'total_recaudo': total_recaudo,
+            'por_grado': por_grado,
+            'por_asignacion': por_asignacion,
+            'opts': self.model._meta,
+            'app_label': self.model._meta.app_label,
+        }
+        return render(request, 'admin/pagos/pago/gestion_dinero.html', context)
 
     def rechazar_view(self, request, pk):
         pago = Pago.objects.select_related("inscripcion__estudiante").filter(pk=pk).first()
@@ -340,6 +448,7 @@ class PagoAdmin(admin.ModelAdmin):
 @admin.register(Comprobante)
 class ComprobanteAdmin(admin.ModelAdmin):
     list_display = ("id", "pago", "fecha")
+    form = ComprobanteForm
 
     def has_module_permission(self, request):
         return False
