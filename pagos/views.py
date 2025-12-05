@@ -293,12 +293,19 @@ def registrar_pago(request):
     archivos = request.FILES.getlist("archivos")
 
     if pago_form.is_valid():
-        if len(archivos) == 0:
+        if not archivos:
             pago_form.add_error(None, "Debes adjuntar al menos un comprobante (PDF o imagen).")
         elif len(archivos) > MAX_FILES:
             pago_form.add_error(None, f"Solo se permiten {MAX_FILES} comprobantes por pago.")
         else:
-            # If we already have a persisted inscripcion, use existing flow
+            for f in archivos:
+                if f.content_type not in ALLOWED_CT:
+                    pago_form.add_error(None, "Solo PDF o imágenes (JPG/PNG/WEBP/GIF).")
+                    break
+                if f.size > MAX_MB * 1024 * 1024:
+                    pago_form.add_error(None, f"Cada archivo debe pesar ≤ {MAX_MB} MB.")
+                    break
+        if pago_form.is_valid():
             if inscripcion:
                 registrar_pago_con_comprobantes(inscripcion, pago_form.cleaned_data, archivos)
                 messages.success(
@@ -307,8 +314,6 @@ def registrar_pago(request):
                 )
                 return redirect(f"{reverse('registrar_pago')}?inscripcion_id={inscripcion.id}&ok=1")
 
-            # Otherwise, try to create Apoderado, Estudiante, Inscripcion, Matricula
-            # and the Pago atomically using session data
             if not ses_ins or not ses_apod:
                 pago_form.add_error(None, "Falta información del estudiante o apoderado. Reinicia el proceso.")
             else:

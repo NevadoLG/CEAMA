@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 class Curso(models.Model):
     nombre = models.CharField(max_length=100)
     # Eliminamos el campo `nivel` para simplificar el modelo.
@@ -87,6 +88,7 @@ class Asignacion(models.Model):
             max_digits=7,
             decimal_places=2,
             default=0,
+            validators=[MinValueValidator(0)],
             help_text="Costo en soles de esta asignación (por alumno).",
         )
     def __str__(self):
