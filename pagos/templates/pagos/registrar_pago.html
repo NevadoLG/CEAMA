@@ -130,7 +130,12 @@
                   <input type="text" value="Carga bloqueada (pago ya registrado)" readonly>
                 {% else %}
                   <!-- input manual directo; se procesa con request.FILES.getlist('archivos') -->
-                  <input type="file" name="archivos" id="id_archivos" class="form-control" multiple>
+                  <input type="file"
+                         name="archivos"
+                         id="id_archivos"
+                         class="form-control"
+                         multiple
+                         accept="application/pdf,image/*">
                 {% endif %}
               </div>
             </div>
