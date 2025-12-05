@@ -37,7 +37,7 @@ class HorarioAdmin(admin.ModelAdmin):
 
 @admin.register(Asignacion)
 class AsignacionAdmin(admin.ModelAdmin):
-    list_display = ('plan','profesores_list','aula','horario','grado','fecha_inicio','fecha_fin', 'cupos')
+    list_display = ('plan','profesores_list','aula','horario','grado','fecha_inicio','fecha_fin', 'cupos', 'precio')
     list_filter = ('plan','profesores','aula','horario','grado')
     search_fields = ('profesores__apellidos','profesores__nombres','plan__nombre')
     def get_queryset(self, request):

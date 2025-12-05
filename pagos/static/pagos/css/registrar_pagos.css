@@ -177,3 +177,13 @@ input[type="file"] { white-space: nowrap; text-overflow: ellipsis; overflow: hid
 .alert.error { background:#fee2e2;border:1px solid #fecaca;color:#991b1b;padding:12px 14px;border-radius:8px;margin-bottom:16px; }
 .list-errors { margin:0; padding-left:18px; }
 .field-error { color:#b91c1c;font-size:12px;margin-top:6px; }
+
+.metodo-info {
+  margin-top: 6px;
+  font-size: 0.9rem;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: #eef6ff;
+  border: 1px solid #c7ddff;
+  color: #0b4f6c;
+}

@@ -106,6 +106,9 @@
                   {% if pago_form.metodo.errors %}
                     <div class="field-error">{{ pago_form.metodo.errors.0 }}</div>
                   {% endif %}
+                  <div id="metodo-info" class="metodo-info">
+                    Selecciona un método de pago para ver los datos.
+                  </div>
                 {% endif %}
               </div>
 
@@ -138,7 +141,9 @@
             <div class="form-group" style="grid-column: 1 / -1;">
               {% if asignaciones %}
                 {% for a in asignaciones %}
-                  <div style="margin-bottom:12px;padding:12px;border:1px solid #eee;border-radius:8px;background:#fafafa;">
+                  <div class="card-asignacion"
+                      data-precio-asignacion="{{ a.precio|default_if_none:'0' }}"
+                      style="margin-bottom:12px;padding:12px;border:1px solid #eee;border-radius:8px;background:#fafafa;">
                     <strong>Plan:</strong> {{ a.plan }}<br>
                     <strong>Profesor:</strong>
                     {% for p in a.profesores.all %}
@@ -149,7 +154,8 @@
                     <br>
                     <strong>Horario:</strong> {{ a.horario }}<br>
                     <strong>Aula:</strong> {{ a.aula }}<br>
-                    <strong>Cupos:</strong> {{ a.matriculas.count }} / {{ a.cupo_maximo }}
+                    <strong>Cupos:</strong> {{ a.matriculas.count }} / {{ a.cupo_maximo }}<br>
+                    <strong>Precio:</strong> S/ {{ a.precio|default_if_none:'0'|floatformat:2 }}
                     {% if a.matriculas.count >= a.cupo_maximo %}
                       <div style="color:#b00; font-weight:600; margin-top:6px;">Estado: Lleno</div>
                     {% endif %}
