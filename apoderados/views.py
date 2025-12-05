@@ -83,6 +83,30 @@ def registrar_apoderado(request):
             messages.error(request, "Los apellidos no pueden exceder 30 caracteres.")
             return redirect(redirect_url)
 
+        est_nom = ""
+        est_ape = ""
+
+        if inscripcion and getattr(inscripcion, "estudiante", None):
+            # Caso en que ya existe el estudiante en BD
+            est_nom = (inscripcion.estudiante.nombres or "").strip().lower()
+            est_ape = (inscripcion.estudiante.apellidos or "").strip().lower()
+        else:
+            # Caso del flujo por sesión (aún no existe en BD)
+            ses_ins = request.session.get("ceama_inscripcion") or {}
+            est_nom = (ses_ins.get("nombres") or "").strip().lower()
+            est_ape = (ses_ins.get("apellidos") or "").strip().lower()
+
+        apod_nom = data["nombres"].strip().lower()
+        apod_ape = data["apellidos"].strip().lower()
+
+        if est_nom and est_ape and apod_nom and apod_ape:
+            if est_nom == apod_nom and est_ape == apod_ape:
+                messages.error(
+                    request,
+                    "El apoderado no puede tener exactamente el mismo nombre y apellidos que el estudiante."
+                )
+                return redirect(redirect_url)
+
         telefono = data["telefono"]
         if not telefono:
             messages.error(request, "El teléfono es obligatorio.")
