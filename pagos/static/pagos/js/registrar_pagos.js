@@ -5,7 +5,6 @@
     const inputArchivos = document.getElementById('id_archivos');
     const MAX = 3;
 
-    // Evitar doble envío
     if (form && btn) {
       form.addEventListener('submit', () => {
         if (btn.disabled) return;
@@ -14,7 +13,6 @@
       });
     }
 
-    // Vista previa (con X para quitar) + límite de 3
     if (inputArchivos) {
       // contenedor de previews (lo creamos una sola vez)
       let previewGrid = document.getElementById('preview-grid');
@@ -84,6 +82,66 @@
           previewGrid.appendChild(item);
         });
       }
+    }
+
+    const metodoSelect = document.getElementById('id_metodo');
+    const metodoInfo   = document.getElementById('metodo-info');
+    const estadoSelect = document.getElementById('id_estado');
+    const montoInput   = document.getElementById('id_monto');
+
+    const MENSAJES_METODO = {
+      transferencia: 'Transfiere a la cuenta: 00257019713717601206',
+      yape:          'Yapea al número: 904 929 929',
+      plin:          'Envía tu Plin al número: 904 929 929',
+    };
+
+    function actualizarMensajeMetodo() {
+      if (!metodoSelect || !metodoInfo) return;
+      const value = metodoSelect.value;
+      const msg = MENSAJES_METODO[value];
+      if (msg) {
+        metodoInfo.textContent = msg;
+        metodoInfo.style.display = 'block';
+      } else {
+        metodoInfo.textContent = '';
+        metodoInfo.style.display = 'none';
+      }
+    }
+
+    const tarjetas = document.querySelectorAll('[data-precio-asignacion]');
+    let precioTotal = 0;
+    tarjetas.forEach((card) => {
+      const val = parseFloat(card.getAttribute('data-precio-asignacion') || '0');
+      if (!isNaN(val)) {
+        precioTotal += val;
+      }
+    });
+
+    function actualizarMontoPorEstado() {
+      if (!estadoSelect || !montoInput) return;
+
+      if (!precioTotal || precioTotal <= 0) {
+        montoInput.readOnly = false;
+        return;
+      }
+
+      if (estadoSelect.value === 'completado') {
+        montoInput.value = precioTotal.toFixed(2);
+        montoInput.readOnly = true;
+      } else if (estadoSelect.value === 'parcial') {
+        montoInput.readOnly = false;
+      }
+    }
+
+    actualizarMensajeMetodo();
+    actualizarMontoPorEstado();
+
+    // Listeners
+    if (metodoSelect) {
+      metodoSelect.addEventListener('change', actualizarMensajeMetodo);
+    }
+    if (estadoSelect) {
+      estadoSelect.addEventListener('change', actualizarMontoPorEstado);
     }
   });
 })();

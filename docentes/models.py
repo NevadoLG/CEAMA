@@ -82,13 +82,13 @@ class Asignacion(models.Model):
     fecha_fin = models.DateField(null=True, blank=True)
     # Capacidad por grupo/asignación
     cupo_maximo = models.PositiveIntegerField(default=30)
-
-    class Meta:
-        constraints = [
-            # Un aula no puede tener dos clases en el mismo horario
-            models.UniqueConstraint(fields=['aula','horario'], name='uniq_aula_horario'),
-        ]
-
+    precio = models.DecimalField(
+            "Precio",
+            max_digits=7,
+            decimal_places=2,
+            default=0,
+            help_text="Costo en soles de esta asignación (por alumno).",
+        )
     def __str__(self):
         profs = ', '.join(str(p) for p in self.profesores.all())
         return f"{profs} → {getattr(self.plan, 'nombre', 'Plan?')} ({self.horario} / {self.aula})"
@@ -96,6 +96,12 @@ class Asignacion(models.Model):
     class Meta:
         verbose_name = "Asignación"
         verbose_name_plural = "Asignaciones"
+        constraints = [
+            models.UniqueConstraint(
+                fields=['aula', 'horario'],
+                name='uniq_aula_horario'
+            ),
+        ]
 
 
 class Dia(models.Model):
