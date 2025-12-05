@@ -43,6 +43,19 @@
 
         <h2 class="section-title">Datos del Apoderado</h2>
 
+        {% if messages %}
+          <div class="messages-wrapper">
+            {% for message in messages %}
+              <div class="alert
+                          {% if message.tags == 'error' %} alert-danger
+                          {% elif message.tags == 'success' %} alert-success
+                          {% else %} alert-info {% endif %}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+        
         <form method="post" action="{% url 'registrar_apoderado' %}">
           {% csrf_token %}
          <input type="hidden" name="inscripcion_id" value="{{ inscripcion.id }}">
