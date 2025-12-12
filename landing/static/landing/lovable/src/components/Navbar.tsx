@@ -58,10 +58,10 @@ export const Navbar = () => {
             >
               Contacto
             </button>
-            <Button variant="outline" onClick={() => scrollToSection("contacto")}>
+            <Button variant="outline" onClick={() => window.location.href = '/pagos/regularizar/'}>
               Regularización de Pagos
             </Button>
-            <Button>Inscríbete Ahora</Button>
+            <Button onClick={() => window.location.href = '/estudiantes/registrar'}>Inscríbete Ahora</Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -112,10 +112,10 @@ export const Navbar = () => {
             >
               Contacto
             </button>
-            <Button variant="outline" className="w-full mb-2" onClick={() => scrollToSection("contacto")}>
+            <Button variant="outline" className="w-full mb-2" onClick={() => window.location.href = '/pagos/regularizar/'}>
               Regularización de Pagos
             </Button>
-            <Button className="w-full">Inscríbete Ahora</Button>
+            <Button className="w-full" onClick={() => window.location.href = '/estudiantes/registrar'}>Inscríbete Ahora</Button>
           </div>
         )}
       </div>
