@@ -68,18 +68,18 @@ export const Hero = () => {
           alt="CEAMA Academia Classroom"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/70 to-primary/50"></div>
       </div>
 
       <div className="container mx-auto px-4 z-10 text-center">
         <div className="max-w-4xl mx-auto space-y-6">
-          <h1 className="text-5xl md:text-7xl font-bold text-primary-foreground animate-fade-in">
+          <h1 className="text-6xl md:text-8xl font-bold text-primary-foreground animate-fade-in">
             Bienvenido a CEAMA
           </h1>
-          <p className="text-xl md:text-2xl text-primary-foreground/90 max-w-2xl mx-auto">
+          <p className="text-2xl md:text-3xl text-primary-foreground/90 max-w-2xl mx-auto">
             Centro de Excelencia Académica en Matemática y Comunicación
           </p>
-          <p className="text-lg md:text-xl text-primary-foreground/80 max-w-3xl mx-auto">
+          <p className="text-xl md:text-2xl text-primary-foreground/80 max-w-3xl mx-auto">
             Desarrollamos habilidades esenciales para el éxito académico y
             profesional a través de programas especializados en comunicación
             efectiva y razonamiento matemático.
@@ -357,7 +357,7 @@ export const Team = () => {
             <div className="space-y-6">
               <div>
                 <h3 className="text-3xl font-bold text-foreground mb-2">
-                  [Nombre del Profesor]
+                  Alfredo Rafael Vásquez Sotero
                 </h3>
                 <p className="text-xl text-muted-foreground mb-4">
                   Director y Profesor Principal
@@ -456,10 +456,10 @@ export const Team = () => {
                       />
                     </div>
                     <h4 className="text-xl font-bold text-foreground mb-2">
-                      Liliana Alvarez Chavez
+                      Diana Castillo Miñano
                     </h4>
                     <p className="text-sm text-muted-foreground mb-2">
-                      Docente especialista 1ro. y 2do. grado primaria
+                      Docente especialista en el área de Comunicación
                     </p>
                     <p className="text-xs text-muted-foreground">
                       Colegio Rafael Narvaez Cadenillas
@@ -479,10 +479,10 @@ export const Team = () => {
                       />
                     </div>
                     <h4 className="text-xl font-bold text-foreground mb-2">
-                      Diana Castillo Miñano
+                      Liliana Alvarez Chavez
                     </h4>
                     <p className="text-sm text-muted-foreground mb-2">
-                      Docente especialista en el área de Comunicación
+                      Docente especialista 1ro. y 2do. grado primaria
                     </p>
                     <p className="text-xs text-muted-foreground">
                       Colegio Rafael Narvaez Cadenillas
@@ -498,7 +498,8 @@ export const Team = () => {
                       <img
                         src={teacherGiovanna}
                         alt="Giovanna Tejada Suarez"
-                        className="w-full h-full object-cover object-top"
+                        className="w-full h-full object-cover object-center scale-125"
+                        style={{objectPosition: '38% 18%'}}
                       />
                     </div>
                     <h4 className="text-xl font-bold text-foreground mb-2">
@@ -780,19 +781,19 @@ export const Contact = () => {
     {
       icon: Phone,
       title: "Teléfono",
-      info: "+51 987 654 321",
+      info: "+51 906 601 866",
       color: "from-education-orange to-education-yellow",
     },
     {
       icon: Mail,
       title: "Correo Electrónico",
-      info: "info@ceama.edu.pe",
+      info: "gtejadarnc@gmail.com",
       color: "from-education-primary to-education-teal",
     },
     {
       icon: MapPin,
       title: "Dirección",
-      info: "Av. Educación 123, Lima, Perú",
+      info: "Urb. Trupal Mz. D Lote 20 Calle Kabul",
       color: "from-education-purple to-education-coral",
     },
     {
