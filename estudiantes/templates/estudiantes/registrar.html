@@ -114,6 +114,7 @@
                   </div>
                   <p id="asignacion-aula"><strong>Aula:</strong> —</p>
                   <p id="asignacion-cupo"><strong>Cupos:</strong> —</p>
+                  <p id="asignacion-precio"><strong>Precio:</strong> —</p>
                 </div>
               </div>
             </aside>
@@ -185,6 +186,11 @@
           const cupoMax = (typeof data.cupo_maximo === 'number') ? data.cupo_maximo : (data.cupo_maximo ? parseInt(data.cupo_maximo) : null);
           const cupoText = (ocupados != null && cupoMax != null) ? `${ocupados} / ${cupoMax}` : '—';
           panelCupo.innerHTML = '<strong>Cupos:</strong> ' + cupoText;
+
+          // precio
+          const panelPrecio = document.getElementById('asignacion-precio');
+          const precio = (typeof data.precio === 'number' && data.precio > 0) ? `S/ ${data.precio.toFixed(2)}` : 'Consultar';
+          if(panelPrecio) panelPrecio.innerHTML = '<strong>Precio:</strong> ' + precio;
 
           const isFull = (ocupados != null && cupoMax != null && ocupados >= cupoMax);
           if(isFull){

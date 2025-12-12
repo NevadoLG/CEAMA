@@ -40,6 +40,7 @@ def asignacion_detail(request, pk):
 		'fecha_fin': asignacion.fecha_fin.isoformat() if asignacion.fecha_fin else None,
 		'ocupados': ocupados,
 		'cupo_maximo': getattr(asignacion, 'cupo_maximo', None),
+		'precio': float(asignacion.precio) if hasattr(asignacion, 'precio') and asignacion.precio else 0,
 	}
 	return JsonResponse(data)
 
