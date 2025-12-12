@@ -25,6 +25,9 @@ class PagoForm(forms.ModelForm):
         self.fields["metodo"].choices = Pago._meta.get_field("metodo").choices
         all_estado = Pago._meta.get_field("estado").choices
         self.fields["estado"].choices = [(v, l) for v, l in all_estado if v in PUBLIC_ALLOWED_ESTADOS]
+        # Establecer "completado" como valor predeterminado
+        if not self.instance.pk:  # Solo para nuevos pagos
+            self.initial["estado"] = "completado"
 
     def clean_monto(self):
         raw = self.data.get("monto", "")
